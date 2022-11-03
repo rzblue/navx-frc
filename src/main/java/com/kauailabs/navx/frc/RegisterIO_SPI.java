@@ -43,8 +43,7 @@ class RegisterIO_SPI implements IRegisterIO{
     public boolean init() {
         port.setClockRate(bitrate);
         port.setMSBFirst();
-        port.setSampleDataOnTrailingEdge();
-        port.setClockActiveLow();
+        port.setMode(SPI.Mode.kMode2);
         port.setChipSelectActiveLow();
         if (trace) Tracer.Trace("navX-MXP:  Initialized SPI communication at bitrate " + bitrate + "\n");
         return true;

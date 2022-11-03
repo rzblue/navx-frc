@@ -224,11 +224,7 @@ public class AHRS implements Sendable, Gyro {
         if (m_simDevice != null) {
             io = new SimIO(update_rate_hz, io_complete_sink, m_simDevice);
         } else {
-            if (RuntimeDetector.isRaspbian() && spi_port_id == SPI.Port.kMXP) {
-                io = new RegisterIOMau(update_rate_hz, io_complete_sink, board_capabilities);
-            } else {
-                io = new RegisterIO(new RegisterIO_SPI(new SPI(spi_port_id)), update_rate_hz, io_complete_sink, board_capabilities);
-            }
+            io = new RegisterIO(new RegisterIO_SPI(new SPI(spi_port_id)), update_rate_hz, io_complete_sink, board_capabilities);
         }
         SendableRegistry.addLW(this, "navX-Sensor", spi_port_id.value);
         io_thread.start();
@@ -262,12 +258,8 @@ public class AHRS implements Sendable, Gyro {
         commonInit(update_rate_hz);
         if (m_simDevice != null) {
             io = new SimIO(update_rate_hz, io_complete_sink, m_simDevice);
-        } else {        
-            if (RuntimeDetector.isRaspbian() && spi_port_id == SPI.Port.kMXP) {
-                io = new RegisterIOMau(update_rate_hz, io_complete_sink, board_capabilities);
-            } else {
-                io = new RegisterIO(new RegisterIO_SPI(new SPI(spi_port_id), spi_bitrate), update_rate_hz, io_complete_sink, board_capabilities);
-            }
+        } else {
+            io = new RegisterIO(new RegisterIO_SPI(new SPI(spi_port_id), spi_bitrate), update_rate_hz, io_complete_sink, board_capabilities);
         }
         SendableRegistry.addLW(this, "navX-Sensor", spi_port_id.value);
         io_thread.start();
@@ -289,12 +281,8 @@ public class AHRS implements Sendable, Gyro {
         commonInit(update_rate_hz);
         if (m_simDevice != null) {
             io = new SimIO(update_rate_hz, io_complete_sink, m_simDevice);
-        } else {        
-            if (RuntimeDetector.isRaspbian() && i2c_port_id == I2C.Port.kMXP) {
-                io = new RegisterIOMau(update_rate_hz, io_complete_sink, board_capabilities);
-            } else {
-                io = new RegisterIO(new RegisterIO_I2C(new I2C(i2c_port_id, 0x32)), update_rate_hz, io_complete_sink, board_capabilities);
-            }
+        } else {
+            io = new RegisterIO(new RegisterIO_I2C(new I2C(i2c_port_id, 0x32)), update_rate_hz, io_complete_sink, board_capabilities);
         }
         SendableRegistry.addLW(this, "navX-Sensor", i2c_port_id.value);
         io_thread.start();
@@ -325,13 +313,9 @@ public class AHRS implements Sendable, Gyro {
         commonInit(update_rate_hz);
         if (m_simDevice != null) {
             io = new SimIO(update_rate_hz, io_complete_sink, m_simDevice);
-        } else {        
-            if (RuntimeDetector.isRaspbian() && serial_port_id == SerialPort.Port.kMXP) {
-                io = new RegisterIOMau(NAVX_DEFAULT_UPDATE_RATE_HZ, io_complete_sink, board_capabilities);
-            } else {
-                boolean processed_data = (data_type == SerialDataType.kProcessedData);
-                io = new SerialIO(serial_port_id, update_rate_hz, processed_data, io_complete_sink, board_capabilities);
-            }
+        } else {
+            boolean processed_data = (data_type == SerialDataType.kProcessedData);
+            io = new SerialIO(serial_port_id, update_rate_hz, processed_data, io_complete_sink, board_capabilities);
         }
         SendableRegistry.addLW(this, "navX-Sensor", serial_port_id.value);
         io_thread.start();

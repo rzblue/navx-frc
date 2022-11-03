@@ -56,21 +56,21 @@ class SimIO implements IIOProvider {
             
             // Booleans
 
-            simConnected            = sim_device.createBoolean("Connected", false, true); 
+            simConnected            = sim_device.createBoolean("Connected", SimDevice.Direction.kInput, true);
             
             // Doubles
             
-            simRate                 = sim_device.createDouble("Rate", false, 0.0f);
-            simYaw                  = sim_device.createDouble("Yaw", false, 0.0f);
-            simPitch                = sim_device.createDouble("Pitch", false, 0.0f);
-            simRoll                 = sim_device.createDouble("Roll", false, 0.0f);     
+            simRate                 = sim_device.createDouble("Rate", SimDevice.Direction.kInput, 0.0f);
+            simYaw                  = sim_device.createDouble("Yaw", SimDevice.Direction.kInput, 0.0f);
+            simPitch                = sim_device.createDouble("Pitch", SimDevice.Direction.kInput, 0.0f);
+            simRoll                 = sim_device.createDouble("Roll", SimDevice.Direction.kInput, 0.0f);
             
-            simCompassHeading       = sim_device.createDouble("CompassHeading", false, 0.0f);
-            simFusedHeading         = sim_device.createDouble("FusedHeading", false, 0.0f);     
+            simCompassHeading       = sim_device.createDouble("CompassHeading", SimDevice.Direction.kInput, 0.0f);
+            simFusedHeading         = sim_device.createDouble("FusedHeading", SimDevice.Direction.kInput, 0.0f);
 
-            simLinearWorldAccelX    = sim_device.createDouble("LinearWorldAccelX", false, 0.0f);                                
-            simLinearWorldAccelY    = sim_device.createDouble("LinearWorldAccelY", false, 0.0f); 
-            simLinearWorldAccelZ    = sim_device.createDouble("LinearWorldAccelZ", false, 0.0f);   
+            simLinearWorldAccelX    = sim_device.createDouble("LinearWorldAccelX", SimDevice.Direction.kInput, 0.0f);
+            simLinearWorldAccelY    = sim_device.createDouble("LinearWorldAccelY", SimDevice.Direction.kInput, 0.0f);
+            simLinearWorldAccelZ    = sim_device.createDouble("LinearWorldAccelZ", SimDevice.Direction.kInput, 0.0f);
             
             Tracer.Trace("navX-Sensor SimDevice created.");            
         }      
