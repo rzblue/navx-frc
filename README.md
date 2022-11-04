@@ -1,5 +1,5 @@
 # 2023 Beta Unofficial NavX Library
-[![CI](https://github.com/rzblue/navx-2023/actions/workflows/ci.yml/badge.svg)](https://github.com/rzblue/navx-2023/actions/workflows/ci.yml)
+[![CI](https://github.com/rzblue/navx-frc/actions/workflows/ci.yml/badge.svg)](https://github.com/rzblue/navx-frc/actions/workflows/ci.yml)
 
 This is an *unofficial* repository containing source for the NavX FRC libraries for 2023.
 

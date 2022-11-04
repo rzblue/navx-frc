@@ -48,7 +48,7 @@ ext.addTaskToCopyAllOutputs = { task ->
 }
 
 def artifactGroupId = 'com.kauailabs.navx'
-def baseArtifactId = 'navx-2023'
+def baseArtifactId = 'navx-frc'
 def zipBaseName = "_GROUP_com_kauailabs_navx_ID_${baseArtifactId}-cpp_CLS"
 def javaBaseName = "_GROUP_com_kauailabs_navx_ID_${baseArtifactId}-java_CLS"
 
