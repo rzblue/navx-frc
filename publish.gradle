@@ -10,9 +10,8 @@ if(!project.hasProperty("releaseMode")) {
 }
 
 def outputsFolder = file("$buildDir/allOutputs")
-def intermediateOutput = file("$buildDir/intermediateOutputs")
 
-def versionFile = file("$intermediateOutput/version.txt")
+def versionFile = file("$outputsFolder/version.txt")
 
 task outputVersions() {
     description = 'Prints the versions of wpilib to a file for use by the downstream packaging project'
@@ -21,7 +20,7 @@ task outputVersions() {
 
     doFirst {
         buildDir.mkdir()
-        intermediateOutput.mkdir()
+        outputsFolder.mkdir()
     }
 
     doLast {
@@ -52,7 +51,7 @@ def zipBaseName = "_GROUP_com_vendor_frc_ID_${baseArtifactId}-cpp_CLS"
 def javaBaseName = "_GROUP_com_vendor_frc_ID_${baseArtifactId}-java_CLS"
 
 task cppHeadersZip(type: Zip) {
-    destinationDirectory = intermediateOutput
+    destinationDirectory = outputsFolder
     archiveBaseName = zipBaseName
     classifier = "headers"
 
@@ -66,7 +65,7 @@ task cppHeadersZip(type: Zip) {
 }
 
 task cppSourceZip(type: Zip) {
-    destinationDirectory = intermediateOutput
+    destinationDirectory = outputsFolder
     archiveBaseName = zipBaseName
     classifier = "source"
 
@@ -88,6 +87,7 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
+
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
@@ -95,20 +95,20 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 task outputJar(type: Jar, dependsOn: classes) {
     archiveBaseName = javaBaseName
-    destinationDirectory = intermediateOutput
+    destinationDirectory = outputsFolder
     from sourceSets.main.output
 }
 
 task outputSourcesJar(type: Jar, dependsOn: classes) {
     archiveBaseName = javaBaseName
-    destinationDirectory = intermediateOutput
+    destinationDirectory = outputsFolder
     classifier = 'sources'
     from sourceSets.main.allSource
 }
 
 task outputJavadocJar(type: Jar, dependsOn: javadoc) {
     archiveBaseName = javaBaseName
-    destinationDirectory = intermediateOutput
+    destinationDirectory = outputsFolder
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
@@ -150,7 +150,7 @@ tasks.matching {it != cleanReleaseRepo}.all {it.dependsOn cleanReleaseRepo}
 
 model {
     publishing {
-        def taskList = createComponentZipTasks($.components, ['navx'], zipBaseName, Zip, project, includeStandardZipFormat)
+        def taskList = createComponentZipTasks($.components, ['NavX'], zipBaseName, Zip, project, includeStandardZipFormat)
 
         publications {
             cpp(MavenPublication) {
