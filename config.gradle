@@ -22,17 +22,17 @@ nativeUtils.wpi.addWarningsAsErrors()
 nativeUtils.setSinglePrintPerPlatform()
 
 model {
-    components {
-        all {
-            targetPlatform nativeUtils.wpi.platforms.roborio
-        }
-    }
-    // Uncomment this, and remove above lines to enable builds for all platforms
     // components {
     //     all {
-    //         nativeUtils.useAllPlatforms(it)
+    //         targetPlatform nativeUtils.wpi.platforms.roborio
     //     }
     // }
+    // Uncomment this, and remove above lines to enable builds for all platforms
+    components {
+        all {
+            nativeUtils.useAllPlatforms(it)
+        }
+    }
     binaries {
         withType(NativeBinarySpec).all {
             nativeUtils.usePlatformArguments(it)

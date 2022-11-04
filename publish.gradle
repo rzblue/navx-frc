@@ -48,7 +48,6 @@ ext.addTaskToCopyAllOutputs = { task ->
 
 def artifactGroupId = 'com.kauailabs.navx'
 def baseArtifactId = 'navx-2023'
-def driverZipBaseName = "_GROUP_com_vendor_frc_ID_${baseArtifactId}-driver_CLS"
 def zipBaseName = "_GROUP_com_vendor_frc_ID_${baseArtifactId}-cpp_CLS"
 def javaBaseName = "_GROUP_com_vendor_frc_ID_${baseArtifactId}-java_CLS"
 
@@ -80,26 +79,10 @@ task cppSourceZip(type: Zip) {
     }
 }
 
-task cppDriverHeadersZip(type: Zip) {
-    destinationDirectory = intermediateOutput
-    archiveBaseName = driverZipBaseName
-    classifier = "headers"
-
-    from(licenseFile) {
-        into '/'
-    }
-
-    from('src/main/driver/include') {
-        into '/'
-    }
-}
-
 build.dependsOn cppHeadersZip
 addTaskToCopyAllOutputs(cppHeadersZip)
 build.dependsOn cppSourceZip
 addTaskToCopyAllOutputs(cppSourceZip)
-build.dependsOn cppDriverHeadersZip
-addTaskToCopyAllOutputs(cppDriverHeadersZip)
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
@@ -169,8 +152,6 @@ model {
     publishing {
         def taskList = createComponentZipTasks($.components, ['navx'], zipBaseName, Zip, project, includeStandardZipFormat)
 
-        def driverTaskList = createComponentZipTasks($.components, ['navx-driver'], driverZipBaseName, Zip, project, includeStandardZipFormat)
-
         publications {
             cpp(MavenPublication) {
                 taskList.each {
@@ -180,16 +161,6 @@ model {
                 artifact cppSourceZip
 
                 artifactId = "${baseArtifactId}-cpp"
-                groupId artifactGroupId
-                version pubVersion
-            }
-            driver(MavenPublication) {
-                driverTaskList.each {
-                    artifact it
-                }
-                artifact cppDriverHeadersZip
-
-                artifactId = "${baseArtifactId}-driver"
                 groupId artifactGroupId
                 version pubVersion
             }
