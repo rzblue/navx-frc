@@ -9,7 +9,7 @@ if(!project.hasProperty("releaseMode")) {
     pubVersion += "-" + gitCommitHash
 }
 
-def outputsFolder = file("$buildDir/allOutputs")
+def outputsFolder = file("$buildDir/outputs")
 
 def versionFile = file("$outputsFolder/version.txt")
 
@@ -33,7 +33,7 @@ task libraryBuild() {}
 build.dependsOn outputVersions
 
 task copyAllOutputs(type: Copy) {
-    destinationDir outputsFolder
+    destinationDir file("$buildDir/allOutputs")
 }
 
 build.dependsOn copyAllOutputs
