@@ -2,11 +2,17 @@ apply plugin: 'maven-publish'
 
 ext.licenseFile = files("$rootDir/LICENSE.txt")
 
-def pubVersion = '0.0.1'
+def gitCommitHash = 'git rev-parse --verify --short HEAD'.execute().text.trim()
+def baseVersion = '2023.0.1-beta'
+def pubVersion = baseVersion
+if(!project.hasProperty("releaseMode")) {
+    pubVersion += "-" + gitCommitHash
+}
 
 def outputsFolder = file("$buildDir/allOutputs")
+def intermediateOutput = file("$buildDir/intermediateOutputs")
 
-def versionFile = file("$outputsFolder/version.txt")
+def versionFile = file("$intermediateOutput/version.txt")
 
 task outputVersions() {
     description = 'Prints the versions of wpilib to a file for use by the downstream packaging project'
@@ -15,7 +21,7 @@ task outputVersions() {
 
     doFirst {
         buildDir.mkdir()
-        outputsFolder.mkdir()
+        intermediateOutput.mkdir()
     }
 
     doLast {
@@ -41,13 +47,13 @@ ext.addTaskToCopyAllOutputs = { task ->
 }
 
 def artifactGroupId = 'com.kauailabs.navx'
-def baseArtifactId = 'navx'
+def baseArtifactId = 'navx-2023'
 def driverZipBaseName = "_GROUP_com_vendor_frc_ID_${baseArtifactId}-driver_CLS"
 def zipBaseName = "_GROUP_com_vendor_frc_ID_${baseArtifactId}-cpp_CLS"
 def javaBaseName = "_GROUP_com_vendor_frc_ID_${baseArtifactId}-java_CLS"
 
 task cppHeadersZip(type: Zip) {
-    destinationDirectory = outputsFolder
+    destinationDirectory = intermediateOutput
     archiveBaseName = zipBaseName
     classifier = "headers"
 
@@ -61,7 +67,7 @@ task cppHeadersZip(type: Zip) {
 }
 
 task cppSourceZip(type: Zip) {
-    destinationDirectory = outputsFolder
+    destinationDirectory = intermediateOutput
     archiveBaseName = zipBaseName
     classifier = "source"
 
@@ -75,7 +81,7 @@ task cppSourceZip(type: Zip) {
 }
 
 task cppDriverHeadersZip(type: Zip) {
-    destinationDirectory = outputsFolder
+    destinationDirectory = intermediateOutput
     archiveBaseName = driverZipBaseName
     classifier = "headers"
 
@@ -99,7 +105,6 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
-
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
@@ -107,20 +112,20 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 task outputJar(type: Jar, dependsOn: classes) {
     archiveBaseName = javaBaseName
-    destinationDirectory = outputsFolder
+    destinationDirectory = intermediateOutput
     from sourceSets.main.output
 }
 
 task outputSourcesJar(type: Jar, dependsOn: classes) {
     archiveBaseName = javaBaseName
-    destinationDirectory = outputsFolder
+    destinationDirectory = intermediateOutput
     classifier = 'sources'
     from sourceSets.main.allSource
 }
 
 task outputJavadocJar(type: Jar, dependsOn: javadoc) {
     archiveBaseName = javaBaseName
-    destinationDirectory = outputsFolder
+    destinationDirectory = intermediateOutput
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
