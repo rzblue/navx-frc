@@ -34,6 +34,8 @@ build.dependsOn outputVersions
 
 task copyAllOutputs(type: Copy) {
     destinationDir file("$buildDir/allOutputs")
+    from versionFile
+    dependsOn outputVersions
 }
 
 build.dependsOn copyAllOutputs
