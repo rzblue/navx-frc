@@ -29,7 +29,7 @@ jobs:
           submodules: true
       - name: Fetch all history and metadata
         run: |
-          git config --global --add safe.directory /__w/navx-2023/navx-2023
+          git config --global --add safe.directory /__w/navx-frc/navx-frc
           git fetch --prune --unshallow
       - name: Build with Gradle
         run: ./gradlew build --max-workers 1 ${{ matrix.build-options }}
