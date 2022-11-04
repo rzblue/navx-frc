@@ -9,10 +9,9 @@ if(!project.hasProperty("releaseMode")) {
     pubVersion += "-" + gitCommitHash
 }
 
-def outputsFolder = file("$buildDir/allOutputs")
-def intermediateOutput = file("$buildDir/intermediateOutputs")
+def outputsFolder = file("$buildDir/outputs")
 
-def versionFile = file("$intermediateOutput/version.txt")
+def versionFile = file("$outputsFolder/version.txt")
 
 task outputVersions() {
     description = 'Prints the versions of wpilib to a file for use by the downstream packaging project'
@@ -21,7 +20,7 @@ task outputVersions() {
 
     doFirst {
         buildDir.mkdir()
-        intermediateOutput.mkdir()
+        outputsFolder.mkdir()
     }
 
     doLast {
@@ -34,7 +33,7 @@ task libraryBuild() {}
 build.dependsOn outputVersions
 
 task copyAllOutputs(type: Copy) {
-    destinationDir outputsFolder
+    destinationDir file("$buildDir/allOutputs")
 }
 
 build.dependsOn copyAllOutputs
@@ -48,12 +47,11 @@ ext.addTaskToCopyAllOutputs = { task ->
 
 def artifactGroupId = 'com.kauailabs.navx'
 def baseArtifactId = 'navx-2023'
-def driverZipBaseName = "_GROUP_com_vendor_frc_ID_${baseArtifactId}-driver_CLS"
 def zipBaseName = "_GROUP_com_vendor_frc_ID_${baseArtifactId}-cpp_CLS"
 def javaBaseName = "_GROUP_com_vendor_frc_ID_${baseArtifactId}-java_CLS"
 
 task cppHeadersZip(type: Zip) {
-    destinationDirectory = intermediateOutput
+    destinationDirectory = outputsFolder
     archiveBaseName = zipBaseName
     classifier = "headers"
 
@@ -67,7 +65,7 @@ task cppHeadersZip(type: Zip) {
 }
 
 task cppSourceZip(type: Zip) {
-    destinationDirectory = intermediateOutput
+    destinationDirectory = outputsFolder
     archiveBaseName = zipBaseName
     classifier = "source"
 
@@ -80,31 +78,16 @@ task cppSourceZip(type: Zip) {
     }
 }
 
-task cppDriverHeadersZip(type: Zip) {
-    destinationDirectory = intermediateOutput
-    archiveBaseName = driverZipBaseName
-    classifier = "headers"
-
-    from(licenseFile) {
-        into '/'
-    }
-
-    from('src/main/driver/include') {
-        into '/'
-    }
-}
-
 build.dependsOn cppHeadersZip
 addTaskToCopyAllOutputs(cppHeadersZip)
 build.dependsOn cppSourceZip
 addTaskToCopyAllOutputs(cppSourceZip)
-build.dependsOn cppDriverHeadersZip
-addTaskToCopyAllOutputs(cppDriverHeadersZip)
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
+
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
@@ -112,20 +95,20 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 task outputJar(type: Jar, dependsOn: classes) {
     archiveBaseName = javaBaseName
-    destinationDirectory = intermediateOutput
+    destinationDirectory = outputsFolder
     from sourceSets.main.output
 }
 
 task outputSourcesJar(type: Jar, dependsOn: classes) {
     archiveBaseName = javaBaseName
-    destinationDirectory = intermediateOutput
+    destinationDirectory = outputsFolder
     classifier = 'sources'
     from sourceSets.main.allSource
 }
 
 task outputJavadocJar(type: Jar, dependsOn: javadoc) {
     archiveBaseName = javaBaseName
-    destinationDirectory = intermediateOutput
+    destinationDirectory = outputsFolder
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
@@ -167,9 +150,7 @@ tasks.matching {it != cleanReleaseRepo}.all {it.dependsOn cleanReleaseRepo}
 
 model {
     publishing {
-        def taskList = createComponentZipTasks($.components, ['navx'], zipBaseName, Zip, project, includeStandardZipFormat)
-
-        def driverTaskList = createComponentZipTasks($.components, ['navx-driver'], driverZipBaseName, Zip, project, includeStandardZipFormat)
+        def taskList = createComponentZipTasks($.components, ['NavX'], zipBaseName, Zip, project, includeStandardZipFormat)
 
         publications {
             cpp(MavenPublication) {
@@ -180,16 +161,6 @@ model {
                 artifact cppSourceZip
 
                 artifactId = "${baseArtifactId}-cpp"
-                groupId artifactGroupId
-                version pubVersion
-            }
-            driver(MavenPublication) {
-                driverTaskList.each {
-                    artifact it
-                }
-                artifact cppDriverHeadersZip
-
-                artifactId = "${baseArtifactId}-driver"
                 groupId artifactGroupId
                 version pubVersion
             }
