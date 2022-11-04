@@ -1,4 +1,5 @@
 # 2023 Beta Unofficial NavX Library
+[![CI](https://github.com/rzblue/navx-2023/actions/workflows/ci.yml/badge.svg)](https://github.com/rzblue/navx-2023/actions/workflows/ci.yml)
 
 This is an *unofficial* repository containing source for the NavX FRC libraries for 2023.
 
@@ -10,4 +11,3 @@ Caveats:
 - Support for VMXpi has been removed as I do not have the source for the native library.
 
 This repository is published under the license specified by the Maven Repository listing and by the downloaded source, which can be found at [LICENSE.txt](LICENSE.txt)
-
