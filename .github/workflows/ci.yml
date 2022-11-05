@@ -27,12 +27,15 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
+      - name: Set release environment variable
+        run: echo "EXTRA_GRADLE_ARGS=-PreleaseMode" >> $GITHUB_ENV
+        if: startsWith(github.ref, 'refs/tags/v')
       - name: Fetch all history and metadata
         run: |
           git config --global --add safe.directory /__w/navx-frc/navx-frc
           git fetch --prune --unshallow
       - name: Build with Gradle
-        run: ./gradlew build --max-workers 1 ${{ matrix.build-options }}
+        run: ./gradlew build --max-workers 1 ${{ matrix.build-options }} ${{ env.EXTRA_GRADLE_ARGS }}
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.artifact-name }}
@@ -57,12 +60,17 @@ jobs:
           submodules: true
       - name: Fetch all history and metadata
         run: git fetch --prune --unshallow
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v3
         with:
-          java-version: 11
+          java-version: 17
+          distribution: zulu
           architecture: ${{ matrix.architecture }}
+      - name: Set release environment variable
+        run: echo "EXTRA_GRADLE_ARGS=-PreleaseMode" >> $GITHUB_ENV
+        shell: bash
+        if: startsWith(github.ref, 'refs/tags/v')
       - name: Build with Gradle
-        run: ./gradlew build -Pbuildalldesktop
+        run: ./gradlew build -Pbuildalldesktop ${{ env.EXTRA_GRADLE_ARGS }}
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.artifact-name }}
@@ -76,31 +84,50 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: wpilibsuite/build-tools
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           path: combiner/products/build/allOutputs
       - name: Flatten Artifacts
         run: rsync -a --delete combiner/products/build/allOutputs/*/* combiner/products/build/allOutputs/
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v3
         with:
           java-version: 11
+          distribution: zulu
       - name: Combine
-        # if: |
-        #   !startsWith(github.ref, 'refs/tags/v')
+        if: |
+          !startsWith(github.ref, 'refs/tags/v')
         run: ./gradlew publish -Pthirdparty
         working-directory: combiner
-      # - name: Combine (Release)
-      #   if: |
-      #     github.repository_owner == 'wpilibsuite' &&
-      #     startsWith(github.ref, 'refs/tags/v')
-      #   run: |
-      #     ./gradlew publish -Pthirdparty
-      #   working-directory: combiner
-      #   env:
-      #     RUN_AZURE_ARTIFACTORY_RELEASE: 'TRUE'
-      #     ARTIFACTORY_PUBLISH_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-      #     ARTIFACTORY_PUBLISH_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+      - name: Combine (Release)
+        if: |
+          github.repository_owner == 'rzblue' &&
+          startsWith(github.ref, 'refs/tags/v')
+        run: |
+          ./gradlew publish -Pthirdparty -PreleaseRepoPublish
+        working-directory: combiner
       - uses: actions/upload-artifact@v3
         with:
           name: Maven
           path: ~/releases
+
+  publish-maven-release:
+    if: |
+      github.repository_owner == 'rzblue' && startsWith(github.ref, 'refs/tags/v')
+    needs: combine
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch maven repo branch
+        uses: actions/checkout@v3
+        with:
+          ref: maven
+      - name: Download maven artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: Maven
+      - name: Commit and push changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m "Add version ${{ github.ref_name }}" -m "CI Run ID: ${{ github.run_id }}" -m "CI Run Attempt: ${{ github.run_attempt }}"
+          git push

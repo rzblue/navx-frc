@@ -5,6 +5,7 @@ ext.licenseFile = files("$rootDir/LICENSE.txt")
 def gitCommitHash = 'git rev-parse --verify --short HEAD'.execute().text.trim()
 def baseVersion = '2023.0.1-beta'
 def pubVersion = baseVersion
+// This isn't what releaseMode is for - fix this later
 if(!project.hasProperty("releaseMode")) {
     pubVersion += "-" + gitCommitHash
 }
@@ -47,10 +48,10 @@ ext.addTaskToCopyAllOutputs = { task ->
     copyAllOutputs.from task.archivePath
 }
 
-def artifactGroupId = 'com.kauailabs.navx'
+def artifactGroupId = 'com.kauailabs.navx.frc'
 def baseArtifactId = 'navx-frc'
-def zipBaseName = "_GROUP_com_kauailabs_navx_ID_${baseArtifactId}-cpp_CLS"
-def javaBaseName = "_GROUP_com_kauailabs_navx_ID_${baseArtifactId}-java_CLS"
+def zipBaseName = "_GROUP_com_kauailabs_navx_frc_ID_${baseArtifactId}-cpp_CLS"
+def javaBaseName = "_GROUP_com_kauailabs_navx_frc_ID_${baseArtifactId}-java_CLS"
 
 task cppHeadersZip(type: Zip) {
     destinationDirectory = outputsFolder
