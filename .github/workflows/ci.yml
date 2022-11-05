@@ -84,7 +84,7 @@ jobs:
         run: rsync -a --delete combiner/products/build/allOutputs/*/* combiner/products/build/allOutputs/
       - uses: actions/setup-java@v3
         with:
-          java-version: 17
+          java-version: 11
           distribution: zulu
       - name: Combine
         if: |
