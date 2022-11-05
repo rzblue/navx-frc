@@ -123,5 +123,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add .
-          git commit -m "Add publication for $GITHUB_RUN_NUMBER"
+          git commit -m "Add publication for ${{ github.run_number }}" -m "CI Run ID: ${{ github.run_id }}" -m "CI Run Attempt: ${{ github.run_attempt }}"
           git push
