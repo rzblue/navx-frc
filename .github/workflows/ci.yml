@@ -85,22 +85,40 @@ jobs:
         with:
           java-version: 11
       - name: Combine
-        # if: |
-        #   !startsWith(github.ref, 'refs/tags/v')
+        if: |
+          !startsWith(github.ref, 'refs/tags/v')
         run: ./gradlew publish -Pthirdparty
         working-directory: combiner
-      # - name: Combine (Release)
-      #   if: |
-      #     github.repository_owner == 'wpilibsuite' &&
-      #     startsWith(github.ref, 'refs/tags/v')
-      #   run: |
-      #     ./gradlew publish -Pthirdparty
-      #   working-directory: combiner
-      #   env:
-      #     RUN_AZURE_ARTIFACTORY_RELEASE: 'TRUE'
-      #     ARTIFACTORY_PUBLISH_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-      #     ARTIFACTORY_PUBLISH_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+      - name: Combine (Release)
+        if: |
+          github.repository_owner == 'wpilibsuite' &&
+          startsWith(github.ref, 'refs/tags/v')
+        run: |
+          ./gradlew publish -Pthirdparty -PreleaseMode
+        working-directory: combiner
       - uses: actions/upload-artifact@v3
         with:
           name: Maven
           path: ~/releases
+
+  publish-maven-release:
+    if: |
+      github.repository_owner == 'rzblue'
+    # && ( startsWith(github.ref, 'refs/tags/v') re-enable this after testing
+    needs: combine
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch maven repo branch
+        uses: actions/checkout@v3
+        with:
+          ref: mvn-tmp
+      - name: Download maven artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: Maven
+      - name: Commit and push changes
+        run: |
+          git add .
+          git commit -m "Add publication for $GITHUB_RUN_NUMBER"
+          git push
+
