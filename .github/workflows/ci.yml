@@ -96,14 +96,14 @@ jobs:
       - name: Combine
         if: |
           !startsWith(github.ref, 'refs/tags/v')
-        run: ./gradlew publish -Pthirdparty -PreleaseRepoPublish
+        run: ./gradlew publish -Pthirdparty
         working-directory: combiner
       - name: Combine (Release)
         if: |
           github.repository_owner == 'rzblue' &&
           startsWith(github.ref, 'refs/tags/v')
         run: |
-          ./gradlew publish -Pthirdparty -PreleaseMode
+          ./gradlew publish -Pthirdparty -PreleaseRepoPublish
         working-directory: combiner
       - uses: actions/upload-artifact@v3
         with:
@@ -112,15 +112,14 @@ jobs:
 
   publish-maven-release:
     if: |
-      github.repository_owner == 'rzblue'
-    # && ( startsWith(github.ref, 'refs/tags/v') re-enable this after testing
+      github.repository_owner == 'rzblue' && startsWith(github.ref, 'refs/tags/v')
     needs: combine
     runs-on: ubuntu-latest
     steps:
       - name: Fetch maven repo branch
         uses: actions/checkout@v3
         with:
-          ref: mvn-tmp
+          ref: maven
       - name: Download maven artifacts
         uses: actions/download-artifact@v3
         with:
@@ -130,5 +129,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add .
-          git commit -m "Add publication for ${{ github.run_number }}" -m "CI Run ID: ${{ github.run_id }}" -m "CI Run Attempt: ${{ github.run_attempt }}"
+          git commit -m "Add version ${{ github.ref_name }}" -m "CI Run ID: ${{ github.run_id }}" -m "CI Run Attempt: ${{ github.run_attempt }}"
           git push
