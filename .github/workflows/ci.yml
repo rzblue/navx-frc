@@ -77,7 +77,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: wpilibsuite/build-tools
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           path: combiner/products/build/allOutputs
       - name: Flatten Artifacts
