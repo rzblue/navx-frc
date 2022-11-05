@@ -5,6 +5,7 @@ ext.licenseFile = files("$rootDir/LICENSE.txt")
 def gitCommitHash = 'git rev-parse --verify --short HEAD'.execute().text.trim()
 def baseVersion = '2023.0.1-beta'
 def pubVersion = baseVersion
+// This isn't what releaseMode is for - fix this later
 if(!project.hasProperty("releaseMode")) {
     pubVersion += "-" + gitCommitHash
 }
