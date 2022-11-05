@@ -89,11 +89,11 @@ jobs:
       - name: Combine
         if: |
           !startsWith(github.ref, 'refs/tags/v')
-        run: ./gradlew publish -Pthirdparty
+        run: ./gradlew publish -Pthirdparty -PreleaseMode
         working-directory: combiner
       - name: Combine (Release)
         if: |
-          github.repository_owner == 'wpilibsuite' &&
+          github.repository_owner == 'rzblue' &&
           startsWith(github.ref, 'refs/tags/v')
         run: |
           ./gradlew publish -Pthirdparty -PreleaseMode
