@@ -57,9 +57,10 @@ jobs:
           submodules: true
       - name: Fetch all history and metadata
         run: git fetch --prune --unshallow
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v2
         with:
-          java-version: 11
+          java-version: 17
+          distribution: zulu
           architecture: ${{ matrix.architecture }}
       - name: Build with Gradle
         run: ./gradlew build -Pbuildalldesktop
@@ -81,9 +82,10 @@ jobs:
           path: combiner/products/build/allOutputs
       - name: Flatten Artifacts
         run: rsync -a --delete combiner/products/build/allOutputs/*/* combiner/products/build/allOutputs/
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v2
         with:
-          java-version: 11
+          java-version: 17
+          distribution: zulu
       - name: Combine
         if: |
           !startsWith(github.ref, 'refs/tags/v')
@@ -123,4 +125,3 @@ jobs:
           git add .
           git commit -m "Add publication for $GITHUB_RUN_NUMBER"
           git push
-
