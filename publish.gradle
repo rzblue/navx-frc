@@ -2,13 +2,13 @@ apply plugin: 'maven-publish'
 
 ext.licenseFile = files("$rootDir/LICENSE.txt")
 
-def gitCommitHash = 'git rev-parse --verify --short HEAD'.execute().text.trim()
-def baseVersion = '2023.1.0-beta-1'
-def pubVersion = baseVersion
-// This isn't what releaseMode is for - fix this later
-if(!project.hasProperty("releaseMode")) {
-    pubVersion += "-" + gitCommitHash
-}
+wpilibVersioning.buildServerMode = project.hasProperty('buildServer')
+wpilibVersioning.releaseMode = project.hasProperty('releaseMode')
+
+wpilibVersioning.useAllTags = true
+wpilibVersioning.version.finalizeValue()
+
+def pubVersion = wpilibVersioning.version.get()
 
 def outputsFolder = file("$buildDir/outputs")
 
@@ -139,7 +139,6 @@ def releasesRepoUrl = "$buildDir/repos/releases"
 publishing {
     repositories {
         maven {
-
             url = releasesRepoUrl
         }
     }

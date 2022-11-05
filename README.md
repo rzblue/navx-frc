@@ -3,7 +3,8 @@
 
 This is an *unofficial* repository containing source for the NavX FRC libraries for 2023.
 
-Download the latest vendordep JSON on the [releases page](https://github.com/rzblue/navx-frc/releases)
+Use this url to install the vendordep online:
+`https://raw.githubusercontent.com/rzblue/navx-frc/maven/navx_frc.json`
 
 Caveats:
 
