@@ -4,8 +4,6 @@ ext.licenseFile = files("$rootDir/LICENSE.txt")
 
 wpilibVersioning.buildServerMode = project.hasProperty('buildServer')
 wpilibVersioning.releaseMode = project.hasProperty('releaseMode')
-
-wpilibVersioning.useAllTags = true
 wpilibVersioning.version.finalizeValue()
 
 def pubVersion = wpilibVersioning.version.get()

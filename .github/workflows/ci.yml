@@ -122,10 +122,18 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: maven
+      - uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: zulu
       - name: Download maven artifacts
         uses: actions/download-artifact@v3
         with:
           name: Maven
+      - name: Update metadata
+        run: |
+          java -jar ./maven/release/MavenMetaDataFixer.jar
+          java -jar ./maven/development/MavenMetaDataFixer.jar
       - name: Commit and push changes
         if: |
           github.ref_name == 'main'
