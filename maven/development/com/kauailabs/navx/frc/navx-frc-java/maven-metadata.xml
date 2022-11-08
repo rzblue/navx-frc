@@ -3,12 +3,13 @@
   <groupId>com.kauailabs.navx.frc</groupId>
   <artifactId>navx-frc-java</artifactId>
   <versioning>
-    <release>2023.1.0-beta-2-1-g5e7ccee</release>
+    <release>2023.1.0-beta-2-2-g8b7ca03</release>
     <versions>
       <version>2023.1.0-beta-1-2-g67d6817</version>
       <version>2023.1.0-beta-1-3-gc0379d7</version>
       <version>2023.1.0-beta-2-1-g5e7ccee</version>
+      <version>2023.1.0-beta-2-2-g8b7ca03</version>
     </versions>
-    <lastUpdated>20221107031130</lastUpdated>
+    <lastUpdated>20221108180534</lastUpdated>
   </versioning>
 </metadata>
