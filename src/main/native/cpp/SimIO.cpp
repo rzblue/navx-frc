@@ -8,8 +8,10 @@
 #include "SimIO.h"
 #include "IMURegisters.h"
 #include "delay.h"
+#include <units/base.h>
 
 using namespace frc;
+using units::unit_cast;
 
 SimIO::SimIO( uint8_t update_rate_hz,
                 IIOCompleteNotification *notify_sink,
@@ -19,7 +21,7 @@ SimIO::SimIO( uint8_t update_rate_hz,
     this->stop                  = false;
     this->start_seconds         = 0.0;
     this->is_connected          = false;
-    this->sim_device            = sim_device;
+	this->sim_device 			= sim_device;
 
     raw_data_update = {};
     ahrs_update     = {};
@@ -152,12 +154,12 @@ bool SimIO::IsConnected() {
 
 double SimIO::GetByteCount() {
     #define SIM_BYTES_PER_SECOND 1000
-    double num_secs_running = Timer::GetFPGATimestamp().value() - start_seconds;
+    double num_secs_running = unit_cast<double>(Timer::GetFPGATimestamp()) - start_seconds;
     return num_secs_running * SIM_BYTES_PER_SECOND;
 }
 
 double SimIO::GetUpdateCount() {
-    double num_secs_running = Timer::GetFPGATimestamp().value() - start_seconds;
+    double num_secs_running = unit_cast<double>(Timer::GetFPGATimestamp()) - start_seconds;
     return num_secs_running / update_rate_hz;
 }
 
@@ -190,7 +192,7 @@ void SimIO::Run() {
     // Update AHRS data (portions of which are static; others are updated from sim variables)
     notify_sink->SetAHRSPosData(ahrs_update, sensor_timestamp);        
 
-    start_seconds = Timer::GetFPGATimestamp().value();
+    start_seconds = unit_cast<double>(Timer::GetFPGATimestamp());
 
     while (!stop) {
         delayMillis(20);

@@ -24,9 +24,12 @@
 #include "IMURegisters.h"
 #include "delay.h"
 #include <dlfcn.h>
+#include <units/base.h>
 #include "frc/Timer.h"
+#include "Tracer.h"
 
 using namespace frc;
+using units::unit_cast;
 
 RegisterIOMau::RegisterIOMau(uint8_t update_rate_hz,
         IIOCompleteNotification *notify_sink,
@@ -74,7 +77,7 @@ RegisterIOMau::RegisterIOMau(uint8_t update_rate_hz,
 
 	(*pfunc_Init)(update_rate_hz);
     } else {
-	printf("Error opening shared libraries %s or %s\n", p_sharedlibname_debug, p_sharedlibname_release);
+	Tracer::Trace("Error opening shared libraries %s or %s\n", p_sharedlibname_debug, p_sharedlibname_release);
     }
 }
 
@@ -185,7 +188,7 @@ bool RegisterIOMau::GetCurrentData() {
     if ( displacement_registers ) {
         buffer_len = NAVX_REG_LAST + 1 - first_address;
     } else {
-        buffer_len = NAVX_REG_QUAT_OFFSET_Z_H + 1 - first_address;
+        buffer_len = NAVX_REG_HIRES_TIMESTAMP_H_H_H + 1 - first_address;
     }
 
     uint8_t first_register_address;
@@ -268,7 +271,7 @@ bool RegisterIOMau::GetCurrentData() {
         raw_data_update.temp_c      = ahrspos_update.mpu_temp;
         notify_sink->SetRawData(raw_data_update, sensor_timestamp);
 
-        this->last_update_time = Timer::GetFPGATimestamp().value();
+        this->last_update_time = unit_cast<double>(Timer::GetFPGATimestamp());
 	return true;
     }
 

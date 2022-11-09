@@ -8,8 +8,11 @@
 #include "RegisterIO.h"
 #include "IMURegisters.h"
 #include "delay.h"
+#include "Tracer.h"
+#include <units/base.h>
 
 using namespace frc;
+using units::unit_cast;
 
 RegisterIO::RegisterIO( IRegisterIO *io_provider,
         uint8_t update_rate_hz,
@@ -25,7 +28,7 @@ RegisterIO::RegisterIO( IRegisterIO *io_provider,
     this->last_update_time      = 0;
     this->stop                  = false;
     this->disconnect_reported   = false;
-    this->connect_reported      = true;
+    this->connect_reported      = false;
 
     raw_data_update = {};
     ahrs_update     = {};
@@ -41,7 +44,7 @@ RegisterIO::~RegisterIO() {
 }
 
 bool RegisterIO::IsConnected() {
-    double time_since_last_update = Timer::GetFPGATimestamp().value() - this->last_update_time;
+    double time_since_last_update = unit_cast<double>(Timer::GetFPGATimestamp()) - this->last_update_time;
     return time_since_last_update <= IO_TIMEOUT_SECONDS;
 }
 
@@ -105,11 +108,20 @@ bool RegisterIO::GetConfiguration() {
     int retry_count = 0;
     while ( retry_count < 3 && !success ) {
         char config[NAVX_REG_SENSOR_STATUS_H+1] = {0};
-        if ( io_provider->Read(NAVX_REG_WHOAMI, (uint8_t *)config, sizeof(config)) ) {
+        if ( io_provider->Read(NAVX_REG_WHOAMI, (uint8_t *)config, sizeof(config)) &&
+             (config[NAVX_REG_WHOAMI] == NAVX_MODEL_NAVX_MXP) ) {
+
+            if (!connect_reported) {
+                notify_sink->ConnectDetected();
+                connect_reported = true;
+                disconnect_reported = false;            
+            }
+            
             board_id.hw_rev                 = config[NAVX_REG_HW_REV];
             board_id.fw_ver_major           = config[NAVX_REG_FW_VER_MAJOR];
             board_id.fw_ver_minor           = config[NAVX_REG_FW_VER_MINOR];
             board_id.type                   = config[NAVX_REG_WHOAMI];
+  
             notify_sink->SetBoardID(board_id);
 
             board_state.cal_status          = config[NAVX_REG_CAL_STATUS];
@@ -142,7 +154,7 @@ void RegisterIO::GetCurrentData() {
     if ( displacement_registers ) {
         buffer_len = NAVX_REG_LAST + 1 - first_address;
     } else {
-        buffer_len = NAVX_REG_QUAT_OFFSET_Z_H + 1 - first_address;
+        buffer_len = NAVX_REG_HIRES_TIMESTAMP_H_H_H + 1 - first_address;
     }
     if ( io_provider->Read(first_address,(uint8_t *)curr_data, buffer_len) ) {
     	long sensor_timestamp = IMURegisters::decodeProtocolUint32(curr_data + NAVX_REG_TIMESTAMP_L_L-first_address);
@@ -218,7 +230,7 @@ void RegisterIO::GetCurrentData() {
         raw_data_update.temp_c      = ahrspos_update.mpu_temp;
         notify_sink->SetRawData(raw_data_update, sensor_timestamp);
 
-        this->last_update_time = Timer::GetFPGATimestamp().value();
+        this->last_update_time = unit_cast<double>(Timer::GetFPGATimestamp());
         byte_count += buffer_len;
         update_count++;
     }

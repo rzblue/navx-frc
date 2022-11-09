@@ -8,8 +8,8 @@
 #ifndef SRC_AHRS_H_
 #define SRC_AHRS_H_
 
-#include "wpi/sendable/Sendable.h"
-#include "wpi/sendable/SendableBuilder.h"
+#include <wpi/sendable/Sendable.h>
+#include <wpi/sendable/SendableHelper.h>
 #include "frc/I2C.h"
 #include "frc/SPI.h"
 #include "frc/SerialPort.h"
@@ -17,8 +17,6 @@
 #include "frc/interfaces/Gyro.h"
 #include "ITimestampedDataSubscriber.h"
 #include "networktables/NetworkTableEntry.h"
-#include <thread>
-
 #include <hal/SimDevice.h>
 
 class IIOProvider;
@@ -27,25 +25,33 @@ class InertialDataIntegrator;
 class OffsetTracker;
 class AHRSInternal;
 
-class AHRS : public wpi::Sendable,
-            //  public frc::ErrorBase,
-             public frc::Gyro  {
+/// Class providing an "Attitude and Heading Reference System" (AHRS)
+/// interface to a navX-sensor
+class AHRS : public frc::Gyro,
+             public wpi::Sendable,
+             public wpi::SendableHelper<AHRS>  {
 public:
 
+    /// Enumeration of all board axes
     enum BoardAxis {
+        /// Board X (left/right) Axis 
         kBoardAxisX = 0,
+        /// Board Y (forward/reverse) Axis
         kBoardAxisY = 1,
+        /// Board Z (up/down) Axis
         kBoardAxisZ = 2,
     };
 
+    /// Structure describing the current board orientation w/respect to the IMU axes of measurement.
     struct BoardYawAxis
     {
-        /* Identifies one of the board axes */
+        /// Identifies one of the board axes.
         BoardAxis board_axis;
-        /* true if axis is pointing up (with respect to gravity); false if pointing down. */
+        /// true if axis is pointing up (with respect to gravity); false if pointing down.
         bool up;
     };
 
+    /// navX-Sensor support Serial Data types
     enum SerialDataType {
     /**
      * (default):  6 and 9-axis processed data
@@ -78,10 +84,10 @@ private:
     volatile bool       altitude_valid;
     volatile bool       is_magnetometer_calibrated;
     volatile bool       magnetic_disturbance;
-    volatile float    	quaternionW;
-    volatile float    	quaternionX;
-    volatile float    	quaternionY;
-    volatile float    	quaternionZ;
+    volatile float      quaternionW;
+    volatile float      quaternionX;
+    volatile float      quaternionY;
+    volatile float      quaternionZ;
 
     /* Integrated Data */
     float velocity[3];
@@ -131,8 +137,8 @@ private:
 #define MAX_NUM_CALLBACKS 3
     ITimestampedDataSubscriber *callbacks[MAX_NUM_CALLBACKS];
     void *callback_contexts[MAX_NUM_CALLBACKS];
-	
-	bool enable_boardlevel_yawreset;
+    
+    bool enable_boardlevel_yawreset;
     double last_yawreset_request_timestamp;
     double last_yawreset_while_calibrating_request_timestamp;
     uint32_t successive_suppressed_yawreset_request_count;
@@ -211,13 +217,13 @@ public:
     int GetRequestedUpdateRate();
 
     void EnableLogging(bool enable);
-	void EnableBoardlevelYawReset(bool enable);
-	bool IsBoardlevelYawResetEnabled();
+    void EnableBoardlevelYawReset(bool enable);
+    bool IsBoardlevelYawResetEnabled();
 
     int16_t GetGyroFullScaleRangeDPS();
     int16_t GetAccelFullScaleRangeG();
 
-    // Gyro interface implementation
+    /// Gyro interface implementation
     void Calibrate() override;
 
 private:

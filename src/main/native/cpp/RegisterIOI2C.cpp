@@ -5,16 +5,17 @@
  *      Author: Scott
  */
 
-#include <wpi/mutex.h>
 #include "RegisterIOI2C.h"
-#include "wpi/priority_mutex.h"
+#include "wpi/mutex.h"
 #include "frc/Timer.h"
+#include "Tracer.h"
+#include <cstring>
 
 using namespace wpi;
 
 #define NUM_IGNORED_SUCCESSIVE_ERRORS 50
 
-static std::mutex imu_mutex;
+static wpi::mutex imu_mutex;
 RegisterIO_I2C::RegisterIO_I2C(I2C* port) {
     this->port = port;
     this->trace = false;
@@ -26,16 +27,16 @@ bool RegisterIO_I2C::Init() {
 }
 
 bool RegisterIO_I2C::Write(uint8_t address, uint8_t value ) {
-	std::unique_lock<std::mutex> sync(imu_mutex);
+	std::unique_lock<wpi::mutex> sync(imu_mutex);
     bool aborted = port->Write(address | 0x80, value);
-    if (aborted && trace) printf("navX-MXP I2C Write error\n");
+    if (aborted && trace) Tracer::Trace("navX-MXP I2C Write error\n");
     return !aborted;
 }
 
 static const int MAX_WPILIB_I2C_READ_BYTES = 127;
 
 bool RegisterIO_I2C::Read(uint8_t first_address, uint8_t* buffer, uint8_t buffer_len) {
-	std::unique_lock<std::mutex> sync(imu_mutex);
+	std::unique_lock<wpi::mutex> sync(imu_mutex);
     int len = buffer_len;
     int buffer_offset = 0;
     uint8_t read_buffer[MAX_WPILIB_I2C_READ_BYTES];
@@ -43,7 +44,7 @@ bool RegisterIO_I2C::Read(uint8_t first_address, uint8_t* buffer, uint8_t buffer
         int read_len = (len > MAX_WPILIB_I2C_READ_BYTES) ? MAX_WPILIB_I2C_READ_BYTES : len;
         if (!port->Write(first_address + buffer_offset, read_len) &&
             !port->ReadOnly(read_len, read_buffer) ) {
-            memcpy(buffer + buffer_offset, read_buffer, read_len);
+            std::memcpy(buffer + buffer_offset, read_buffer, read_len);
             buffer_offset += read_len;
             len -= read_len;
             successive_error_count = 0;
@@ -51,7 +52,7 @@ bool RegisterIO_I2C::Read(uint8_t first_address, uint8_t* buffer, uint8_t buffer
             successive_error_count++;
             if (successive_error_count % NUM_IGNORED_SUCCESSIVE_ERRORS == 1) {
         	    if (trace) {
-                    printf("navX-MXP I2C Read error %s.\n",
+                    Tracer::Trace("navX-MXP I2C Read error %s.\n",
                         ((successive_error_count < NUM_IGNORED_SUCCESSIVE_ERRORS) ? "" : " (Repeated errors omitted)"));
                 }
                 break;
