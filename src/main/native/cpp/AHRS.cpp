@@ -1292,13 +1292,13 @@ void AHRS::commonInit(uint8_t update_rate_hz)
     integrator = new InertialDataIntegrator();
     yaw_angle_tracker = new ContinuousAngleTracker();
 
-    yaw =
-        pitch =
-            roll =
-                compass_heading = 0.0f;
-    world_linear_accel_x =
-        world_linear_accel_y =
-            world_linear_accel_z = 0.0f;
+    yaw = 0.0f;
+    pitch = 0.0f;
+    roll = 0.0f;
+    compass_heading = 0.0f;
+    world_linear_accel_x = 0.0f;
+    world_linear_accel_y = 0.0f;
+    world_linear_accel_z = 0.0f;
     mpu_temp_c = 0.0f;
     fused_heading = 0.0f;
     altitude = 0.0f;
@@ -1309,10 +1309,10 @@ void AHRS::commonInit(uint8_t update_rate_hz)
     altitude_valid = false;
     is_magnetometer_calibrated = false;
     magnetic_disturbance = false;
-    quaternionW =
-        quaternionX =
-            quaternionY =
-                quaternionZ = 0.0f;
+    quaternionW = 0.0f;
+    quaternionX = 0.0f;
+    quaternionY = 0.0f;
+    quaternionZ = 0.0f;
 
     /* Integrated Data */
 
@@ -1323,30 +1323,30 @@ void AHRS::commonInit(uint8_t update_rate_hz)
     }
 
     /* Raw Data */
-    raw_gyro_x =
-        raw_gyro_y =
-            raw_gyro_z = 0.0f;
-    raw_accel_x =
-        raw_accel_y =
-            raw_accel_z = 0.0f;
-    cal_mag_x =
-        cal_mag_y =
-            cal_mag_z = 0.0f;
+    raw_gyro_x = 0.0f;
+    raw_gyro_y = 0.0f;
+    raw_gyro_z = 0.0f;
+    raw_accel_x = 0.0f;
+    raw_accel_y = 0.0f;
+    raw_accel_z = 0.0f;
+    cal_mag_x = 0.0f;
+    cal_mag_y = 0.0f;
+    cal_mag_z = 0.0f;
 
     /* Configuration/Status */
     update_rate_hz = 0;
     accel_fsr_g = DEFAULT_ACCEL_FSR_G;
     gyro_fsr_dps = DEFAULT_GYRO_FSR_DPS;
     capability_flags = 0;
-    op_status =
-        sensor_status =
-            cal_status =
-                selftest_status = 0;
+    op_status = 0;
+    sensor_status = 0;
+    cal_status = 0;
+    selftest_status = 0;
     /* Board ID */
-    board_type =
-        hw_rev =
-            fw_ver_major =
-                fw_ver_minor = 0;
+    board_type = 0;
+    hw_rev = 0;
+    fw_ver_major = 0;
+    fw_ver_minor = 0;
     last_sensor_timestamp = 0;
     last_update_time = 0;
 
@@ -1668,8 +1668,9 @@ std::string AHRS::GetFirmwareVersion()
 void AHRS::InitSendable(wpi::SendableBuilder &builder)
 {
     builder.SetSmartDashboardType("Gyro");
+    ;
     builder.AddDoubleProperty(
-        "Value", [=]()
+        "Value", [this]()
         { return GetYaw(); },
         nullptr);
 }
