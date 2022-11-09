@@ -33,20 +33,21 @@ SimIO::SimIO(uint8_t update_rate_hz,
     if (sim_device)
     {
 
+        auto const direction = hal::SimDevice::Direction::kInput;
         // Booleans
 
-        this->simConnected = sim_device->CreateBoolean("Connected", false, true);
+        this->simConnected = sim_device->CreateBoolean("Connected", direction, true);
 
         // Doubles
-        this->simYaw = sim_device->CreateDouble("Yaw", false, 0.0f);
-        this->simPitch = sim_device->CreateDouble("Pitch", false, 0.0f);
-        this->simRoll = sim_device->CreateDouble("Roll", false, 0.0f);
-        this->simCompassHeading = sim_device->CreateDouble("CompassHeading", false, 0.0f);
-        this->simFusedHeading = sim_device->CreateDouble("FusedHeading", false, 0.0f);
+        this->simYaw = sim_device->CreateDouble("Yaw", direction, 0.0f);
+        this->simPitch = sim_device->CreateDouble("Pitch", direction, 0.0f);
+        this->simRoll = sim_device->CreateDouble("Roll", direction, 0.0f);
+        this->simCompassHeading = sim_device->CreateDouble("CompassHeading", direction, 0.0f);
+        this->simFusedHeading = sim_device->CreateDouble("FusedHeading", direction, 0.0f);
 
-        this->simLinearWorldAccelX = sim_device->CreateDouble("LinearWorldAccelX", false, 0.0f);
-        this->simLinearWorldAccelY = sim_device->CreateDouble("LinearWorldAccelY", false, 0.0f);
-        this->simLinearWorldAccelZ = sim_device->CreateDouble("LinearWorldAccelZ", false, 0.0f);
+        this->simLinearWorldAccelX = sim_device->CreateDouble("LinearWorldAccelX", direction, 0.0f);
+        this->simLinearWorldAccelY = sim_device->CreateDouble("LinearWorldAccelY", direction, 0.0f);
+        this->simLinearWorldAccelZ = sim_device->CreateDouble("LinearWorldAccelZ", direction, 0.0f);
 
         board_id.fw_ver_major = 3;
         board_id.fw_ver_minor = 1;

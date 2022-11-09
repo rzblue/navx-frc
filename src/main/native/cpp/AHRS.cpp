@@ -13,7 +13,6 @@
 #include "ContinuousAngleTracker.h"
 #include "RegisterIOSPI.h"
 #include "RegisterIOI2C.h"
-#include "RegisterIOMau.h"
 #include "SerialIO.h"
 #include "AHRS.h"
 #include "AHRSProtocol.h"
@@ -39,30 +38,6 @@ static const int16_t DEFAULT_ACCEL_FSR_G = 2;
 static const int16_t DEFAULT_GYRO_FSR_DPS = 2000;
 static const uint32_t DEFAULT_SPI_BITRATE = 500000;
 static const uint8_t NAVX_MXP_I2C_ADDRESS = 0x32;
-
-static bool IsRaspbian()
-{
-    bool is_raspbian = false;
-
-    std::string raspbian_suffix("aspbian");
-    std::ifstream os_release_file;
-    os_release_file.open("/etc/os-release", std::ios::in);
-    if (os_release_file.fail())
-        return false;
-
-    std::string line;
-    while (getline(os_release_file, line))
-    {
-        if (line.find(raspbian_suffix) != std::string::npos)
-        {
-            is_raspbian = true;
-            break;
-        }
-    }
-
-    os_release_file.close();
-    return is_raspbian;
-}
 
 class AHRSInternal : public IIOCompleteNotification, public IBoardCapabilities
 {
@@ -1199,25 +1174,16 @@ void AHRS::SPIInit(SPI::Port spi_port_id, uint32_t bitrate, uint8_t update_rate_
 {
     Tracer::Trace("Instantiating navX-Sensor on SPI Port %d.\n", spi_port_id);
     commonInit(update_rate_hz);
+
     if (m_simDevice)
     {
         io = new SimIO(update_rate_hz, ahrs_internal, &m_simDevice);
     }
     else
     {
-#ifdef __linux__
-        if (IsRaspbian() && (spi_port_id == SPI::Port::kMXP))
-        {
-            io = new RegisterIOMau(update_rate_hz, ahrs_internal, ahrs_internal);
-        }
-        else
-        {
-            io = new RegisterIO(new RegisterIO_SPI(new SPI(spi_port_id), bitrate), update_rate_hz, ahrs_internal, ahrs_internal);
-        }
-#else
         io = new RegisterIO(new RegisterIO_SPI(new SPI(spi_port_id), bitrate), update_rate_hz, ahrs_internal, ahrs_internal);
-#endif
     }
+
     wpi::SendableRegistry::AddLW(this, "navX-Sensor", spi_port_id);
     task = new std::thread(AHRS::ThreadFunc, io);
 }
@@ -1226,25 +1192,16 @@ void AHRS::I2CInit(I2C::Port i2c_port_id, uint8_t update_rate_hz)
 {
     Tracer::Trace("Instantiating navX-Sensor on I2C Port %d.\n", i2c_port_id);
     commonInit(update_rate_hz);
+
     if (m_simDevice)
     {
         io = new SimIO(update_rate_hz, ahrs_internal, &m_simDevice);
     }
     else
     {
-#ifdef __linux__
-        if (IsRaspbian() && (i2c_port_id == I2C::Port::kMXP))
-        {
-            io = new RegisterIOMau(update_rate_hz, ahrs_internal, ahrs_internal);
-        }
-        else
-        {
-            io = new RegisterIO(new RegisterIO_I2C(new I2C(i2c_port_id, NAVX_MXP_I2C_ADDRESS)), update_rate_hz, ahrs_internal, ahrs_internal);
-        }
-#else
         io = new RegisterIO(new RegisterIO_I2C(new I2C(i2c_port_id, NAVX_MXP_I2C_ADDRESS)), update_rate_hz, ahrs_internal, ahrs_internal);
-#endif
     }
+
     wpi::SendableRegistry::AddLW(this, "navX-Sensor", i2c_port_id);
     task = new std::thread(AHRS::ThreadFunc, io);
 }
@@ -1253,27 +1210,17 @@ void AHRS::SerialInit(SerialPort::Port serial_port_id, AHRS::SerialDataType data
 {
     Tracer::Trace("Instantiating navX-Sensor on Serial Port %d.\n", serial_port_id);
     commonInit(update_rate_hz);
+
     if (m_simDevice)
     {
         io = new SimIO(update_rate_hz, ahrs_internal, &m_simDevice);
     }
     else
     {
-#ifdef __linux__
-        if (IsRaspbian() && (serial_port_id == SerialPort::Port::kMXP))
-        {
-            io = new RegisterIOMau(update_rate_hz, ahrs_internal, ahrs_internal);
-        }
-        else
-        {
-            bool processed_data = (data_type == SerialDataType::kProcessedData);
-            io = new SerialIO(serial_port_id, update_rate_hz, processed_data, ahrs_internal, ahrs_internal);
-        }
-#else
         bool processed_data = (data_type == SerialDataType::kProcessedData);
         io = new SerialIO(serial_port_id, update_rate_hz, processed_data, ahrs_internal, ahrs_internal);
-#endif
     }
+
     wpi::SendableRegistry::AddLW(this, "navX-Sensor", serial_port_id);
     task = new std::thread(AHRS::ThreadFunc, io);
 }

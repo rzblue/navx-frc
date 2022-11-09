@@ -29,9 +29,7 @@ RegisterIO_SPI::RegisterIO_SPI(SPI *port, uint32_t bitrate)
 bool RegisterIO_SPI::Init()
 {
     port->SetClockRate(bitrate);
-    port->SetMSBFirst();
-    port->SetSampleDataOnTrailingEdge();
-    port->SetClockActiveLow();
+    port->SetMode(frc::SPI::kMode3);
     port->SetChipSelectActiveLow();
     if (trace)
         Tracer::Trace("navX-MXP:  Initialized SPI communication at bitrate %d\n", bitrate);
