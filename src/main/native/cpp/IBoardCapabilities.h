@@ -8,7 +8,8 @@
 #ifndef SRC_IBOARDCAPABILITIES_H_
 #define SRC_IBOARDCAPABILITIES_H_
 
-class IBoardCapabilities {
+class IBoardCapabilities
+{
 public:
     IBoardCapabilities() {}
     virtual bool IsOmniMountSupported() = 0;

@@ -8,7 +8,6 @@
 #ifndef SRC_REGISTERIOMAU_H_
 #define SRC_REGISTERIOMAU_H_
 
-#include <stdint.h>
 #include "IIOProvider.h"
 #include "IRegisterIO.h"
 #include "IMUProtocol.h"
@@ -16,7 +15,10 @@
 #include "IBoardCapabilities.h"
 #include "IIOCompleteNotification.h"
 
-class RegisterIOMau : public IIOProvider {
+#include <stdint.h>
+
+class RegisterIOMau : public IIOProvider
+{
 private:
     uint8_t update_rate_hz;
     bool stop;
@@ -43,19 +45,20 @@ private:
     void *dlhandle;
 
 public:
-    RegisterIOMau( uint8_t update_rate_hz,
-                IIOCompleteNotification *notify_sink,
-                IBoardCapabilities *board_capabilities  );
-    bool   IsConnected();
+    RegisterIOMau(uint8_t update_rate_hz,
+                  IIOCompleteNotification *notify_sink,
+                  IBoardCapabilities *board_capabilities);
+    bool IsConnected();
     double GetByteCount();
     double GetUpdateCount();
-    void   SetUpdateRateHz(uint8_t update_rate);
-    void   ZeroYaw();
-    void   ZeroDisplacement();
-    void   Run();
-    void   Stop();
-    void   EnableLogging(bool enable);
+    void SetUpdateRateHz(uint8_t update_rate);
+    void ZeroYaw();
+    void ZeroDisplacement();
+    void Run();
+    void Stop();
+    void EnableLogging(bool enable);
     virtual ~RegisterIOMau();
+
 private:
     bool GetConfiguration();
     bool GetCurrentData();

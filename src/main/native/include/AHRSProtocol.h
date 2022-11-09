@@ -64,16 +64,16 @@ THE SOFTWARE.
 typedef enum
 {
     UNSPECIFIED = 0,
-    MOTION_THRESHOLD = 1,				/* In G */
-    YAW_STABLE_THRESHOLD = 2,			/* In Degrees */
-    MAG_DISTURBANCE_THRESHOLD =3,		/* Ratio */
-    SEA_LEVEL_PRESSURE = 4,				/* Millibars */
-    KALMAN_STATIC_MOTION_COEFF = 5,		/* [DEPRECATED] Unitless, from 0.5 to 10.0 */
-    KALMAN_DYNAMIC_MOTION_COEFF = 6,	/* [DEPRECATED] Unitless, from 0.5 to 10.0 */
-    YAW_GYRO_SCALE_FACTOR_RATIO = 7,	/* Unitless, from 0.9 to 1.1 */
-    MAX_GYRO_MEASUREMENT_ERR_DPS = 8,	/* Sensor Fusion Gyro/(Acc+Mag) Beta Seed */
-    GYRO_FULL_SCALE_RANGE_DPS = 9,		/* In Degrees/Second */
-    ACCEL_FULL_SCALE_RANGE_G = 10,		/* In G */
+    MOTION_THRESHOLD = 1,             /* In G */
+    YAW_STABLE_THRESHOLD = 2,         /* In Degrees */
+    MAG_DISTURBANCE_THRESHOLD = 3,    /* Ratio */
+    SEA_LEVEL_PRESSURE = 4,           /* Millibars */
+    KALMAN_STATIC_MOTION_COEFF = 5,   /* [DEPRECATED] Unitless, from 0.5 to 10.0 */
+    KALMAN_DYNAMIC_MOTION_COEFF = 6,  /* [DEPRECATED] Unitless, from 0.5 to 10.0 */
+    YAW_GYRO_SCALE_FACTOR_RATIO = 7,  /* Unitless, from 0.9 to 1.1 */
+    MAX_GYRO_MEASUREMENT_ERR_DPS = 8, /* Sensor Fusion Gyro/(Acc+Mag) Beta Seed */
+    GYRO_FULL_SCALE_RANGE_DPS = 9,    /* In Degrees/Second */
+    ACCEL_FULL_SCALE_RANGE_G = 10,    /* In G */
     MIN_TUNING_VAR_ID = MOTION_THRESHOLD,
     MAX_TUNING_VAR_ID = ACCEL_FULL_SCALE_RANGE_G,
 } AHRS_TUNING_VAR_ID;
@@ -92,270 +92,296 @@ typedef enum
     DATA_SET_TO_DEFAULT = 2,
 } AHRS_DATA_ACTION;
 
-#define DATA_GETSET_SUCCESS	0
-#define DATA_GETSET_ERROR	1
+#define DATA_GETSET_SUCCESS 0
+#define DATA_GETSET_ERROR 1
 
 // AHRS Update Packet - e.g., !a[yaw][pitch][roll][heading][altitude][fusedheading][accelx/y/z][angular rot x/y/z][opstatus][fusionstatus][cr][lf]
 
 #define MSGID_AHRS_UPDATE 'a'
-#define AHRS_UPDATE_YAW_VALUE_INDEX                     4  /* Degrees.  Signed Hundredths */
-#define AHRS_UPDATE_ROLL_VALUE_INDEX                    6  /* Degrees.  Signed Hundredths */
-#define AHRS_UPDATE_PITCH_VALUE_INDEX                   8  /* Degrees.  Signed Hundredeths */
-#define AHRS_UPDATE_HEADING_VALUE_INDEX                 10 /* Degrees.  Unsigned Hundredths */
-#define AHRS_UPDATE_ALTITUDE_VALUE_INDEX                12 /* Meters.   Signed 16:16 */
-#define AHRS_UPDATE_FUSED_HEADING_VALUE_INDEX           16 /* Degrees.  Unsigned Hundredths */
-#define AHRS_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX          18 /* Inst. G.  Signed Thousandths */
-#define AHRS_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX          20 /* Inst. G.  Signed Thousandths */
-#define AHRS_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX          22 /* Inst. G.  Signed Thousandths */
-#define AHRS_UPDATE_CAL_MAG_X_VALUE_INDEX               24 /* Int16 (Device Units) */
-#define AHRS_UPDATE_CAL_MAG_Y_VALUE_INDEX               26 /* Int16 (Device Units) */
-#define AHRS_UPDATE_CAL_MAG_Z_VALUE_INDEX               28 /* Int16 (Device Units) */
-#define AHRS_UPDATE_CAL_MAG_NORM_RATIO_VALUE_INDEX      30 /* Ratio.  Unsigned Hundredths */
-#define AHRS_UPDATE_CAL_MAG_SCALAR_VALUE_INDEX          32 /* Coefficient. Signed q16:16 */
-#define AHRS_UPDATE_MPU_TEMP_VAUE_INDEX                 36 /* Centigrade.  Signed Hundredths */
-#define AHRS_UPDATE_RAW_MAG_X_VALUE_INDEX               38 /* INT16 (Device Units) */
-#define AHRS_UPDATE_RAW_MAG_Y_VALUE_INDEX               40 /* INT16 (Device Units) */
-#define AHRS_UPDATE_RAW_MAG_Z_VALUE_INDEX               42 /* INT16 (Device Units) */
-#define AHRS_UPDATE_QUAT_W_VALUE_INDEX                  44 /* INT16 */
-#define AHRS_UPDATE_QUAT_X_VALUE_INDEX                  46 /* INT16 */
-#define AHRS_UPDATE_QUAT_Y_VALUE_INDEX                  48 /* INT16 */
-#define AHRS_UPDATE_QUAT_Z_VALUE_INDEX                  50 /* INT16 */
-#define AHRS_UPDATE_BARO_PRESSURE_VALUE_INDEX           52 /* millibar.  Signed 16:16 */
-#define AHRS_UPDATE_BARO_TEMP_VAUE_INDEX                56 /* Centigrade.  Signed  Hundredths */
-#define AHRS_UPDATE_OPSTATUS_VALUE_INDEX                58 /* NAVX_OP_STATUS_XXX */
-#define AHRS_UPDATE_SENSOR_STATUS_VALUE_INDEX           59 /* NAVX_SENSOR_STATUS_XXX */
-#define AHRS_UPDATE_CAL_STATUS_VALUE_INDEX              60 /* NAVX_CAL_STATUS_XXX */
-#define AHRS_UPDATE_SELFTEST_STATUS_VALUE_INDEX         61 /* NAVX_SELFTEST_STATUS_XXX */
-#define AHRS_UPDATE_MESSAGE_CHECKSUM_INDEX              62
-#define AHRS_UPDATE_MESSAGE_TERMINATOR_INDEX            64
-#define AHRS_UPDATE_MESSAGE_LENGTH                      66
+#define AHRS_UPDATE_YAW_VALUE_INDEX 4                 /* Degrees.  Signed Hundredths */
+#define AHRS_UPDATE_ROLL_VALUE_INDEX 6                /* Degrees.  Signed Hundredths */
+#define AHRS_UPDATE_PITCH_VALUE_INDEX 8               /* Degrees.  Signed Hundredeths */
+#define AHRS_UPDATE_HEADING_VALUE_INDEX 10            /* Degrees.  Unsigned Hundredths */
+#define AHRS_UPDATE_ALTITUDE_VALUE_INDEX 12           /* Meters.   Signed 16:16 */
+#define AHRS_UPDATE_FUSED_HEADING_VALUE_INDEX 16      /* Degrees.  Unsigned Hundredths */
+#define AHRS_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX 18     /* Inst. G.  Signed Thousandths */
+#define AHRS_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX 20     /* Inst. G.  Signed Thousandths */
+#define AHRS_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX 22     /* Inst. G.  Signed Thousandths */
+#define AHRS_UPDATE_CAL_MAG_X_VALUE_INDEX 24          /* Int16 (Device Units) */
+#define AHRS_UPDATE_CAL_MAG_Y_VALUE_INDEX 26          /* Int16 (Device Units) */
+#define AHRS_UPDATE_CAL_MAG_Z_VALUE_INDEX 28          /* Int16 (Device Units) */
+#define AHRS_UPDATE_CAL_MAG_NORM_RATIO_VALUE_INDEX 30 /* Ratio.  Unsigned Hundredths */
+#define AHRS_UPDATE_CAL_MAG_SCALAR_VALUE_INDEX 32     /* Coefficient. Signed q16:16 */
+#define AHRS_UPDATE_MPU_TEMP_VAUE_INDEX 36            /* Centigrade.  Signed Hundredths */
+#define AHRS_UPDATE_RAW_MAG_X_VALUE_INDEX 38          /* INT16 (Device Units) */
+#define AHRS_UPDATE_RAW_MAG_Y_VALUE_INDEX 40          /* INT16 (Device Units) */
+#define AHRS_UPDATE_RAW_MAG_Z_VALUE_INDEX 42          /* INT16 (Device Units) */
+#define AHRS_UPDATE_QUAT_W_VALUE_INDEX 44             /* INT16 */
+#define AHRS_UPDATE_QUAT_X_VALUE_INDEX 46             /* INT16 */
+#define AHRS_UPDATE_QUAT_Y_VALUE_INDEX 48             /* INT16 */
+#define AHRS_UPDATE_QUAT_Z_VALUE_INDEX 50             /* INT16 */
+#define AHRS_UPDATE_BARO_PRESSURE_VALUE_INDEX 52      /* millibar.  Signed 16:16 */
+#define AHRS_UPDATE_BARO_TEMP_VAUE_INDEX 56           /* Centigrade.  Signed  Hundredths */
+#define AHRS_UPDATE_OPSTATUS_VALUE_INDEX 58           /* NAVX_OP_STATUS_XXX */
+#define AHRS_UPDATE_SENSOR_STATUS_VALUE_INDEX 59      /* NAVX_SENSOR_STATUS_XXX */
+#define AHRS_UPDATE_CAL_STATUS_VALUE_INDEX 60         /* NAVX_CAL_STATUS_XXX */
+#define AHRS_UPDATE_SELFTEST_STATUS_VALUE_INDEX 61    /* NAVX_SELFTEST_STATUS_XXX */
+#define AHRS_UPDATE_MESSAGE_CHECKSUM_INDEX 62
+#define AHRS_UPDATE_MESSAGE_TERMINATOR_INDEX 64
+#define AHRS_UPDATE_MESSAGE_LENGTH 66
 
 // AHRSAndPositioning Update Packet (similar to AHRS, but removes magnetometer and adds velocity/displacement) */
 
 #define MSGID_AHRSPOS_UPDATE 'p'
-#define AHRSPOS_UPDATE_YAW_VALUE_INDEX                   4 /* Degrees.  Signed Hundredths */
-#define AHRSPOS_UPDATE_ROLL_VALUE_INDEX                  6 /* Degrees.  Signed Hundredths */
-#define AHRSPOS_UPDATE_PITCH_VALUE_INDEX                 8 /* Degrees.  Signed Hundredeths */
-#define AHRSPOS_UPDATE_HEADING_VALUE_INDEX              10 /* Degrees.  Unsigned Hundredths */
-#define AHRSPOS_UPDATE_ALTITUDE_VALUE_INDEX             12 /* Meters.   Signed 16:16 */
-#define AHRSPOS_UPDATE_FUSED_HEADING_VALUE_INDEX        16 /* Degrees.  Unsigned Hundredths */
-#define AHRSPOS_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX       18 /* Inst. G.  Signed Thousandths */
-#define AHRSPOS_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX       20 /* Inst. G.  Signed Thousandths */
-#define AHRSPOS_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX       22 /* Inst. G.  Signed Thousandths */
-#define AHRSPOS_UPDATE_VEL_X_VALUE_INDEX                24 /* Signed 16:16, in meters/sec */
-#define AHRSPOS_UPDATE_VEL_Y_VALUE_INDEX                28 /* Signed 16:16, in meters/sec */
-#define AHRSPOS_UPDATE_VEL_Z_VALUE_INDEX                32 /* Signed 16:16, in meters/sec */
-#define AHRSPOS_UPDATE_DISP_X_VALUE_INDEX               36 /* Signed 16:16, in meters */
-#define AHRSPOS_UPDATE_DISP_Y_VALUE_INDEX               40 /* Signed 16:16, in meters */
-#define AHRSPOS_UPDATE_DISP_Z_VALUE_INDEX               44 /* Signed 16:16, in meters */
-#define AHRSPOS_UPDATE_QUAT_W_VALUE_INDEX               48 /* INT16 */
-#define AHRSPOS_UPDATE_QUAT_X_VALUE_INDEX               50 /* INT16 */
-#define AHRSPOS_UPDATE_QUAT_Y_VALUE_INDEX               52 /* INT16 */
-#define AHRSPOS_UPDATE_QUAT_Z_VALUE_INDEX               54 /* INT16 */
-#define AHRSPOS_UPDATE_MPU_TEMP_VAUE_INDEX              56 /* Centigrade.  Signed Hundredths */
-#define AHRSPOS_UPDATE_OPSTATUS_VALUE_INDEX             58 /* NAVX_OP_STATUS_XXX */
-#define AHRSPOS_UPDATE_SENSOR_STATUS_VALUE_INDEX        59 /* NAVX_SENSOR_STATUS_XXX */
-#define AHRSPOS_UPDATE_CAL_STATUS_VALUE_INDEX           60 /* NAVX_CAL_STATUS_XXX */
-#define AHRSPOS_UPDATE_SELFTEST_STATUS_VALUE_INDEX      61 /* NAVX_SELFTEST_STATUS_XXX */
-#define AHRSPOS_UPDATE_MESSAGE_CHECKSUM_INDEX           62
-#define AHRSPOS_UPDATE_MESSAGE_TERMINATOR_INDEX         64
-#define AHRSPOS_UPDATE_MESSAGE_LENGTH                   66
+#define AHRSPOS_UPDATE_YAW_VALUE_INDEX 4              /* Degrees.  Signed Hundredths */
+#define AHRSPOS_UPDATE_ROLL_VALUE_INDEX 6             /* Degrees.  Signed Hundredths */
+#define AHRSPOS_UPDATE_PITCH_VALUE_INDEX 8            /* Degrees.  Signed Hundredeths */
+#define AHRSPOS_UPDATE_HEADING_VALUE_INDEX 10         /* Degrees.  Unsigned Hundredths */
+#define AHRSPOS_UPDATE_ALTITUDE_VALUE_INDEX 12        /* Meters.   Signed 16:16 */
+#define AHRSPOS_UPDATE_FUSED_HEADING_VALUE_INDEX 16   /* Degrees.  Unsigned Hundredths */
+#define AHRSPOS_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX 18  /* Inst. G.  Signed Thousandths */
+#define AHRSPOS_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX 20  /* Inst. G.  Signed Thousandths */
+#define AHRSPOS_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX 22  /* Inst. G.  Signed Thousandths */
+#define AHRSPOS_UPDATE_VEL_X_VALUE_INDEX 24           /* Signed 16:16, in meters/sec */
+#define AHRSPOS_UPDATE_VEL_Y_VALUE_INDEX 28           /* Signed 16:16, in meters/sec */
+#define AHRSPOS_UPDATE_VEL_Z_VALUE_INDEX 32           /* Signed 16:16, in meters/sec */
+#define AHRSPOS_UPDATE_DISP_X_VALUE_INDEX 36          /* Signed 16:16, in meters */
+#define AHRSPOS_UPDATE_DISP_Y_VALUE_INDEX 40          /* Signed 16:16, in meters */
+#define AHRSPOS_UPDATE_DISP_Z_VALUE_INDEX 44          /* Signed 16:16, in meters */
+#define AHRSPOS_UPDATE_QUAT_W_VALUE_INDEX 48          /* INT16 */
+#define AHRSPOS_UPDATE_QUAT_X_VALUE_INDEX 50          /* INT16 */
+#define AHRSPOS_UPDATE_QUAT_Y_VALUE_INDEX 52          /* INT16 */
+#define AHRSPOS_UPDATE_QUAT_Z_VALUE_INDEX 54          /* INT16 */
+#define AHRSPOS_UPDATE_MPU_TEMP_VAUE_INDEX 56         /* Centigrade.  Signed Hundredths */
+#define AHRSPOS_UPDATE_OPSTATUS_VALUE_INDEX 58        /* NAVX_OP_STATUS_XXX */
+#define AHRSPOS_UPDATE_SENSOR_STATUS_VALUE_INDEX 59   /* NAVX_SENSOR_STATUS_XXX */
+#define AHRSPOS_UPDATE_CAL_STATUS_VALUE_INDEX 60      /* NAVX_CAL_STATUS_XXX */
+#define AHRSPOS_UPDATE_SELFTEST_STATUS_VALUE_INDEX 61 /* NAVX_SELFTEST_STATUS_XXX */
+#define AHRSPOS_UPDATE_MESSAGE_CHECKSUM_INDEX 62
+#define AHRSPOS_UPDATE_MESSAGE_TERMINATOR_INDEX 64
+#define AHRSPOS_UPDATE_MESSAGE_LENGTH 66
 
 // AHRSAndPositioningWithTimestamp Update Packet (similar to AHRSPos, but adds sample timestamp)
 
 #define MSGID_AHRSPOS_TS_UPDATE 't'
-#define AHRSPOS_TS_UPDATE_YAW_VALUE_INDEX                4 /* Signed 16:16.  Signed Hundredths */
-#define AHRSPOS_TS_UPDATE_ROLL_VALUE_INDEX               8 /* Signed 16:16.  Signed Hundredths */
-#define AHRSPOS_TS_UPDATE_PITCH_VALUE_INDEX             12 /* Signed 16:16.  Signed Hundredeths */
-#define AHRSPOS_TS_UPDATE_HEADING_VALUE_INDEX           16 /* Signed 16:16.  Unsigned Hundredths */
-#define AHRSPOS_TS_UPDATE_ALTITUDE_VALUE_INDEX          20 /* Meters.   Signed 16:16 */
-#define AHRSPOS_TS_UPDATE_FUSED_HEADING_VALUE_INDEX     24 /* Degrees.  Unsigned Hundredths */
-#define AHRSPOS_TS_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX    28 /* Inst. G.  Signed 16:16 */
-#define AHRSPOS_TS_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX    32 /* Inst. G.  Signed 16:16 */
-#define AHRSPOS_TS_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX    36 /* Inst. G.  Signed 16:16 */
-#define AHRSPOS_TS_UPDATE_VEL_X_VALUE_INDEX             40 /* Signed 16:16, in meters/sec */
-#define AHRSPOS_TS_UPDATE_VEL_Y_VALUE_INDEX             44 /* Signed 16:16, in meters/sec */
-#define AHRSPOS_TS_UPDATE_VEL_Z_VALUE_INDEX             48 /* Signed 16:16, in meters/sec */
-#define AHRSPOS_TS_UPDATE_DISP_X_VALUE_INDEX            52 /* Signed 16:16, in meters */
-#define AHRSPOS_TS_UPDATE_DISP_Y_VALUE_INDEX            56 /* Signed 16:16, in meters */
-#define AHRSPOS_TS_UPDATE_DISP_Z_VALUE_INDEX            60 /* Signed 16:16, in meters */
-#define AHRSPOS_TS_UPDATE_QUAT_W_VALUE_INDEX            64 /* Signed 16:16 */
-#define AHRSPOS_TS_UPDATE_QUAT_X_VALUE_INDEX            68 /* Signed 16:16 */
-#define AHRSPOS_TS_UPDATE_QUAT_Y_VALUE_INDEX            72 /* Signed 16:16 */
-#define AHRSPOS_TS_UPDATE_QUAT_Z_VALUE_INDEX            76 /* Signed 16:16 */
-#define AHRSPOS_TS_UPDATE_MPU_TEMP_VAUE_INDEX           80 /* Centigrade.  Signed Hundredths */
-#define AHRSPOS_TS_UPDATE_OPSTATUS_VALUE_INDEX          82 /* NAVX_OP_STATUS_XXX */
-#define AHRSPOS_TS_UPDATE_SENSOR_STATUS_VALUE_INDEX     83 /* NAVX_SENSOR_STATUS_XXX */
-#define AHRSPOS_TS_UPDATE_CAL_STATUS_VALUE_INDEX        84 /* NAVX_CAL_STATUS_XXX */
-#define AHRSPOS_TS_UPDATE_SELFTEST_STATUS_VALUE_INDEX   85 /* NAVX_SELFTEST_STATUS_XXX */
-#define AHRSPOS_TS_UPDATE_TIMESTAMP_INDEX				86 /* UINT32 Timestamp, in milliseconds */
-#define AHRSPOS_TS_UPDATE_MESSAGE_CHECKSUM_INDEX        90
-#define AHRSPOS_TS_UPDATE_MESSAGE_TERMINATOR_INDEX      92
-#define AHRSPOS_TS_UPDATE_MESSAGE_LENGTH                94
+#define AHRSPOS_TS_UPDATE_YAW_VALUE_INDEX 4              /* Signed 16:16.  Signed Hundredths */
+#define AHRSPOS_TS_UPDATE_ROLL_VALUE_INDEX 8             /* Signed 16:16.  Signed Hundredths */
+#define AHRSPOS_TS_UPDATE_PITCH_VALUE_INDEX 12           /* Signed 16:16.  Signed Hundredeths */
+#define AHRSPOS_TS_UPDATE_HEADING_VALUE_INDEX 16         /* Signed 16:16.  Unsigned Hundredths */
+#define AHRSPOS_TS_UPDATE_ALTITUDE_VALUE_INDEX 20        /* Meters.   Signed 16:16 */
+#define AHRSPOS_TS_UPDATE_FUSED_HEADING_VALUE_INDEX 24   /* Degrees.  Unsigned Hundredths */
+#define AHRSPOS_TS_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX 28  /* Inst. G.  Signed 16:16 */
+#define AHRSPOS_TS_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX 32  /* Inst. G.  Signed 16:16 */
+#define AHRSPOS_TS_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX 36  /* Inst. G.  Signed 16:16 */
+#define AHRSPOS_TS_UPDATE_VEL_X_VALUE_INDEX 40           /* Signed 16:16, in meters/sec */
+#define AHRSPOS_TS_UPDATE_VEL_Y_VALUE_INDEX 44           /* Signed 16:16, in meters/sec */
+#define AHRSPOS_TS_UPDATE_VEL_Z_VALUE_INDEX 48           /* Signed 16:16, in meters/sec */
+#define AHRSPOS_TS_UPDATE_DISP_X_VALUE_INDEX 52          /* Signed 16:16, in meters */
+#define AHRSPOS_TS_UPDATE_DISP_Y_VALUE_INDEX 56          /* Signed 16:16, in meters */
+#define AHRSPOS_TS_UPDATE_DISP_Z_VALUE_INDEX 60          /* Signed 16:16, in meters */
+#define AHRSPOS_TS_UPDATE_QUAT_W_VALUE_INDEX 64          /* Signed 16:16 */
+#define AHRSPOS_TS_UPDATE_QUAT_X_VALUE_INDEX 68          /* Signed 16:16 */
+#define AHRSPOS_TS_UPDATE_QUAT_Y_VALUE_INDEX 72          /* Signed 16:16 */
+#define AHRSPOS_TS_UPDATE_QUAT_Z_VALUE_INDEX 76          /* Signed 16:16 */
+#define AHRSPOS_TS_UPDATE_MPU_TEMP_VAUE_INDEX 80         /* Centigrade.  Signed Hundredths */
+#define AHRSPOS_TS_UPDATE_OPSTATUS_VALUE_INDEX 82        /* NAVX_OP_STATUS_XXX */
+#define AHRSPOS_TS_UPDATE_SENSOR_STATUS_VALUE_INDEX 83   /* NAVX_SENSOR_STATUS_XXX */
+#define AHRSPOS_TS_UPDATE_CAL_STATUS_VALUE_INDEX 84      /* NAVX_CAL_STATUS_XXX */
+#define AHRSPOS_TS_UPDATE_SELFTEST_STATUS_VALUE_INDEX 85 /* NAVX_SELFTEST_STATUS_XXX */
+#define AHRSPOS_TS_UPDATE_TIMESTAMP_INDEX 86             /* UINT32 Timestamp, in milliseconds */
+#define AHRSPOS_TS_UPDATE_MESSAGE_CHECKSUM_INDEX 90
+#define AHRSPOS_TS_UPDATE_MESSAGE_TERMINATOR_INDEX 92
+#define AHRSPOS_TS_UPDATE_MESSAGE_LENGTH 94
 
 // AHRSAndPositioningWithTimestampAndRaw Update Packet (similar to AHRSPosTS, but adds raw data)
 
 #define MSGID_AHRSPOS_TS_RAW_UPDATE 'u'
-#define AHRSPOS_TS_RAW_UPDATE_YAW_VALUE_INDEX                4 /* Signed 16:16.  Signed Hundredths */
-#define AHRSPOS_TS_RAW_UPDATE_ROLL_VALUE_INDEX               8 /* Signed 16:16.  Signed Hundredths */
-#define AHRSPOS_TS_RAW_UPDATE_PITCH_VALUE_INDEX             12 /* Signed 16:16.  Signed Hundredeths */
-#define AHRSPOS_TS_RAW_UPDATE_HEADING_VALUE_INDEX           16 /* Signed 16:16.  Unsigned Hundredths */
-#define AHRSPOS_TS_RAW_UPDATE_ALTITUDE_VALUE_INDEX          20 /* Meters.   Signed 16:16 */
-#define AHRSPOS_TS_RAW_UPDATE_FUSED_HEADING_VALUE_INDEX     24 /* Degrees.  Unsigned Hundredths */
-#define AHRSPOS_TS_RAW_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX    28 /* Inst. G.  Signed 16:16 */
-#define AHRSPOS_TS_RAW_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX    32 /* Inst. G.  Signed 16:16 */
-#define AHRSPOS_TS_RAW_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX    36 /* Inst. G.  Signed 16:16 */
-#define AHRSPOS_TS_RAW_UPDATE_VEL_X_VALUE_INDEX             40 /* Signed 16:16, in meters/sec */
-#define AHRSPOS_TS_RAW_UPDATE_VEL_Y_VALUE_INDEX             44 /* Signed 16:16, in meters/sec */
-#define AHRSPOS_TS_RAW_UPDATE_VEL_Z_VALUE_INDEX             48 /* Signed 16:16, in meters/sec */
-#define AHRSPOS_TS_RAW_UPDATE_DISP_X_VALUE_INDEX            52 /* Signed 16:16, in meters */
-#define AHRSPOS_TS_RAW_UPDATE_DISP_Y_VALUE_INDEX            56 /* Signed 16:16, in meters */
-#define AHRSPOS_TS_RAW_UPDATE_DISP_Z_VALUE_INDEX            60 /* Signed 16:16, in meters */
-#define AHRSPOS_TS_RAW_UPDATE_QUAT_W_VALUE_INDEX            64 /* Signed 16:16 */
-#define AHRSPOS_TS_RAW_UPDATE_QUAT_X_VALUE_INDEX            68 /* Signed 16:16 */
-#define AHRSPOS_TS_RAW_UPDATE_QUAT_Y_VALUE_INDEX            72 /* Signed 16:16 */
-#define AHRSPOS_TS_RAW_UPDATE_QUAT_Z_VALUE_INDEX            76 /* Signed 16:16 */
-#define AHRSPOS_TS_RAW_UPDATE_MPU_TEMP_VAUE_INDEX           80 /* Centigrade.  Signed Hundredths */
-#define AHRSPOS_TS_RAW_UPDATE_OPSTATUS_VALUE_INDEX          82 /* NAVX_OP_STATUS_XXX */
-#define AHRSPOS_TS_RAW_UPDATE_SENSOR_STATUS_VALUE_INDEX     83 /* NAVX_SENSOR_STATUS_XXX */
-#define AHRSPOS_TS_RAW_UPDATE_CAL_STATUS_VALUE_INDEX        84 /* NAVX_CAL_STATUS_XXX */
-#define AHRSPOS_TS_RAW_UPDATE_SELFTEST_STATUS_VALUE_INDEX   85 /* NAVX_SELFTEST_STATUS_XXX */
-#define AHRSPOS_TS_RAW_UPDATE_TIMESTAMP_INDEX				86 /* UINT32 Timestamp, in milliseconds */
-#define AHRSPOS_TS_RAW_UPDATE_GYRO_X_VALUE_INDEX			90 /* INT16, in device units (scaled by FSR) */
-#define AHRSPOS_TS_RAW_UPDATE_GYRO_Y_VALUE_INDEX			92 /* INT16, in device units (scaled by FSR) */
-#define AHRSPOS_TS_RAW_UPDATE_GYRO_Z_VALUE_INDEX			94 /* INT16, in device units (scaled by FSR) */
-#define AHRSPOS_TS_RAW_UPDATE_ACC_X_VALUE_INDEX			    96 /* INT16, in device units (scaled by FSR) */
-#define AHRSPOS_TS_RAW_UPDATE_ACC_Y_VALUE_INDEX			    98 /* INT16, in device units (scaled by FSR) */
-#define AHRSPOS_TS_RAW_UPDATE_ACC_Z_VALUE_INDEX			   100 /* INT16, in device units (scaled by FSR) */
-#define AHRSPOS_TS_RAW_UPDATE_LAST_SAMPLE_DELTA_SEC_INDEX  104 /* Signed 16:16 */
+#define AHRSPOS_TS_RAW_UPDATE_YAW_VALUE_INDEX 4                /* Signed 16:16.  Signed Hundredths */
+#define AHRSPOS_TS_RAW_UPDATE_ROLL_VALUE_INDEX 8               /* Signed 16:16.  Signed Hundredths */
+#define AHRSPOS_TS_RAW_UPDATE_PITCH_VALUE_INDEX 12             /* Signed 16:16.  Signed Hundredeths */
+#define AHRSPOS_TS_RAW_UPDATE_HEADING_VALUE_INDEX 16           /* Signed 16:16.  Unsigned Hundredths */
+#define AHRSPOS_TS_RAW_UPDATE_ALTITUDE_VALUE_INDEX 20          /* Meters.   Signed 16:16 */
+#define AHRSPOS_TS_RAW_UPDATE_FUSED_HEADING_VALUE_INDEX 24     /* Degrees.  Unsigned Hundredths */
+#define AHRSPOS_TS_RAW_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX 28    /* Inst. G.  Signed 16:16 */
+#define AHRSPOS_TS_RAW_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX 32    /* Inst. G.  Signed 16:16 */
+#define AHRSPOS_TS_RAW_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX 36    /* Inst. G.  Signed 16:16 */
+#define AHRSPOS_TS_RAW_UPDATE_VEL_X_VALUE_INDEX 40             /* Signed 16:16, in meters/sec */
+#define AHRSPOS_TS_RAW_UPDATE_VEL_Y_VALUE_INDEX 44             /* Signed 16:16, in meters/sec */
+#define AHRSPOS_TS_RAW_UPDATE_VEL_Z_VALUE_INDEX 48             /* Signed 16:16, in meters/sec */
+#define AHRSPOS_TS_RAW_UPDATE_DISP_X_VALUE_INDEX 52            /* Signed 16:16, in meters */
+#define AHRSPOS_TS_RAW_UPDATE_DISP_Y_VALUE_INDEX 56            /* Signed 16:16, in meters */
+#define AHRSPOS_TS_RAW_UPDATE_DISP_Z_VALUE_INDEX 60            /* Signed 16:16, in meters */
+#define AHRSPOS_TS_RAW_UPDATE_QUAT_W_VALUE_INDEX 64            /* Signed 16:16 */
+#define AHRSPOS_TS_RAW_UPDATE_QUAT_X_VALUE_INDEX 68            /* Signed 16:16 */
+#define AHRSPOS_TS_RAW_UPDATE_QUAT_Y_VALUE_INDEX 72            /* Signed 16:16 */
+#define AHRSPOS_TS_RAW_UPDATE_QUAT_Z_VALUE_INDEX 76            /* Signed 16:16 */
+#define AHRSPOS_TS_RAW_UPDATE_MPU_TEMP_VAUE_INDEX 80           /* Centigrade.  Signed Hundredths */
+#define AHRSPOS_TS_RAW_UPDATE_OPSTATUS_VALUE_INDEX 82          /* NAVX_OP_STATUS_XXX */
+#define AHRSPOS_TS_RAW_UPDATE_SENSOR_STATUS_VALUE_INDEX 83     /* NAVX_SENSOR_STATUS_XXX */
+#define AHRSPOS_TS_RAW_UPDATE_CAL_STATUS_VALUE_INDEX 84        /* NAVX_CAL_STATUS_XXX */
+#define AHRSPOS_TS_RAW_UPDATE_SELFTEST_STATUS_VALUE_INDEX 85   /* NAVX_SELFTEST_STATUS_XXX */
+#define AHRSPOS_TS_RAW_UPDATE_TIMESTAMP_INDEX 86               /* UINT32 Timestamp, in milliseconds */
+#define AHRSPOS_TS_RAW_UPDATE_GYRO_X_VALUE_INDEX 90            /* INT16, in device units (scaled by FSR) */
+#define AHRSPOS_TS_RAW_UPDATE_GYRO_Y_VALUE_INDEX 92            /* INT16, in device units (scaled by FSR) */
+#define AHRSPOS_TS_RAW_UPDATE_GYRO_Z_VALUE_INDEX 94            /* INT16, in device units (scaled by FSR) */
+#define AHRSPOS_TS_RAW_UPDATE_ACC_X_VALUE_INDEX 96             /* INT16, in device units (scaled by FSR) */
+#define AHRSPOS_TS_RAW_UPDATE_ACC_Y_VALUE_INDEX 98             /* INT16, in device units (scaled by FSR) */
+#define AHRSPOS_TS_RAW_UPDATE_ACC_Z_VALUE_INDEX 100            /* INT16, in device units (scaled by FSR) */
+#define AHRSPOS_TS_RAW_UPDATE_LAST_SAMPLE_DELTA_SEC_INDEX 104  /* Signed 16:16 */
 #define AHRSPOS_TS_RAW_UPDATE_GYRO_BIAS_UPDATED_BOOL_INDEX 108 /* INT16, 0 if false, otherwise true */
-#define AHRSPOS_TS_RAW_UPDATE_MESSAGE_CHECKSUM_INDEX       110
-#define AHRSPOS_TS_RAW_UPDATE_MESSAGE_TERMINATOR_INDEX     112
-#define AHRSPOS_TS_RAW_UPDATE_MESSAGE_LENGTH               114
+#define AHRSPOS_TS_RAW_UPDATE_MESSAGE_CHECKSUM_INDEX 110
+#define AHRSPOS_TS_RAW_UPDATE_MESSAGE_TERMINATOR_INDEX 112
+#define AHRSPOS_TS_RAW_UPDATE_MESSAGE_LENGTH 114
 
 // Data Get Request:  Tuning Variable, Mag Cal, Board Identity (Response message depends upon request type)
 #define MSGID_DATA_REQUEST 'D'
-#define DATA_REQUEST_DATATYPE_VALUE_INDEX               4
-#define DATA_REQUEST_VARIABLEID_VALUE_INDEX             5
-#define DATA_REQUEST_CHECKSUM_INDEX                     6
-#define DATA_REQUEST_TERMINATOR_INDEX                   8
-#define DATA_REQUEST_MESSAGE_LENGTH                     10
+#define DATA_REQUEST_DATATYPE_VALUE_INDEX 4
+#define DATA_REQUEST_VARIABLEID_VALUE_INDEX 5
+#define DATA_REQUEST_CHECKSUM_INDEX 6
+#define DATA_REQUEST_TERMINATOR_INDEX 8
+#define DATA_REQUEST_MESSAGE_LENGTH 10
 
 /* Data Set Response Packet (in response to MagCal SET and Tuning SET commands. */
 #define MSGID_DATA_SET_RESPONSE 'v'
-#define DATA_SET_RESPONSE_DATATYPE_VALUE_INDEX          4
-#define DATA_SET_RESPONSE_VARID_VALUE_INDEX             5
-#define DATA_SET_RESPONSE_STATUS_VALUE_INDEX            6
-#define DATA_SET_RESPONSE_MESSAGE_CHECKSUM_INDEX        7
-#define DATA_SET_RESPONSE_MESSAGE_TERMINATOR_INDEX      9
-#define DATA_SET_RESPONSE_MESSAGE_LENGTH                11
+#define DATA_SET_RESPONSE_DATATYPE_VALUE_INDEX 4
+#define DATA_SET_RESPONSE_VARID_VALUE_INDEX 5
+#define DATA_SET_RESPONSE_STATUS_VALUE_INDEX 6
+#define DATA_SET_RESPONSE_MESSAGE_CHECKSUM_INDEX 7
+#define DATA_SET_RESPONSE_MESSAGE_TERMINATOR_INDEX 9
+#define DATA_SET_RESPONSE_MESSAGE_LENGTH 11
 
 /* Integration Control Command Packet */
 #define MSGID_INTEGRATION_CONTROL_CMD 'I'
-#define INTEGRATION_CONTROL_CMD_ACTION_INDEX                4
-#define INTEGRATION_CONTROL_CMD_PARAMETER_INDEX             5
-#define INTEGRATION_CONTROL_CMD_MESSAGE_CHECKSUM_INDEX      9
-#define INTEGRATION_CONTROL_CMD_MESSAGE_TERMINATOR_INDEX    11
-#define INTEGRATION_CONTROL_CMD_MESSAGE_LENGTH              13
+#define INTEGRATION_CONTROL_CMD_ACTION_INDEX 4
+#define INTEGRATION_CONTROL_CMD_PARAMETER_INDEX 5
+#define INTEGRATION_CONTROL_CMD_MESSAGE_CHECKSUM_INDEX 9
+#define INTEGRATION_CONTROL_CMD_MESSAGE_TERMINATOR_INDEX 11
+#define INTEGRATION_CONTROL_CMD_MESSAGE_LENGTH 13
 
 /* Integration Control Response Packet */
 #define MSGID_INTEGRATION_CONTROL_RESP 'j'
-#define INTEGRATION_CONTROL_RESP_ACTION_INDEX               4
-#define INTEGRATION_CONTROL_RESP_PARAMETER_INDEX            5
-#define INTEGRATION_CONTROL_RESP_MESSAGE_CHECKSUM_INDEX     9
-#define INTEGRATION_CONTROL_RESP_MESSAGE_TERMINATOR_INDEX   11
-#define INTEGRATION_CONTROL_RESP_MESSAGE_LENGTH             13
+#define INTEGRATION_CONTROL_RESP_ACTION_INDEX 4
+#define INTEGRATION_CONTROL_RESP_PARAMETER_INDEX 5
+#define INTEGRATION_CONTROL_RESP_MESSAGE_CHECKSUM_INDEX 9
+#define INTEGRATION_CONTROL_RESP_MESSAGE_TERMINATOR_INDEX 11
+#define INTEGRATION_CONTROL_RESP_MESSAGE_LENGTH 13
 
 /* Magnetometer Calibration Packet
  ** This message may be used to SET (store) a new calibration into the navX board, or may be used
  ** to retrieve the current calibration data from the navX board. */
 #define MSGID_MAG_CAL_CMD 'M'
-#define MAG_CAL_DATA_ACTION_VALUE_INDEX                 4
-#define MAG_X_BIAS_VALUE_INDEX                          5 /* signed short */
-#define MAG_Y_BIAS_VALUE_INDEX                          7
-#define MAG_Z_BIAS_VALUE_INDEX                          9
-#define MAG_XFORM_1_1_VALUE_INDEX                       11 /* signed 16:16 */
-#define MAG_XFORM_1_2_VALUE_INDEX                       15
-#define MAG_XFORM_1_3_VALUE_INDEX                       19
-#define MAG_XFORM_2_1_VALUE_INDEX                       23
-#define MAG_XFORM_2_2_VALUE_INDEX                       27
-#define MAG_XFORM_2_3_VALUE_INDEX                       31
-#define MAG_XFORM_3_1_VALUE_INDEX                       35
-#define MAG_XFORM_3_2_VALUE_INDEX                       39
-#define MAG_XFORM_3_3_VALUE_INDEX                       43
-#define MAG_CAL_EARTH_MAG_FIELD_NORM_VALUE_INDEX        47
-#define MAG_CAL_CMD_MESSAGE_CHECKSUM_INDEX              51
-#define MAG_CAL_CMD_MESSAGE_TERMINATOR_INDEX            53
-#define MAG_CAL_CMD_MESSAGE_LENGTH                      55
+#define MAG_CAL_DATA_ACTION_VALUE_INDEX 4
+#define MAG_X_BIAS_VALUE_INDEX 5 /* signed short */
+#define MAG_Y_BIAS_VALUE_INDEX 7
+#define MAG_Z_BIAS_VALUE_INDEX 9
+#define MAG_XFORM_1_1_VALUE_INDEX 11 /* signed 16:16 */
+#define MAG_XFORM_1_2_VALUE_INDEX 15
+#define MAG_XFORM_1_3_VALUE_INDEX 19
+#define MAG_XFORM_2_1_VALUE_INDEX 23
+#define MAG_XFORM_2_2_VALUE_INDEX 27
+#define MAG_XFORM_2_3_VALUE_INDEX 31
+#define MAG_XFORM_3_1_VALUE_INDEX 35
+#define MAG_XFORM_3_2_VALUE_INDEX 39
+#define MAG_XFORM_3_3_VALUE_INDEX 43
+#define MAG_CAL_EARTH_MAG_FIELD_NORM_VALUE_INDEX 47
+#define MAG_CAL_CMD_MESSAGE_CHECKSUM_INDEX 51
+#define MAG_CAL_CMD_MESSAGE_TERMINATOR_INDEX 53
+#define MAG_CAL_CMD_MESSAGE_LENGTH 55
 
 /* Tuning Variable Packet
  ** This message may be used to SET (modify) a tuning variable into the navX board,
  ** or to retrieve a current tuning variable from the navX board. */
 #define MSGID_FUSION_TUNING_CMD 'T'
-#define FUSION_TUNING_DATA_ACTION_VALUE_INDEX           4
-#define FUSION_TUNING_CMD_VAR_ID_VALUE_INDEX            5
-#define FUSION_TUNING_CMD_VAR_VALUE_INDEX               6
-#define FUSION_TUNING_CMD_MESSAGE_CHECKSUM_INDEX        10
-#define FUSION_TUNING_CMD_MESSAGE_TERMINATOR_INDEX      12
-#define FUSION_TUNING_CMD_MESSAGE_LENGTH                14
+#define FUSION_TUNING_DATA_ACTION_VALUE_INDEX 4
+#define FUSION_TUNING_CMD_VAR_ID_VALUE_INDEX 5
+#define FUSION_TUNING_CMD_VAR_VALUE_INDEX 6
+#define FUSION_TUNING_CMD_MESSAGE_CHECKSUM_INDEX 10
+#define FUSION_TUNING_CMD_MESSAGE_TERMINATOR_INDEX 12
+#define FUSION_TUNING_CMD_MESSAGE_LENGTH 14
 
 // Board Identity Response Packet
 // Sent in response to a Data Get (Board ID) message
 #define MSGID_BOARD_IDENTITY_RESPONSE 'i'
-#define BOARD_IDENTITY_BOARDTYPE_VALUE_INDEX            4
-#define BOARD_IDENTITY_HWREV_VALUE_INDEX                5
-#define BOARD_IDENTITY_FW_VER_MAJOR                     6
-#define BOARD_IDENTITY_FW_VER_MINOR                     7
-#define BOARD_IDENTITY_FW_VER_REVISION_VALUE_INDEX      8
-#define BOARD_IDENTITY_UNIQUE_ID_0                      10
-#define BOARD_IDENTITY_UNIQUE_ID_1                      11
-#define BOARD_IDENTITY_UNIQUE_ID_2                      12
-#define BOARD_IDENTITY_UNIQUE_ID_3                      13
-#define BOARD_IDENTITY_UNIQUE_ID_4                      14
-#define BOARD_IDENTITY_UNIQUE_ID_5                      15
-#define BOARD_IDENTITY_UNIQUE_ID_6                      16
-#define BOARD_IDENTITY_UNIQUE_ID_7                      17
-#define BOARD_IDENTITY_UNIQUE_ID_8                      18
-#define BOARD_IDENTITY_UNIQUE_ID_9                      19
-#define BOARD_IDENTITY_UNIQUE_ID_10                     20
-#define BOARD_IDENTITY_UNIQUE_ID_11                     21
-#define BOARD_IDENTITY_RESPONSE_CHECKSUM_INDEX          22
-#define BOARD_IDENTITY_RESPONSE_TERMINATOR_INDEX        24
-#define BOARD_IDENTITY_RESPONSE_MESSAGE_LENGTH          26
+#define BOARD_IDENTITY_BOARDTYPE_VALUE_INDEX 4
+#define BOARD_IDENTITY_HWREV_VALUE_INDEX 5
+#define BOARD_IDENTITY_FW_VER_MAJOR 6
+#define BOARD_IDENTITY_FW_VER_MINOR 7
+#define BOARD_IDENTITY_FW_VER_REVISION_VALUE_INDEX 8
+#define BOARD_IDENTITY_UNIQUE_ID_0 10
+#define BOARD_IDENTITY_UNIQUE_ID_1 11
+#define BOARD_IDENTITY_UNIQUE_ID_2 12
+#define BOARD_IDENTITY_UNIQUE_ID_3 13
+#define BOARD_IDENTITY_UNIQUE_ID_4 14
+#define BOARD_IDENTITY_UNIQUE_ID_5 15
+#define BOARD_IDENTITY_UNIQUE_ID_6 16
+#define BOARD_IDENTITY_UNIQUE_ID_7 17
+#define BOARD_IDENTITY_UNIQUE_ID_8 18
+#define BOARD_IDENTITY_UNIQUE_ID_9 19
+#define BOARD_IDENTITY_UNIQUE_ID_10 20
+#define BOARD_IDENTITY_UNIQUE_ID_11 21
+#define BOARD_IDENTITY_RESPONSE_CHECKSUM_INDEX 22
+#define BOARD_IDENTITY_RESPONSE_TERMINATOR_INDEX 24
+#define BOARD_IDENTITY_RESPONSE_MESSAGE_LENGTH 26
 
 // NavX2-specific messages
 
 #define MSGID_CAL_STATUS 'c'
-#define CAL_STATUS_TYPE_INDEX             	 		 	 4 // 'A' : Accel, 'M' : Magnetometer
-#define CAL_STATUS_STATE_INDEX				 	 		 5 // 'D' : Disabled, 'E' : Enabled
-#define CAL_STATUS_QUALITY_INDEX                   		 6 // NONE, POOR, OK, GOOD
-#define CAL_STATUS_PARAMETER_INDEX						 7 // 0-3 (StatUpdate, StatResponse, CmdAck, CmdNAK)
-#define CAL_STATUS_CHECKSUM_INDEX				    	11
-#define CAL_STATUS_TERMINATOR_INDEX			    		13
-#define CAL_STATUS_MESSAGE_LENGTH						15
+#define CAL_STATUS_TYPE_INDEX 4      // 'A' : Accel, 'M' : Magnetometer
+#define CAL_STATUS_STATE_INDEX 5     // 'D' : Disabled, 'E' : Enabled
+#define CAL_STATUS_QUALITY_INDEX 6   // NONE, POOR, OK, GOOD
+#define CAL_STATUS_PARAMETER_INDEX 7 // 0-3 (StatUpdate, StatResponse, CmdAck, CmdNAK)
+#define CAL_STATUS_CHECKSUM_INDEX 11
+#define CAL_STATUS_TERMINATOR_INDEX 13
+#define CAL_STATUS_MESSAGE_LENGTH 15
 
 /* Calibration Control Command Packet */
 #define MSGID_CAL_CONTROL 'C'
-#define CAL_CONTROL_TYPE_INDEX							 4 // 'A' : Accel, 'M' : Magmetometer
-#define CAL_CONTROL_CMD_INDEX             	 		 	 5 // 'S' : Start, 'P' : Stop, 'R' : StatusRequest
-#define CAL_CONTROL_PARAMETER_INDEX						 6 // Currently Unused
-#define CAL_CONTROL_CMD_MESSAGE_CHECKSUM_INDEX      	10
-#define CAL_CONTROL_CMD_MESSAGE_TERMINATOR_INDEX    	12
-#define CAL_CONTROL_CMD_MESSAGE_LENGTH              	14
+#define CAL_CONTROL_TYPE_INDEX 4      // 'A' : Accel, 'M' : Magmetometer
+#define CAL_CONTROL_CMD_INDEX 5       // 'S' : Start, 'P' : Stop, 'R' : StatusRequest
+#define CAL_CONTROL_PARAMETER_INDEX 6 // Currently Unused
+#define CAL_CONTROL_CMD_MESSAGE_CHECKSUM_INDEX 10
+#define CAL_CONTROL_CMD_MESSAGE_TERMINATOR_INDEX 12
+#define CAL_CONTROL_CMD_MESSAGE_LENGTH 14
 
 #define AHRS_PROTOCOL_MAX_MESSAGE_LENGTH AHRSPOS_TS_RAW_UPDATE_MESSAGE_LENGTH
 
-enum CAL_CMD {  CAL_CMD_START = 'S', CAL_CMD_STOP = 'P', CAL_CMD_STATUS_REQUEST = 'R' };
-enum CAL_TYPE { CAL_TYPE_ACCEL = 'A', CAL_TYPE_MAGNETOMETER = 'M' };
-enum CAL_STATE { CAL_STATE_NONE = 0, CAL_STATE_INPROGRESS = 1, CAL_STATE_DONE = 2 };
-enum CAL_QUALITY { CAL_QUAL_NONE = 0, CAL_QUAL_POOR = 1, CAL_QUAL_OK = 2, CAL_QUAL_GOOD = 3 };
-enum CAL_PARAMETER { CAL_PARAM_NOTIFY = 0, CAL_PARAM_STATUS_RESPONSE = 1, CAL_PARAM_ACK = 2, CAL_PARAM_NACK = 3 };
+enum CAL_CMD
+{
+    CAL_CMD_START = 'S',
+    CAL_CMD_STOP = 'P',
+    CAL_CMD_STATUS_REQUEST = 'R'
+};
+enum CAL_TYPE
+{
+    CAL_TYPE_ACCEL = 'A',
+    CAL_TYPE_MAGNETOMETER = 'M'
+};
+enum CAL_STATE
+{
+    CAL_STATE_NONE = 0,
+    CAL_STATE_INPROGRESS = 1,
+    CAL_STATE_DONE = 2
+};
+enum CAL_QUALITY
+{
+    CAL_QUAL_NONE = 0,
+    CAL_QUAL_POOR = 1,
+    CAL_QUAL_OK = 2,
+    CAL_QUAL_GOOD = 3
+};
+enum CAL_PARAMETER
+{
+    CAL_PARAM_NOTIFY = 0,
+    CAL_PARAM_STATUS_RESPONSE = 1,
+    CAL_PARAM_ACK = 2,
+    CAL_PARAM_NACK = 3
+};
 
 class AHRSProtocol : public IMUProtocol
 {
 public:
-
-	struct AHRSUpdateBase {
+    struct AHRSUpdateBase
+    {
         float yaw;
         float pitch;
         float roll;
@@ -364,7 +390,7 @@ public:
         float fused_heading;
         float linear_accel_x;
         float linear_accel_y;
-        float linear_accel_z;    	
+        float linear_accel_z;
         float mpu_temp;
         float quat_w;
         float quat_x;
@@ -373,44 +399,48 @@ public:
         float barometric_pressure;
         float baro_temp;
         uint8_t op_status;
-        uint8_t  sensor_status;
-        uint8_t  cal_status;
-        uint8_t  selftest_status;       	
-	};
-
-    struct AHRSUpdate : public AHRSUpdateBase {
-        short   cal_mag_x;
-        short   cal_mag_y;
-        short   cal_mag_z;
-        float   mag_field_norm_ratio;
-        float   mag_field_norm_scalar;
-        short   raw_mag_x;
-        short   raw_mag_y;
-        short   raw_mag_z;
+        uint8_t sensor_status;
+        uint8_t cal_status;
+        uint8_t selftest_status;
     };
 
-    struct AHRSPosUpdate : public AHRSUpdateBase {
-        float   vel_x;
-        float   vel_y;
-        float   vel_z;
-        float   disp_x;
-        float   disp_y;
-        float   disp_z;
+    struct AHRSUpdate : public AHRSUpdateBase
+    {
+        short cal_mag_x;
+        short cal_mag_y;
+        short cal_mag_z;
+        float mag_field_norm_ratio;
+        float mag_field_norm_scalar;
+        short raw_mag_x;
+        short raw_mag_y;
+        short raw_mag_z;
     };
 
-    struct AHRSPosTSUpdate : public AHRSPosUpdate {
+    struct AHRSPosUpdate : public AHRSUpdateBase
+    {
+        float vel_x;
+        float vel_y;
+        float vel_z;
+        float disp_x;
+        float disp_y;
+        float disp_z;
+    };
+
+    struct AHRSPosTSUpdate : public AHRSPosUpdate
+    {
         uint32_t timestamp;
     };
 
-    struct AHRSPosTSRawUpdate : public AHRSPosTSUpdate {
-        int16_t raw_gyro_x;			// Device units, scaled by FSR
-        int16_t raw_gyro_y;			// Device units, scaled by FSR
-        int16_t raw_gyro_z;			// Device units, scaled by FSR
-        int16_t accel_x;			// Device units, scaled by FSR
-        int16_t accel_y;			// Device units, scaled by FSR
-        int16_t accel_z;			// Device units, scaled by FSR
-        float delta_t_sec;			// last sample period, as a portion of a second
-        bool gyro_bias_updated;		// true if gyro bias was updated (e.g., when still) during last sample
+    struct AHRSPosTSRawUpdate : public AHRSPosTSUpdate
+    {
+        int16_t raw_gyro_x;     // Device units, scaled by FSR
+        int16_t raw_gyro_y;     // Device units, scaled by FSR
+        int16_t raw_gyro_z;     // Device units, scaled by FSR
+        int16_t accel_x;        // Device units, scaled by FSR
+        int16_t accel_y;        // Device units, scaled by FSR
+        int16_t accel_z;        // Device units, scaled by FSR
+        float delta_t_sec;      // last sample period, as a portion of a second
+        bool gyro_bias_updated; // true if gyro bias was updated (e.g., when still) during last sample
     };
 
     struct BoardID
@@ -426,27 +456,26 @@ public:
     struct IntegrationControl
     {
         uint8_t action;
-        int     parameter;
+        int parameter;
     };
 
     struct CalibrationControl
     {
-    	uint8_t type; 			// CAL_TYPE_xxx
-    	uint8_t command;		// CAL_CMD_xxx
-    	int parameter; 			// Unused
+        uint8_t type;    // CAL_TYPE_xxx
+        uint8_t command; // CAL_CMD_xxx
+        int parameter;   // Unused
     };
 
     struct CalibrationStatus
     {
-    	uint8_t type;			// CAL_TYPE_xxx
-    	uint8_t state;			// CAL_STATE_xxx
-    	uint8_t cal_quality;	// CAL_QUALITY_xxx
-    	int parameter;			// CAL_PARAM_xxx
+        uint8_t type;        // CAL_TYPE_xxx
+        uint8_t state;       // CAL_STATE_xxx
+        uint8_t cal_quality; // CAL_QUALITY_xxx
+        int parameter;       // CAL_PARAM_xxx
     };
 
 public:
-
-    static int encodeIntegrationControlCmd( char *protocol_buffer, struct IntegrationControl& cmd )
+    static int encodeIntegrationControlCmd(char *protocol_buffer, struct IntegrationControl &cmd)
     {
         // Header
         protocol_buffer[0] = PACKET_START_CHAR;
@@ -455,21 +484,23 @@ public:
         protocol_buffer[3] = MSGID_INTEGRATION_CONTROL_CMD;
         // Data
         protocol_buffer[INTEGRATION_CONTROL_CMD_ACTION_INDEX] = cmd.action;
-        IMURegisters::encodeProtocolInt32(cmd.parameter,&protocol_buffer[INTEGRATION_CONTROL_CMD_PARAMETER_INDEX]);
+        IMURegisters::encodeProtocolInt32(cmd.parameter, &protocol_buffer[INTEGRATION_CONTROL_CMD_PARAMETER_INDEX]);
         // Footer
-        encodeTermination( protocol_buffer, INTEGRATION_CONTROL_CMD_MESSAGE_LENGTH, INTEGRATION_CONTROL_CMD_MESSAGE_LENGTH - 4 );
+        encodeTermination(protocol_buffer, INTEGRATION_CONTROL_CMD_MESSAGE_LENGTH, INTEGRATION_CONTROL_CMD_MESSAGE_LENGTH - 4);
         return INTEGRATION_CONTROL_CMD_MESSAGE_LENGTH;
     }
 
-    static int decodeIntegrationControlCmd( char *buffer, int length, uint8_t& action, int32_t& parameter)
+    static int decodeIntegrationControlCmd(char *buffer, int length, uint8_t &action, int32_t &parameter)
     {
-        if ( length < INTEGRATION_CONTROL_CMD_MESSAGE_LENGTH ) return 0;
-        if ( ( buffer[0] == PACKET_START_CHAR ) &&
-                ( buffer[1] == BINARY_PACKET_INDICATOR_CHAR ) &&
-                ( buffer[2] == INTEGRATION_CONTROL_CMD_MESSAGE_LENGTH - 2) &&
-                ( buffer[3] == MSGID_INTEGRATION_CONTROL_CMD ) )
+        if (length < INTEGRATION_CONTROL_CMD_MESSAGE_LENGTH)
+            return 0;
+        if ((buffer[0] == PACKET_START_CHAR) &&
+            (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+            (buffer[2] == INTEGRATION_CONTROL_CMD_MESSAGE_LENGTH - 2) &&
+            (buffer[3] == MSGID_INTEGRATION_CONTROL_CMD))
         {
-            if ( !verifyChecksum( buffer, INTEGRATION_CONTROL_CMD_MESSAGE_CHECKSUM_INDEX ) ) return 0;
+            if (!verifyChecksum(buffer, INTEGRATION_CONTROL_CMD_MESSAGE_CHECKSUM_INDEX))
+                return 0;
 
             // Data
             action = (uint8_t)buffer[INTEGRATION_CONTROL_CMD_ACTION_INDEX];
@@ -479,7 +510,7 @@ public:
         return 0;
     }
 
-    static int encodeIntegrationControlResponse( char *protocol_buffer, uint8_t action, int32_t parameter )
+    static int encodeIntegrationControlResponse(char *protocol_buffer, uint8_t action, int32_t parameter)
     {
         // Header
         protocol_buffer[0] = PACKET_START_CHAR;
@@ -488,21 +519,23 @@ public:
         protocol_buffer[3] = MSGID_INTEGRATION_CONTROL_RESP;
         // Data
         protocol_buffer[INTEGRATION_CONTROL_RESP_ACTION_INDEX] = action;
-        IMURegisters::encodeProtocolInt32(parameter,&protocol_buffer[INTEGRATION_CONTROL_RESP_PARAMETER_INDEX]);
+        IMURegisters::encodeProtocolInt32(parameter, &protocol_buffer[INTEGRATION_CONTROL_RESP_PARAMETER_INDEX]);
         // Footer
-        encodeTermination( protocol_buffer, INTEGRATION_CONTROL_RESP_MESSAGE_LENGTH, INTEGRATION_CONTROL_RESP_MESSAGE_LENGTH - 4 );
+        encodeTermination(protocol_buffer, INTEGRATION_CONTROL_RESP_MESSAGE_LENGTH, INTEGRATION_CONTROL_RESP_MESSAGE_LENGTH - 4);
         return INTEGRATION_CONTROL_RESP_MESSAGE_LENGTH;
     }
 
-    static int decodeIntegrationControlResponse( char *buffer, int length, struct IntegrationControl& rsp)
+    static int decodeIntegrationControlResponse(char *buffer, int length, struct IntegrationControl &rsp)
     {
-        if ( length < INTEGRATION_CONTROL_RESP_MESSAGE_LENGTH ) return 0;
-        if ( ( buffer[0] == PACKET_START_CHAR ) &&
-                ( buffer[1] == BINARY_PACKET_INDICATOR_CHAR ) &&
-                ( buffer[2] == INTEGRATION_CONTROL_RESP_MESSAGE_LENGTH - 2) &&
-                ( buffer[3] == MSGID_INTEGRATION_CONTROL_RESP ) )
+        if (length < INTEGRATION_CONTROL_RESP_MESSAGE_LENGTH)
+            return 0;
+        if ((buffer[0] == PACKET_START_CHAR) &&
+            (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+            (buffer[2] == INTEGRATION_CONTROL_RESP_MESSAGE_LENGTH - 2) &&
+            (buffer[3] == MSGID_INTEGRATION_CONTROL_RESP))
         {
-            if ( !verifyChecksum( buffer, INTEGRATION_CONTROL_RESP_MESSAGE_CHECKSUM_INDEX ) ) return 0;
+            if (!verifyChecksum(buffer, INTEGRATION_CONTROL_RESP_MESSAGE_CHECKSUM_INDEX))
+                return 0;
 
             // Data
             rsp.action = (uint8_t)buffer[INTEGRATION_CONTROL_RESP_ACTION_INDEX];
@@ -512,7 +545,7 @@ public:
         return 0;
     }
 
-    static int encodeCalibrationControlCmd( char *protocol_buffer, struct CalibrationControl& cmd )
+    static int encodeCalibrationControlCmd(char *protocol_buffer, struct CalibrationControl &cmd)
     {
         // Header
         protocol_buffer[0] = PACKET_START_CHAR;
@@ -522,21 +555,23 @@ public:
         // Data
         protocol_buffer[CAL_CONTROL_TYPE_INDEX] = cmd.type;
         protocol_buffer[CAL_CONTROL_CMD_INDEX] = cmd.command;
-        IMURegisters::encodeProtocolInt32(cmd.parameter,&protocol_buffer[CAL_CONTROL_PARAMETER_INDEX]);
+        IMURegisters::encodeProtocolInt32(cmd.parameter, &protocol_buffer[CAL_CONTROL_PARAMETER_INDEX]);
         // Footer
-        encodeTermination( protocol_buffer, CAL_CONTROL_CMD_MESSAGE_LENGTH, CAL_CONTROL_CMD_MESSAGE_LENGTH - 4 );
+        encodeTermination(protocol_buffer, CAL_CONTROL_CMD_MESSAGE_LENGTH, CAL_CONTROL_CMD_MESSAGE_LENGTH - 4);
         return CAL_CONTROL_CMD_MESSAGE_LENGTH;
     }
 
-    static int decodeCalibrationControlCmd( char *buffer, int length, struct CalibrationControl& cmd)
+    static int decodeCalibrationControlCmd(char *buffer, int length, struct CalibrationControl &cmd)
     {
-        if ( length < CAL_CONTROL_CMD_MESSAGE_LENGTH ) return 0;
-        if ( ( buffer[0] == PACKET_START_CHAR ) &&
-                ( buffer[1] == BINARY_PACKET_INDICATOR_CHAR ) &&
-                ( buffer[2] == CAL_CONTROL_CMD_MESSAGE_LENGTH - 2) &&
-                ( buffer[3] == MSGID_CAL_CONTROL ) )
+        if (length < CAL_CONTROL_CMD_MESSAGE_LENGTH)
+            return 0;
+        if ((buffer[0] == PACKET_START_CHAR) &&
+            (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+            (buffer[2] == CAL_CONTROL_CMD_MESSAGE_LENGTH - 2) &&
+            (buffer[3] == MSGID_CAL_CONTROL))
         {
-            if ( !verifyChecksum( buffer, CAL_CONTROL_CMD_MESSAGE_CHECKSUM_INDEX ) ) return 0;
+            if (!verifyChecksum(buffer, CAL_CONTROL_CMD_MESSAGE_CHECKSUM_INDEX))
+                return 0;
 
             // Data
             cmd.type = (uint8_t)buffer[CAL_CONTROL_TYPE_INDEX];
@@ -547,7 +582,7 @@ public:
         return 0;
     }
 
-    static int encodeCalibrationStatus( char *protocol_buffer, struct CalibrationStatus& status )
+    static int encodeCalibrationStatus(char *protocol_buffer, struct CalibrationStatus &status)
     {
         // Header
         protocol_buffer[0] = PACKET_START_CHAR;
@@ -558,14 +593,14 @@ public:
         protocol_buffer[CAL_STATUS_STATE_INDEX] = status.state;
         protocol_buffer[CAL_STATUS_TYPE_INDEX] = status.type;
         protocol_buffer[CAL_STATUS_QUALITY_INDEX] = status.cal_quality;
-        IMURegisters::encodeProtocolInt32(status.parameter,&protocol_buffer[CAL_STATUS_PARAMETER_INDEX]);
+        IMURegisters::encodeProtocolInt32(status.parameter, &protocol_buffer[CAL_STATUS_PARAMETER_INDEX]);
 
         // Footer
-        encodeTermination( protocol_buffer, CAL_STATUS_MESSAGE_LENGTH, CAL_STATUS_MESSAGE_LENGTH - 4 );
+        encodeTermination(protocol_buffer, CAL_STATUS_MESSAGE_LENGTH, CAL_STATUS_MESSAGE_LENGTH - 4);
         return CAL_STATUS_MESSAGE_LENGTH;
     }
 
-    static int encodeTuningVariableCmd( char *protocol_buffer, AHRS_DATA_ACTION getset, AHRS_TUNING_VAR_ID id, float val )
+    static int encodeTuningVariableCmd(char *protocol_buffer, AHRS_DATA_ACTION getset, AHRS_TUNING_VAR_ID id, float val)
     {
         // Header
         protocol_buffer[0] = PACKET_START_CHAR;
@@ -575,21 +610,23 @@ public:
         // Data
         protocol_buffer[FUSION_TUNING_DATA_ACTION_VALUE_INDEX] = getset;
         protocol_buffer[FUSION_TUNING_CMD_VAR_ID_VALUE_INDEX] = id;
-        IMURegisters::encodeProtocol1616Float(val,&protocol_buffer[FUSION_TUNING_CMD_VAR_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(val, &protocol_buffer[FUSION_TUNING_CMD_VAR_VALUE_INDEX]);
         // Footer
-        encodeTermination( protocol_buffer, FUSION_TUNING_CMD_MESSAGE_LENGTH, FUSION_TUNING_CMD_MESSAGE_LENGTH - 4 );
+        encodeTermination(protocol_buffer, FUSION_TUNING_CMD_MESSAGE_LENGTH, FUSION_TUNING_CMD_MESSAGE_LENGTH - 4);
         return FUSION_TUNING_CMD_MESSAGE_LENGTH;
     }
 
-    static int decodeTuningVariableCmd( char *buffer, int length, AHRS_DATA_ACTION& getset, AHRS_TUNING_VAR_ID& id, float& val )
+    static int decodeTuningVariableCmd(char *buffer, int length, AHRS_DATA_ACTION &getset, AHRS_TUNING_VAR_ID &id, float &val)
     {
-        if ( length < FUSION_TUNING_CMD_MESSAGE_LENGTH ) return 0;
-        if ( ( buffer[0] == PACKET_START_CHAR ) &&
-                ( buffer[1] == BINARY_PACKET_INDICATOR_CHAR ) &&
-                ( buffer[2] == FUSION_TUNING_CMD_MESSAGE_LENGTH - 2) &&
-                ( buffer[3] == MSGID_FUSION_TUNING_CMD ) )
+        if (length < FUSION_TUNING_CMD_MESSAGE_LENGTH)
+            return 0;
+        if ((buffer[0] == PACKET_START_CHAR) &&
+            (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+            (buffer[2] == FUSION_TUNING_CMD_MESSAGE_LENGTH - 2) &&
+            (buffer[3] == MSGID_FUSION_TUNING_CMD))
         {
-            if ( !verifyChecksum( buffer, FUSION_TUNING_CMD_MESSAGE_CHECKSUM_INDEX ) ) return 0;
+            if (!verifyChecksum(buffer, FUSION_TUNING_CMD_MESSAGE_CHECKSUM_INDEX))
+                return 0;
 
             // Data
             getset = (AHRS_DATA_ACTION)buffer[FUSION_TUNING_DATA_ACTION_VALUE_INDEX];
@@ -600,18 +637,18 @@ public:
         return 0;
     }
 
-    static int encodeAHRSUpdate( char *protocol_buffer,
-            float yaw, float pitch, float roll,
-            float compass_heading, float altitude, float fused_heading,
-            float linear_accel_x, float linear_accel_y, float linear_accel_z,
-            float mpu_temp_c,
-            int16_t raw_mag_x, int16_t raw_mag_y, int16_t raw_mag_z,
-            int16_t cal_mag_x, int16_t cal_mag_y, int16_t cal_mag_z,
-            float mag_norm_ratio, float mag_norm_scalar,
-            int16_t quat_w, int16_t quat_x, int16_t quat_y, int16_t quat_z,
-            float baro_pressure, float baro_temp_c,
-            uint8_t op_status, uint8_t sensor_status,
-            uint8_t cal_status, uint8_t selftest_status )
+    static int encodeAHRSUpdate(char *protocol_buffer,
+                                float yaw, float pitch, float roll,
+                                float compass_heading, float altitude, float fused_heading,
+                                float linear_accel_x, float linear_accel_y, float linear_accel_z,
+                                float mpu_temp_c,
+                                int16_t raw_mag_x, int16_t raw_mag_y, int16_t raw_mag_z,
+                                int16_t cal_mag_x, int16_t cal_mag_y, int16_t cal_mag_z,
+                                float mag_norm_ratio, float mag_norm_scalar,
+                                int16_t quat_w, int16_t quat_x, int16_t quat_y, int16_t quat_z,
+                                float baro_pressure, float baro_temp_c,
+                                uint8_t op_status, uint8_t sensor_status,
+                                uint8_t cal_status, uint8_t selftest_status)
     {
         // Header
         protocol_buffer[0] = PACKET_START_CHAR;
@@ -623,11 +660,11 @@ public:
         IMURegisters::encodeProtocolSignedHundredthsFloat(pitch, &protocol_buffer[AHRS_UPDATE_PITCH_VALUE_INDEX]);
         IMURegisters::encodeProtocolSignedHundredthsFloat(roll, &protocol_buffer[AHRS_UPDATE_ROLL_VALUE_INDEX]);
         IMURegisters::encodeProtocolUnsignedHundredthsFloat(compass_heading, &protocol_buffer[AHRS_UPDATE_HEADING_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(altitude,&protocol_buffer[AHRS_UPDATE_ALTITUDE_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(altitude, &protocol_buffer[AHRS_UPDATE_ALTITUDE_VALUE_INDEX]);
         IMURegisters::encodeProtocolUnsignedHundredthsFloat(fused_heading, &protocol_buffer[AHRS_UPDATE_FUSED_HEADING_VALUE_INDEX]);
-        IMURegisters::encodeProtocolSignedThousandthsFloat(linear_accel_x,&protocol_buffer[AHRS_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX]);
-        IMURegisters::encodeProtocolSignedThousandthsFloat(linear_accel_y,&protocol_buffer[AHRS_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX]);
-        IMURegisters::encodeProtocolSignedThousandthsFloat(linear_accel_z,&protocol_buffer[AHRS_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX]);
+        IMURegisters::encodeProtocolSignedThousandthsFloat(linear_accel_x, &protocol_buffer[AHRS_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX]);
+        IMURegisters::encodeProtocolSignedThousandthsFloat(linear_accel_y, &protocol_buffer[AHRS_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX]);
+        IMURegisters::encodeProtocolSignedThousandthsFloat(linear_accel_z, &protocol_buffer[AHRS_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX]);
         IMURegisters::encodeProtocolInt16(cal_mag_x, &protocol_buffer[AHRS_UPDATE_CAL_MAG_X_VALUE_INDEX]);
         IMURegisters::encodeProtocolInt16(cal_mag_y, &protocol_buffer[AHRS_UPDATE_CAL_MAG_Y_VALUE_INDEX]);
         IMURegisters::encodeProtocolInt16(cal_mag_z, &protocol_buffer[AHRS_UPDATE_CAL_MAG_Z_VALUE_INDEX]);
@@ -649,19 +686,22 @@ public:
         protocol_buffer[AHRS_UPDATE_CAL_STATUS_VALUE_INDEX] = cal_status;
         protocol_buffer[AHRS_UPDATE_SELFTEST_STATUS_VALUE_INDEX] = selftest_status;
         // Footer
-        encodeTermination( protocol_buffer, AHRS_UPDATE_MESSAGE_LENGTH, AHRS_UPDATE_MESSAGE_LENGTH - 4 );
+        encodeTermination(protocol_buffer, AHRS_UPDATE_MESSAGE_LENGTH, AHRS_UPDATE_MESSAGE_LENGTH - 4);
         return AHRS_UPDATE_MESSAGE_LENGTH;
     }
 
-    static int decodeAHRSUpdate( char *buffer, int length, struct AHRSUpdate& update)
+    static int decodeAHRSUpdate(char *buffer, int length, struct AHRSUpdate &update)
     {
-        if ( length < AHRS_UPDATE_MESSAGE_LENGTH ) return 0;
-        if ( ( buffer[0] == PACKET_START_CHAR ) &&
-                ( buffer[1] == BINARY_PACKET_INDICATOR_CHAR ) &&
-                ( buffer[2] == AHRS_UPDATE_MESSAGE_LENGTH - 2) &&
-                ( buffer[3] == MSGID_AHRS_UPDATE ) ) {
+        if (length < AHRS_UPDATE_MESSAGE_LENGTH)
+            return 0;
+        if ((buffer[0] == PACKET_START_CHAR) &&
+            (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+            (buffer[2] == AHRS_UPDATE_MESSAGE_LENGTH - 2) &&
+            (buffer[3] == MSGID_AHRS_UPDATE))
+        {
 
-            if ( !verifyChecksum( buffer, AHRS_UPDATE_MESSAGE_CHECKSUM_INDEX ) ) return 0;
+            if (!verifyChecksum(buffer, AHRS_UPDATE_MESSAGE_CHECKSUM_INDEX))
+                return 0;
 
             update.yaw = IMURegisters::decodeProtocolSignedHundredthsFloat(&buffer[AHRS_UPDATE_YAW_VALUE_INDEX]);
             update.pitch = IMURegisters::decodeProtocolSignedHundredthsFloat(&buffer[AHRS_UPDATE_PITCH_VALUE_INDEX]);
@@ -681,7 +721,7 @@ public:
             update.raw_mag_x = IMURegisters::decodeProtocolInt16(&buffer[AHRS_UPDATE_RAW_MAG_X_VALUE_INDEX]);
             update.raw_mag_y = IMURegisters::decodeProtocolInt16(&buffer[AHRS_UPDATE_RAW_MAG_Y_VALUE_INDEX]);
             update.raw_mag_z = IMURegisters::decodeProtocolInt16(&buffer[AHRS_UPDATE_RAW_MAG_Z_VALUE_INDEX]);
-			/* AHRSPosUpdate:  Quaternions are signed int (16-bit resolution); divide by 16384 to yield +/- 2 radians */            
+            /* AHRSPosUpdate:  Quaternions are signed int (16-bit resolution); divide by 16384 to yield +/- 2 radians */
             update.quat_w = ((float)IMURegisters::decodeProtocolInt16(&buffer[AHRS_UPDATE_QUAT_W_VALUE_INDEX]) / 16384.0f);
             update.quat_x = ((float)IMURegisters::decodeProtocolInt16(&buffer[AHRS_UPDATE_QUAT_X_VALUE_INDEX]) / 16384.0f);
             update.quat_y = ((float)IMURegisters::decodeProtocolInt16(&buffer[AHRS_UPDATE_QUAT_Y_VALUE_INDEX]) / 16384.0f);
@@ -698,16 +738,16 @@ public:
         return 0;
     }
 
-    static int encodeAHRSPosUpdate( char *protocol_buffer,
-            float yaw, float pitch, float roll,
-            float compass_heading, float altitude, float fused_heading,
-            float linear_accel_x, float linear_accel_y, float linear_accel_z,
-            float mpu_temp_c,
-            int16_t quat_w, int16_t quat_x, int16_t quat_y, int16_t quat_z,
-            float vel_x, float vel_y, float vel_z,
-            float disp_x, float disp_y, float disp_z,
-            uint8_t op_status, uint8_t sensor_status,
-            uint8_t cal_status, uint8_t selftest_status )
+    static int encodeAHRSPosUpdate(char *protocol_buffer,
+                                   float yaw, float pitch, float roll,
+                                   float compass_heading, float altitude, float fused_heading,
+                                   float linear_accel_x, float linear_accel_y, float linear_accel_z,
+                                   float mpu_temp_c,
+                                   int16_t quat_w, int16_t quat_x, int16_t quat_y, int16_t quat_z,
+                                   float vel_x, float vel_y, float vel_z,
+                                   float disp_x, float disp_y, float disp_z,
+                                   uint8_t op_status, uint8_t sensor_status,
+                                   uint8_t cal_status, uint8_t selftest_status)
     {
         // Header
         protocol_buffer[0] = PACKET_START_CHAR;
@@ -719,17 +759,17 @@ public:
         IMURegisters::encodeProtocolSignedHundredthsFloat(pitch, &protocol_buffer[AHRSPOS_UPDATE_PITCH_VALUE_INDEX]);
         IMURegisters::encodeProtocolSignedHundredthsFloat(roll, &protocol_buffer[AHRSPOS_UPDATE_ROLL_VALUE_INDEX]);
         IMURegisters::encodeProtocolUnsignedHundredthsFloat(compass_heading, &protocol_buffer[AHRSPOS_UPDATE_HEADING_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(altitude,&protocol_buffer[AHRSPOS_UPDATE_ALTITUDE_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(altitude, &protocol_buffer[AHRSPOS_UPDATE_ALTITUDE_VALUE_INDEX]);
         IMURegisters::encodeProtocolUnsignedHundredthsFloat(fused_heading, &protocol_buffer[AHRSPOS_UPDATE_FUSED_HEADING_VALUE_INDEX]);
-        IMURegisters::encodeProtocolSignedThousandthsFloat(linear_accel_x,&protocol_buffer[AHRSPOS_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX]);
-        IMURegisters::encodeProtocolSignedThousandthsFloat(linear_accel_y,&protocol_buffer[AHRSPOS_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX]);
-        IMURegisters::encodeProtocolSignedThousandthsFloat(linear_accel_z,&protocol_buffer[AHRSPOS_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(vel_x,&protocol_buffer[AHRSPOS_UPDATE_VEL_X_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(vel_y,&protocol_buffer[AHRSPOS_UPDATE_VEL_Y_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(vel_z,&protocol_buffer[AHRSPOS_UPDATE_VEL_Z_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(disp_x,&protocol_buffer[AHRSPOS_UPDATE_DISP_X_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(disp_y,&protocol_buffer[AHRSPOS_UPDATE_DISP_Y_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(disp_z,&protocol_buffer[AHRSPOS_UPDATE_DISP_Z_VALUE_INDEX]);
+        IMURegisters::encodeProtocolSignedThousandthsFloat(linear_accel_x, &protocol_buffer[AHRSPOS_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX]);
+        IMURegisters::encodeProtocolSignedThousandthsFloat(linear_accel_y, &protocol_buffer[AHRSPOS_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX]);
+        IMURegisters::encodeProtocolSignedThousandthsFloat(linear_accel_z, &protocol_buffer[AHRSPOS_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(vel_x, &protocol_buffer[AHRSPOS_UPDATE_VEL_X_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(vel_y, &protocol_buffer[AHRSPOS_UPDATE_VEL_Y_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(vel_z, &protocol_buffer[AHRSPOS_UPDATE_VEL_Z_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(disp_x, &protocol_buffer[AHRSPOS_UPDATE_DISP_X_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(disp_y, &protocol_buffer[AHRSPOS_UPDATE_DISP_Y_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(disp_z, &protocol_buffer[AHRSPOS_UPDATE_DISP_Z_VALUE_INDEX]);
         IMURegisters::encodeProtocolSignedHundredthsFloat(mpu_temp_c, &protocol_buffer[AHRSPOS_UPDATE_MPU_TEMP_VAUE_INDEX]);
         IMURegisters::encodeProtocolInt16(quat_w, &protocol_buffer[AHRSPOS_UPDATE_QUAT_W_VALUE_INDEX]);
         IMURegisters::encodeProtocolInt16(quat_x, &protocol_buffer[AHRSPOS_UPDATE_QUAT_X_VALUE_INDEX]);
@@ -741,19 +781,22 @@ public:
         protocol_buffer[AHRSPOS_UPDATE_CAL_STATUS_VALUE_INDEX] = cal_status;
         protocol_buffer[AHRSPOS_UPDATE_SELFTEST_STATUS_VALUE_INDEX] = selftest_status;
         // Footer
-        encodeTermination( protocol_buffer, AHRSPOS_UPDATE_MESSAGE_LENGTH, AHRSPOS_UPDATE_MESSAGE_LENGTH - 4 );
+        encodeTermination(protocol_buffer, AHRSPOS_UPDATE_MESSAGE_LENGTH, AHRSPOS_UPDATE_MESSAGE_LENGTH - 4);
         return AHRSPOS_UPDATE_MESSAGE_LENGTH;
     }
 
-    static int decodeAHRSPosUpdate( char *buffer, int length, struct AHRSPosUpdate& update)
+    static int decodeAHRSPosUpdate(char *buffer, int length, struct AHRSPosUpdate &update)
     {
-        if ( length < AHRSPOS_UPDATE_MESSAGE_LENGTH ) return 0;
-        if ( ( buffer[0] == PACKET_START_CHAR ) &&
-                ( buffer[1] == BINARY_PACKET_INDICATOR_CHAR ) &&
-                ( buffer[2] == AHRSPOS_UPDATE_MESSAGE_LENGTH - 2) &&
-                ( buffer[3] == MSGID_AHRSPOS_UPDATE ) ) {
+        if (length < AHRSPOS_UPDATE_MESSAGE_LENGTH)
+            return 0;
+        if ((buffer[0] == PACKET_START_CHAR) &&
+            (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+            (buffer[2] == AHRSPOS_UPDATE_MESSAGE_LENGTH - 2) &&
+            (buffer[3] == MSGID_AHRSPOS_UPDATE))
+        {
 
-            if ( !verifyChecksum( buffer, AHRSPOS_UPDATE_MESSAGE_CHECKSUM_INDEX ) ) return 0;
+            if (!verifyChecksum(buffer, AHRSPOS_UPDATE_MESSAGE_CHECKSUM_INDEX))
+                return 0;
 
             update.yaw = IMURegisters::decodeProtocolSignedHundredthsFloat(&buffer[AHRSPOS_UPDATE_YAW_VALUE_INDEX]);
             update.pitch = IMURegisters::decodeProtocolSignedHundredthsFloat(&buffer[AHRSPOS_UPDATE_PITCH_VALUE_INDEX]);
@@ -771,7 +814,7 @@ public:
             update.disp_y = IMURegisters::decodeProtocol1616Float(&buffer[AHRSPOS_UPDATE_DISP_Y_VALUE_INDEX]);
             update.disp_z = IMURegisters::decodeProtocol1616Float(&buffer[AHRSPOS_UPDATE_DISP_Z_VALUE_INDEX]);
             update.mpu_temp = IMURegisters::decodeProtocolSignedHundredthsFloat(&buffer[AHRSPOS_UPDATE_MPU_TEMP_VAUE_INDEX]);
-			/* AHRSPosUpdate:  Quaternions are signed int (16-bit resolution); divide by 16384 to yield +/- 2 radians */            
+            /* AHRSPosUpdate:  Quaternions are signed int (16-bit resolution); divide by 16384 to yield +/- 2 radians */
             update.quat_w = ((float)IMURegisters::decodeProtocolInt16(&buffer[AHRSPOS_UPDATE_QUAT_W_VALUE_INDEX]) / 16384.0f);
             update.quat_x = ((float)IMURegisters::decodeProtocolInt16(&buffer[AHRSPOS_UPDATE_QUAT_X_VALUE_INDEX]) / 16384.0f);
             update.quat_y = ((float)IMURegisters::decodeProtocolInt16(&buffer[AHRSPOS_UPDATE_QUAT_Y_VALUE_INDEX]) / 16384.0f);
@@ -786,17 +829,17 @@ public:
         return 0;
     }
 
-    static int encodeAHRSPosTSUpdate( char *protocol_buffer,
-            float yaw, float pitch, float roll,
-            float compass_heading, float altitude, float fused_heading,
-            float linear_accel_x, float linear_accel_y, float linear_accel_z,
-            float mpu_temp_c,
-            float quat_w, float quat_x, float quat_y, float quat_z,
-            float vel_x, float vel_y, float vel_z,
-            float disp_x, float disp_y, float disp_z,
-            uint8_t op_status, uint8_t sensor_status,
-            uint8_t cal_status, uint8_t selftest_status,
-            uint32_t timestamp)
+    static int encodeAHRSPosTSUpdate(char *protocol_buffer,
+                                     float yaw, float pitch, float roll,
+                                     float compass_heading, float altitude, float fused_heading,
+                                     float linear_accel_x, float linear_accel_y, float linear_accel_z,
+                                     float mpu_temp_c,
+                                     float quat_w, float quat_x, float quat_y, float quat_z,
+                                     float vel_x, float vel_y, float vel_z,
+                                     float disp_x, float disp_y, float disp_z,
+                                     uint8_t op_status, uint8_t sensor_status,
+                                     uint8_t cal_status, uint8_t selftest_status,
+                                     uint32_t timestamp)
     {
         // Header
         protocol_buffer[0] = PACKET_START_CHAR;
@@ -809,17 +852,17 @@ public:
         IMURegisters::encodeProtocol1616Float(pitch, &protocol_buffer[AHRSPOS_TS_UPDATE_PITCH_VALUE_INDEX]);
         IMURegisters::encodeProtocol1616Float(roll, &protocol_buffer[AHRSPOS_TS_UPDATE_ROLL_VALUE_INDEX]);
         IMURegisters::encodeProtocol1616Float(compass_heading, &protocol_buffer[AHRSPOS_TS_UPDATE_HEADING_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(altitude,&protocol_buffer[AHRSPOS_TS_UPDATE_ALTITUDE_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(altitude, &protocol_buffer[AHRSPOS_TS_UPDATE_ALTITUDE_VALUE_INDEX]);
         IMURegisters::encodeProtocol1616Float(fused_heading, &protocol_buffer[AHRSPOS_TS_UPDATE_FUSED_HEADING_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(linear_accel_x,&protocol_buffer[AHRSPOS_TS_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(linear_accel_y,&protocol_buffer[AHRSPOS_TS_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(linear_accel_z,&protocol_buffer[AHRSPOS_TS_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(vel_x,&protocol_buffer[AHRSPOS_TS_UPDATE_VEL_X_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(vel_y,&protocol_buffer[AHRSPOS_TS_UPDATE_VEL_Y_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(vel_z,&protocol_buffer[AHRSPOS_TS_UPDATE_VEL_Z_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(disp_x,&protocol_buffer[AHRSPOS_TS_UPDATE_DISP_X_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(disp_y,&protocol_buffer[AHRSPOS_TS_UPDATE_DISP_Y_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(disp_z,&protocol_buffer[AHRSPOS_TS_UPDATE_DISP_Z_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(linear_accel_x, &protocol_buffer[AHRSPOS_TS_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(linear_accel_y, &protocol_buffer[AHRSPOS_TS_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(linear_accel_z, &protocol_buffer[AHRSPOS_TS_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(vel_x, &protocol_buffer[AHRSPOS_TS_UPDATE_VEL_X_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(vel_y, &protocol_buffer[AHRSPOS_TS_UPDATE_VEL_Y_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(vel_z, &protocol_buffer[AHRSPOS_TS_UPDATE_VEL_Z_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(disp_x, &protocol_buffer[AHRSPOS_TS_UPDATE_DISP_X_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(disp_y, &protocol_buffer[AHRSPOS_TS_UPDATE_DISP_Y_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(disp_z, &protocol_buffer[AHRSPOS_TS_UPDATE_DISP_Z_VALUE_INDEX]);
         IMURegisters::encodeProtocolSignedHundredthsFloat(mpu_temp_c, &protocol_buffer[AHRSPOS_TS_UPDATE_MPU_TEMP_VAUE_INDEX]);
         IMURegisters::encodeProtocol1616Float(quat_w, &protocol_buffer[AHRSPOS_TS_UPDATE_QUAT_W_VALUE_INDEX]);
         IMURegisters::encodeProtocol1616Float(quat_x, &protocol_buffer[AHRSPOS_TS_UPDATE_QUAT_X_VALUE_INDEX]);
@@ -833,19 +876,22 @@ public:
         IMURegisters::encodeProtocolInt32((int32_t)timestamp, &protocol_buffer[AHRSPOS_TS_UPDATE_TIMESTAMP_INDEX]);
 
         // Footer
-        encodeTermination( protocol_buffer, AHRSPOS_TS_UPDATE_MESSAGE_LENGTH, AHRSPOS_TS_UPDATE_MESSAGE_LENGTH - 4 );
+        encodeTermination(protocol_buffer, AHRSPOS_TS_UPDATE_MESSAGE_LENGTH, AHRSPOS_TS_UPDATE_MESSAGE_LENGTH - 4);
         return AHRSPOS_TS_UPDATE_MESSAGE_LENGTH;
     }
 
-    static int decodeAHRSPosTSUpdate( char *buffer, int length, struct AHRSPosTSUpdate& update)
+    static int decodeAHRSPosTSUpdate(char *buffer, int length, struct AHRSPosTSUpdate &update)
     {
-        if ( length < AHRSPOS_TS_UPDATE_MESSAGE_LENGTH ) return 0;
-        if ( ( buffer[0] == PACKET_START_CHAR ) &&
-                ( buffer[1] == BINARY_PACKET_INDICATOR_CHAR ) &&
-                ( buffer[2] == AHRSPOS_TS_UPDATE_MESSAGE_LENGTH - 2) &&
-                ( buffer[3] == MSGID_AHRSPOS_TS_UPDATE ) ) {
+        if (length < AHRSPOS_TS_UPDATE_MESSAGE_LENGTH)
+            return 0;
+        if ((buffer[0] == PACKET_START_CHAR) &&
+            (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+            (buffer[2] == AHRSPOS_TS_UPDATE_MESSAGE_LENGTH - 2) &&
+            (buffer[3] == MSGID_AHRSPOS_TS_UPDATE))
+        {
 
-            if ( !verifyChecksum( buffer, AHRSPOS_TS_UPDATE_MESSAGE_CHECKSUM_INDEX ) ) return 0;
+            if (!verifyChecksum(buffer, AHRSPOS_TS_UPDATE_MESSAGE_CHECKSUM_INDEX))
+                return 0;
 
             update.yaw = IMURegisters::decodeProtocol1616Float(&buffer[AHRSPOS_TS_UPDATE_YAW_VALUE_INDEX]);
             update.pitch = IMURegisters::decodeProtocol1616Float(&buffer[AHRSPOS_TS_UPDATE_PITCH_VALUE_INDEX]);
@@ -878,21 +924,21 @@ public:
         return 0;
     }
 
-    static int encodeAHRSPosTSRawUpdate( char *protocol_buffer,
-            float yaw, float pitch, float roll,
-            float compass_heading, float altitude, float fused_heading,
-            float linear_accel_x, float linear_accel_y, float linear_accel_z,
-            float mpu_temp_c,
-            float quat_w, float quat_x, float quat_y, float quat_z,
-            float vel_x, float vel_y, float vel_z,
-            float disp_x, float disp_y, float disp_z,
-            int16_t raw_gyro_x, int16_t raw_gyro_y, int16_t raw_gyro_z,
-            int16_t raw_acc_x, int16_t raw_acc_y, int16_t raw_acc_z,
-            float delta_t_sec,
-            bool gyro_bias_updated,
-            uint8_t op_status, uint8_t sensor_status,
-            uint8_t cal_status, uint8_t selftest_status,
-            uint32_t timestamp)
+    static int encodeAHRSPosTSRawUpdate(char *protocol_buffer,
+                                        float yaw, float pitch, float roll,
+                                        float compass_heading, float altitude, float fused_heading,
+                                        float linear_accel_x, float linear_accel_y, float linear_accel_z,
+                                        float mpu_temp_c,
+                                        float quat_w, float quat_x, float quat_y, float quat_z,
+                                        float vel_x, float vel_y, float vel_z,
+                                        float disp_x, float disp_y, float disp_z,
+                                        int16_t raw_gyro_x, int16_t raw_gyro_y, int16_t raw_gyro_z,
+                                        int16_t raw_acc_x, int16_t raw_acc_y, int16_t raw_acc_z,
+                                        float delta_t_sec,
+                                        bool gyro_bias_updated,
+                                        uint8_t op_status, uint8_t sensor_status,
+                                        uint8_t cal_status, uint8_t selftest_status,
+                                        uint32_t timestamp)
     {
         // Header
         protocol_buffer[0] = PACKET_START_CHAR;
@@ -905,17 +951,17 @@ public:
         IMURegisters::encodeProtocol1616Float(pitch, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_PITCH_VALUE_INDEX]);
         IMURegisters::encodeProtocol1616Float(roll, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_ROLL_VALUE_INDEX]);
         IMURegisters::encodeProtocol1616Float(compass_heading, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_HEADING_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(altitude,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_ALTITUDE_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(altitude, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_ALTITUDE_VALUE_INDEX]);
         IMURegisters::encodeProtocol1616Float(fused_heading, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_FUSED_HEADING_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(linear_accel_x,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(linear_accel_y,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(linear_accel_z,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(vel_x,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_VEL_X_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(vel_y,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_VEL_Y_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(vel_z,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_VEL_Z_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(disp_x,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_DISP_X_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(disp_y,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_DISP_Y_VALUE_INDEX]);
-        IMURegisters::encodeProtocol1616Float(disp_z,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_DISP_Z_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(linear_accel_x, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_LINEAR_ACCEL_X_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(linear_accel_y, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_LINEAR_ACCEL_Y_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(linear_accel_z, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_LINEAR_ACCEL_Z_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(vel_x, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_VEL_X_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(vel_y, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_VEL_Y_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(vel_z, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_VEL_Z_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(disp_x, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_DISP_X_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(disp_y, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_DISP_Y_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(disp_z, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_DISP_Z_VALUE_INDEX]);
         IMURegisters::encodeProtocolSignedHundredthsFloat(mpu_temp_c, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_MPU_TEMP_VAUE_INDEX]);
         IMURegisters::encodeProtocol1616Float(quat_w, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_QUAT_W_VALUE_INDEX]);
         IMURegisters::encodeProtocol1616Float(quat_x, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_QUAT_X_VALUE_INDEX]);
@@ -928,29 +974,32 @@ public:
         protocol_buffer[AHRSPOS_TS_RAW_UPDATE_SELFTEST_STATUS_VALUE_INDEX] = selftest_status;
         IMURegisters::encodeProtocolInt32((int32_t)timestamp, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_TIMESTAMP_INDEX]);
 
-        IMURegisters::encodeProtocolInt16(raw_gyro_x,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_GYRO_X_VALUE_INDEX]);
-        IMURegisters::encodeProtocolInt16(raw_gyro_y,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_GYRO_Y_VALUE_INDEX]);
-        IMURegisters::encodeProtocolInt16(raw_gyro_z,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_GYRO_Z_VALUE_INDEX]);
-        IMURegisters::encodeProtocolInt16(raw_acc_x,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_ACC_X_VALUE_INDEX]);
-        IMURegisters::encodeProtocolInt16(raw_acc_y,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_ACC_Y_VALUE_INDEX]);
-        IMURegisters::encodeProtocolInt16(raw_acc_z,&protocol_buffer[AHRSPOS_TS_RAW_UPDATE_ACC_Z_VALUE_INDEX]);
+        IMURegisters::encodeProtocolInt16(raw_gyro_x, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_GYRO_X_VALUE_INDEX]);
+        IMURegisters::encodeProtocolInt16(raw_gyro_y, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_GYRO_Y_VALUE_INDEX]);
+        IMURegisters::encodeProtocolInt16(raw_gyro_z, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_GYRO_Z_VALUE_INDEX]);
+        IMURegisters::encodeProtocolInt16(raw_acc_x, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_ACC_X_VALUE_INDEX]);
+        IMURegisters::encodeProtocolInt16(raw_acc_y, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_ACC_Y_VALUE_INDEX]);
+        IMURegisters::encodeProtocolInt16(raw_acc_z, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_ACC_Z_VALUE_INDEX]);
         IMURegisters::encodeProtocol1616Float(delta_t_sec, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_LAST_SAMPLE_DELTA_SEC_INDEX]);
         IMURegisters::encodeProtocolInt16((int16_t)gyro_bias_updated, &protocol_buffer[AHRSPOS_TS_RAW_UPDATE_GYRO_BIAS_UPDATED_BOOL_INDEX]);
 
         // Footer
-        encodeTermination( protocol_buffer, AHRSPOS_TS_RAW_UPDATE_MESSAGE_LENGTH, AHRSPOS_TS_RAW_UPDATE_MESSAGE_LENGTH - 4 );
+        encodeTermination(protocol_buffer, AHRSPOS_TS_RAW_UPDATE_MESSAGE_LENGTH, AHRSPOS_TS_RAW_UPDATE_MESSAGE_LENGTH - 4);
         return AHRSPOS_TS_RAW_UPDATE_MESSAGE_LENGTH;
     }
 
-    static int decodeAHRSPosTSRawUpdate( char *buffer, int length, struct AHRSPosTSRawUpdate& update)
+    static int decodeAHRSPosTSRawUpdate(char *buffer, int length, struct AHRSPosTSRawUpdate &update)
     {
-        if ( length < AHRSPOS_TS_RAW_UPDATE_MESSAGE_LENGTH ) return 0;
-        if ( ( buffer[0] == PACKET_START_CHAR ) &&
-                ( buffer[1] == BINARY_PACKET_INDICATOR_CHAR ) &&
-                ( buffer[2] == AHRSPOS_TS_RAW_UPDATE_MESSAGE_LENGTH - 2) &&
-                ( buffer[3] == MSGID_AHRSPOS_TS_RAW_UPDATE ) ) {
+        if (length < AHRSPOS_TS_RAW_UPDATE_MESSAGE_LENGTH)
+            return 0;
+        if ((buffer[0] == PACKET_START_CHAR) &&
+            (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+            (buffer[2] == AHRSPOS_TS_RAW_UPDATE_MESSAGE_LENGTH - 2) &&
+            (buffer[3] == MSGID_AHRSPOS_TS_RAW_UPDATE))
+        {
 
-            if ( !verifyChecksum( buffer, AHRSPOS_TS_RAW_UPDATE_MESSAGE_CHECKSUM_INDEX ) ) return 0;
+            if (!verifyChecksum(buffer, AHRSPOS_TS_RAW_UPDATE_MESSAGE_CHECKSUM_INDEX))
+                return 0;
 
             update.yaw = IMURegisters::decodeProtocol1616Float(&buffer[AHRSPOS_TS_RAW_UPDATE_YAW_VALUE_INDEX]);
             update.pitch = IMURegisters::decodeProtocol1616Float(&buffer[AHRSPOS_TS_RAW_UPDATE_PITCH_VALUE_INDEX]);
@@ -991,7 +1040,7 @@ public:
         return 0;
     }
 
-    static int encodeMagCalCommand( char *protocol_buffer, AHRS_DATA_ACTION action, int16_t *bias, float *matrix, float earth_mag_field_norm )
+    static int encodeMagCalCommand(char *protocol_buffer, AHRS_DATA_ACTION action, int16_t *bias, float *matrix, float earth_mag_field_norm)
     {
         // Header
         protocol_buffer[0] = PACKET_START_CHAR;
@@ -1001,38 +1050,45 @@ public:
 
         // Data
         protocol_buffer[MAG_CAL_DATA_ACTION_VALUE_INDEX] = action;
-        for ( int i = 0; i < 3; i++ ) {
-            IMURegisters::encodeProtocolInt16(	bias[i],
-                    &protocol_buffer[MAG_X_BIAS_VALUE_INDEX + (i * sizeof(int16_t))]);
+        for (int i = 0; i < 3; i++)
+        {
+            IMURegisters::encodeProtocolInt16(bias[i],
+                                              &protocol_buffer[MAG_X_BIAS_VALUE_INDEX + (i * sizeof(int16_t))]);
         }
-        for ( int i = 0; i < 9; i++ ) {
-            IMURegisters::encodeProtocol1616Float( matrix[i], &protocol_buffer[MAG_XFORM_1_1_VALUE_INDEX + (i * sizeof(s_1616_float))]);
+        for (int i = 0; i < 9; i++)
+        {
+            IMURegisters::encodeProtocol1616Float(matrix[i], &protocol_buffer[MAG_XFORM_1_1_VALUE_INDEX + (i * sizeof(s_1616_float))]);
         }
-        IMURegisters::encodeProtocol1616Float( earth_mag_field_norm, &protocol_buffer[MAG_CAL_EARTH_MAG_FIELD_NORM_VALUE_INDEX]);
+        IMURegisters::encodeProtocol1616Float(earth_mag_field_norm, &protocol_buffer[MAG_CAL_EARTH_MAG_FIELD_NORM_VALUE_INDEX]);
         // Footer
-        encodeTermination( protocol_buffer, MAG_CAL_CMD_MESSAGE_LENGTH, MAG_CAL_CMD_MESSAGE_LENGTH - 4 );
+        encodeTermination(protocol_buffer, MAG_CAL_CMD_MESSAGE_LENGTH, MAG_CAL_CMD_MESSAGE_LENGTH - 4);
         return MAG_CAL_CMD_MESSAGE_LENGTH;
     }
 
-    static int decodeMagCalCommand( char *buffer, int length,
-            AHRS_DATA_ACTION& action,
-            int16_t *bias,
-            float *matrix,
-            float& earth_mag_field_norm)
+    static int decodeMagCalCommand(char *buffer, int length,
+                                   AHRS_DATA_ACTION &action,
+                                   int16_t *bias,
+                                   float *matrix,
+                                   float &earth_mag_field_norm)
     {
-        if ( length < MAG_CAL_CMD_MESSAGE_LENGTH ) return 0;
-        if ( ( buffer[0] == PACKET_START_CHAR ) &&
-                ( buffer[1] == BINARY_PACKET_INDICATOR_CHAR ) &&
-                ( buffer[2] == MAG_CAL_CMD_MESSAGE_LENGTH - 2) &&
-                ( buffer[3] == MSGID_MAG_CAL_CMD ) ) {
+        if (length < MAG_CAL_CMD_MESSAGE_LENGTH)
+            return 0;
+        if ((buffer[0] == PACKET_START_CHAR) &&
+            (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+            (buffer[2] == MAG_CAL_CMD_MESSAGE_LENGTH - 2) &&
+            (buffer[3] == MSGID_MAG_CAL_CMD))
+        {
 
-            if ( !verifyChecksum( buffer, MAG_CAL_CMD_MESSAGE_CHECKSUM_INDEX ) ) return 0;
+            if (!verifyChecksum(buffer, MAG_CAL_CMD_MESSAGE_CHECKSUM_INDEX))
+                return 0;
 
             action = (AHRS_DATA_ACTION)buffer[MAG_CAL_DATA_ACTION_VALUE_INDEX];
-            for ( int i = 0; i < 3; i++ ) {
+            for (int i = 0; i < 3; i++)
+            {
                 bias[i] = IMURegisters::decodeProtocolInt16(&buffer[MAG_X_BIAS_VALUE_INDEX + (i * sizeof(int16_t))]);
             }
-            for ( int i = 0; i < 9; i++ ) {
+            for (int i = 0; i < 9; i++)
+            {
                 matrix[i] = IMURegisters::decodeProtocol1616Float(&buffer[MAG_XFORM_1_1_VALUE_INDEX + (i * sizeof(s_1616_float))]);
             }
             earth_mag_field_norm = IMURegisters::decodeProtocol1616Float(&buffer[MAG_CAL_EARTH_MAG_FIELD_NORM_VALUE_INDEX]);
@@ -1041,7 +1097,7 @@ public:
         return 0;
     }
 
-    static int encodeDataSetResponse( char *protocol_buffer, AHRS_DATA_TYPE type, AHRS_TUNING_VAR_ID subtype, uint8_t status )
+    static int encodeDataSetResponse(char *protocol_buffer, AHRS_DATA_TYPE type, AHRS_TUNING_VAR_ID subtype, uint8_t status)
     {
         // Header
         protocol_buffer[0] = PACKET_START_CHAR;
@@ -1053,19 +1109,22 @@ public:
         protocol_buffer[DATA_SET_RESPONSE_VARID_VALUE_INDEX] = subtype;
         protocol_buffer[DATA_SET_RESPONSE_STATUS_VALUE_INDEX] = status;
         // Footer
-        encodeTermination( protocol_buffer, DATA_SET_RESPONSE_MESSAGE_LENGTH, DATA_SET_RESPONSE_MESSAGE_LENGTH - 4 );
+        encodeTermination(protocol_buffer, DATA_SET_RESPONSE_MESSAGE_LENGTH, DATA_SET_RESPONSE_MESSAGE_LENGTH - 4);
         return DATA_SET_RESPONSE_MESSAGE_LENGTH;
     }
 
-    static int decodeDataSetResponse( char *buffer, int length, AHRS_DATA_TYPE& type, AHRS_TUNING_VAR_ID& subtype, uint8_t& status )
+    static int decodeDataSetResponse(char *buffer, int length, AHRS_DATA_TYPE &type, AHRS_TUNING_VAR_ID &subtype, uint8_t &status)
     {
-        if ( length < DATA_SET_RESPONSE_MESSAGE_LENGTH ) return 0;
-        if ( ( buffer[0] == PACKET_START_CHAR ) &&
-                ( buffer[1] == BINARY_PACKET_INDICATOR_CHAR ) &&
-                ( buffer[2] == DATA_SET_RESPONSE_MESSAGE_LENGTH - 2) &&
-                ( buffer[3] == MSGID_DATA_SET_RESPONSE ) ) {
+        if (length < DATA_SET_RESPONSE_MESSAGE_LENGTH)
+            return 0;
+        if ((buffer[0] == PACKET_START_CHAR) &&
+            (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+            (buffer[2] == DATA_SET_RESPONSE_MESSAGE_LENGTH - 2) &&
+            (buffer[3] == MSGID_DATA_SET_RESPONSE))
+        {
 
-            if ( !verifyChecksum( buffer, DATA_SET_RESPONSE_MESSAGE_CHECKSUM_INDEX ) ) return 0;
+            if (!verifyChecksum(buffer, DATA_SET_RESPONSE_MESSAGE_CHECKSUM_INDEX))
+                return 0;
 
             type = (AHRS_DATA_TYPE)buffer[DATA_SET_RESPONSE_DATATYPE_VALUE_INDEX];
             subtype = (AHRS_TUNING_VAR_ID)buffer[DATA_SET_RESPONSE_VARID_VALUE_INDEX];
@@ -1075,7 +1134,7 @@ public:
         return 0;
     }
 
-    static int encodeDataGetRequest( char *protocol_buffer, AHRS_DATA_TYPE type, AHRS_TUNING_VAR_ID subtype )
+    static int encodeDataGetRequest(char *protocol_buffer, AHRS_DATA_TYPE type, AHRS_TUNING_VAR_ID subtype)
     {
         // Header
         protocol_buffer[0] = PACKET_START_CHAR;
@@ -1086,19 +1145,22 @@ public:
         protocol_buffer[DATA_REQUEST_DATATYPE_VALUE_INDEX] = type;
         protocol_buffer[DATA_REQUEST_VARIABLEID_VALUE_INDEX] = subtype;
         // Footer
-        encodeTermination( protocol_buffer, DATA_REQUEST_MESSAGE_LENGTH, DATA_REQUEST_MESSAGE_LENGTH - 4 );
+        encodeTermination(protocol_buffer, DATA_REQUEST_MESSAGE_LENGTH, DATA_REQUEST_MESSAGE_LENGTH - 4);
         return DATA_REQUEST_MESSAGE_LENGTH;
     }
 
-    static int decodeDataGetRequest( char *buffer, int length, AHRS_DATA_TYPE& type, AHRS_TUNING_VAR_ID& subtype )
+    static int decodeDataGetRequest(char *buffer, int length, AHRS_DATA_TYPE &type, AHRS_TUNING_VAR_ID &subtype)
     {
-        if ( length < DATA_REQUEST_MESSAGE_LENGTH ) return 0;
-        if ( ( buffer[0] == PACKET_START_CHAR ) &&
-                ( buffer[1] == BINARY_PACKET_INDICATOR_CHAR ) &&
-                ( buffer[2] == DATA_REQUEST_MESSAGE_LENGTH - 2) &&
-                ( buffer[3] == MSGID_DATA_REQUEST ) ) {
+        if (length < DATA_REQUEST_MESSAGE_LENGTH)
+            return 0;
+        if ((buffer[0] == PACKET_START_CHAR) &&
+            (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+            (buffer[2] == DATA_REQUEST_MESSAGE_LENGTH - 2) &&
+            (buffer[3] == MSGID_DATA_REQUEST))
+        {
 
-            if ( !verifyChecksum( buffer, DATA_REQUEST_CHECKSUM_INDEX ) ) return 0;
+            if (!verifyChecksum(buffer, DATA_REQUEST_CHECKSUM_INDEX))
+                return 0;
 
             type = (AHRS_DATA_TYPE)buffer[DATA_REQUEST_DATATYPE_VALUE_INDEX];
             subtype = (AHRS_TUNING_VAR_ID)buffer[DATA_REQUEST_VARIABLEID_VALUE_INDEX];
@@ -1108,9 +1170,9 @@ public:
         return 0;
     }
 
-    static int encodeBoardIdentityResponse( char *protocol_buffer, uint8_t type, uint8_t fw_rev,
-            uint8_t fw_ver_major, uint8_t fw_ver_minor, uint16_t fw_revision,
-            uint8_t *unique_id)
+    static int encodeBoardIdentityResponse(char *protocol_buffer, uint8_t type, uint8_t fw_rev,
+                                           uint8_t fw_ver_major, uint8_t fw_ver_minor, uint16_t fw_revision,
+                                           uint8_t *unique_id)
     {
         // Header
         protocol_buffer[0] = PACKET_START_CHAR;
@@ -1122,37 +1184,41 @@ public:
         protocol_buffer[BOARD_IDENTITY_HWREV_VALUE_INDEX] = fw_rev;
         protocol_buffer[BOARD_IDENTITY_FW_VER_MAJOR] = fw_ver_major;
         protocol_buffer[BOARD_IDENTITY_FW_VER_MINOR] = fw_ver_minor;
-        IMURegisters::encodeProtocolUint16(fw_revision,&protocol_buffer[BOARD_IDENTITY_FW_VER_REVISION_VALUE_INDEX]);
-        for ( int i = 0; i < 12; i++ ) {
+        IMURegisters::encodeProtocolUint16(fw_revision, &protocol_buffer[BOARD_IDENTITY_FW_VER_REVISION_VALUE_INDEX]);
+        for (int i = 0; i < 12; i++)
+        {
             protocol_buffer[BOARD_IDENTITY_UNIQUE_ID_0 + i] = unique_id[i];
         }
         // Footer
-        encodeTermination( protocol_buffer, BOARD_IDENTITY_RESPONSE_MESSAGE_LENGTH, BOARD_IDENTITY_RESPONSE_MESSAGE_LENGTH - 4 );
+        encodeTermination(protocol_buffer, BOARD_IDENTITY_RESPONSE_MESSAGE_LENGTH, BOARD_IDENTITY_RESPONSE_MESSAGE_LENGTH - 4);
         return BOARD_IDENTITY_RESPONSE_MESSAGE_LENGTH;
     }
 
-    static int decodeBoardIdentityResponse( char *buffer, int length,  struct BoardID& update )
+    static int decodeBoardIdentityResponse(char *buffer, int length, struct BoardID &update)
     {
-        if ( length < BOARD_IDENTITY_RESPONSE_MESSAGE_LENGTH ) return 0;
-        if ( ( buffer[0] == PACKET_START_CHAR ) &&
-                ( buffer[1] == BINARY_PACKET_INDICATOR_CHAR ) &&
-                ( buffer[2] == BOARD_IDENTITY_RESPONSE_MESSAGE_LENGTH - 2) &&
-                ( buffer[3] == MSGID_BOARD_IDENTITY_RESPONSE ) ) {
-            if ( !verifyChecksum( buffer, BOARD_IDENTITY_RESPONSE_CHECKSUM_INDEX ) ) return 0;
+        if (length < BOARD_IDENTITY_RESPONSE_MESSAGE_LENGTH)
+            return 0;
+        if ((buffer[0] == PACKET_START_CHAR) &&
+            (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+            (buffer[2] == BOARD_IDENTITY_RESPONSE_MESSAGE_LENGTH - 2) &&
+            (buffer[3] == MSGID_BOARD_IDENTITY_RESPONSE))
+        {
+            if (!verifyChecksum(buffer, BOARD_IDENTITY_RESPONSE_CHECKSUM_INDEX))
+                return 0;
 
             update.type = buffer[BOARD_IDENTITY_BOARDTYPE_VALUE_INDEX];
             update.hw_rev = buffer[BOARD_IDENTITY_HWREV_VALUE_INDEX];
             update.fw_ver_major = buffer[BOARD_IDENTITY_FW_VER_MAJOR];
             update.fw_ver_minor = buffer[BOARD_IDENTITY_FW_VER_MINOR];
             update.fw_revision = IMURegisters::decodeProtocolUint16(&buffer[BOARD_IDENTITY_FW_VER_REVISION_VALUE_INDEX]);
-            for ( int i = 0; i < 12; i++ ) {
+            for (int i = 0; i < 12; i++)
+            {
                 update.unique_id[i] = buffer[BOARD_IDENTITY_UNIQUE_ID_0 + i];
             }
             return BOARD_IDENTITY_RESPONSE_MESSAGE_LENGTH;
         }
         return 0;
     }
-
 };
 
 #endif // _IMU_PROTOCOL_H_

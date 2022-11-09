@@ -5,11 +5,12 @@
 
 class Tracer
 {
-    private:
-        static char lastMsg[TRACE_BUFFER_LEN];
-        static double lastMsgTimestamp;
-    public:
-        static void Trace( const char* pMsg, ...);
+private:
+    static char lastMsg[TRACE_BUFFER_LEN];
+    static double lastMsgTimestamp;
+
+public:
+    static void Trace(const char *pMsg, ...);
 };
 
 #endif /* SRC_TRACER_H_ */

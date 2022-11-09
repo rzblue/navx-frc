@@ -9,26 +9,27 @@
 #define SRC_SERIALIO_H_
 
 #include "IIOProvider.h"
-#include <stdint.h>
 #include "AHRSProtocol.h"
 #include "IMUProtocol.h"
 #include "IIOCompleteNotification.h"
 #include "IBoardCapabilities.h"
-#include "frc/SerialPort.h"
-#include "frc/smartdashboard/SmartDashboard.h"
+
+#include <frc/SerialPort.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+
+#include <stdint.h>
 
 using namespace frc;
 
-class SerialIO : public IIOProvider {
-
-
+class SerialIO : public IIOProvider
+{
     SerialPort::Port serial_port_id;
     SerialPort *serial_port;
     uint8_t next_integration_control_action;
     bool signal_transmit_integration_control;
     bool signal_retransmit_stream_config;
     bool stop;
-    uint8_t update_type; //IMUProtocol.MSGID_XXX
+    uint8_t update_type; // IMUProtocol.MSGID_XXX
     uint8_t update_rate_hz;
     int byte_count;
     int update_count;
@@ -48,11 +49,11 @@ class SerialIO : public IIOProvider {
     bool debug;
 
 public:
-    SerialIO( SerialPort::Port port_id,
-              uint8_t update_rate_hz,
-              bool processed_data,
-              IIOCompleteNotification *notify_sink,
-              IBoardCapabilities *board_capabilities );
+    SerialIO(SerialPort::Port port_id,
+             uint8_t update_rate_hz,
+             bool processed_data,
+             IIOCompleteNotification *notify_sink,
+             IBoardCapabilities *board_capabilities);
     bool IsConnected();
     double GetByteCount();
     double GetUpdateCount();
@@ -62,13 +63,13 @@ public:
     void Run();
     void Stop();
     void EnableLogging(bool enable);
-private:
 
+private:
     SerialPort *ResetSerialPort();
     SerialPort *GetMaybeCreateSerialPort();
     void EnqueueIntegrationControlMessage(uint8_t action);
-    void DispatchStreamResponse(IMUProtocol::StreamResponse& response);
-    int DecodePacketHandler(char * received_data, int bytes_remaining);
+    void DispatchStreamResponse(IMUProtocol::StreamResponse &response);
+    int DecodePacketHandler(char *received_data, int bytes_remaining);
 };
 
 #endif /* SRC_SERIALIO_H_ */

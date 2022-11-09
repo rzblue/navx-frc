@@ -8,11 +8,12 @@
 #ifndef SRC_CONTINUOUSANGLETRACKER_H_
 #define SRC_CONTINUOUSANGLETRACKER_H_
 
-#include "wpi/priority_mutex.h"
+#include <wpi/priority_mutex.h>
 
 using namespace wpi;
 
-class ContinuousAngleTracker {
+class ContinuousAngleTracker
+{
 private:
     bool fFirstUse;
     double gyro_prevVal;
@@ -26,11 +27,11 @@ public:
     ContinuousAngleTracker();
     void Init();
     void Reset();
-    void NextAngle( float newAngle );
+    void NextAngle(float newAngle);
     double GetAngle();
     double GetRate();
-	void SetAngleAdjustment(double adjustment);
-	double GetAngleAdjustment();
+    void SetAngleAdjustment(double adjustment);
+    double GetAngleAdjustment();
 };
 
 #endif /* SRC_CONTINUOUSANGLETRACKER_H_ */

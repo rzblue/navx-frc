@@ -7,33 +7,37 @@
 
 #include "ContinuousAngleTracker.h"
 
-ContinuousAngleTracker::ContinuousAngleTracker() {
+ContinuousAngleTracker::ContinuousAngleTracker()
+{
 	Init();
-    angleAdjust = 0.0f;
+	angleAdjust = 0.0f;
 }
 
-void ContinuousAngleTracker::Init() {
-    gyro_prevVal = 0.0;
-    ctrRollOver  = 0;
-    fFirstUse = true;
-    last_yaw_angle = 0.0f;
-    curr_yaw_angle = 0.0f;
+void ContinuousAngleTracker::Init()
+{
+	gyro_prevVal = 0.0;
+	ctrRollOver = 0;
+	fFirstUse = true;
+	last_yaw_angle = 0.0f;
+	curr_yaw_angle = 0.0f;
 }
 
-void ContinuousAngleTracker::NextAngle( float newAngle ) {
+void ContinuousAngleTracker::NextAngle(float newAngle)
+{
 	std::unique_lock<std::mutex> sync(tracker_mutex);
 	last_yaw_angle = curr_yaw_angle;
 	curr_yaw_angle = newAngle;
 }
 
 /* Invoked (internally) whenever yaw reset occurs. */
-void ContinuousAngleTracker::Reset() {
+void ContinuousAngleTracker::Reset()
+{
 	std::unique_lock<std::mutex> sync(tracker_mutex);
 	Init();
 }
 
-
-double ContinuousAngleTracker::GetAngle() {
+double ContinuousAngleTracker::GetAngle()
+{
 	// First case
 	// Old reading: +150 degrees
 	// New reading: +170 degrees
@@ -65,20 +69,22 @@ double ContinuousAngleTracker::GetAngle() {
 
 		// Has gyro_prevVal been previously set?
 		// If not, return do not calculate, return current value
-		if( !fFirstUse )
+		if (!fFirstUse)
 		{
 			// Determine count for rollover counter
 			difference = yawVal - gyro_prevVal;
 
 			/* Clockwise past +180 degrees
 			 * If difference > 180*, increment rollover counter */
-			if( difference < -180.0 ) {
+			if (difference < -180.0)
+			{
 				ctrRollOver++;
 
-			/* Counter-clockwise past -180 degrees:
-			 * If difference > 180*, decrement rollover counter */
+				/* Counter-clockwise past -180 degrees:
+				 * If difference > 180*, decrement rollover counter */
 			}
-			else if ( difference > 180.0 ) {
+			else if (difference > 180.0)
+			{
 				ctrRollOver--;
 			}
 		}
@@ -95,24 +101,30 @@ double ContinuousAngleTracker::GetAngle() {
 	}
 }
 
-void ContinuousAngleTracker::SetAngleAdjustment(double adjustment) {
+void ContinuousAngleTracker::SetAngleAdjustment(double adjustment)
+{
 	angleAdjust = adjustment;
 }
 
-double ContinuousAngleTracker::GetAngleAdjustment() {
+double ContinuousAngleTracker::GetAngleAdjustment()
+{
 	return angleAdjust;
 }
 
-double ContinuousAngleTracker::GetRate() {
+double ContinuousAngleTracker::GetRate()
+{
 	float difference;
 	{
 		std::unique_lock<std::mutex> sync(tracker_mutex);
 		difference = curr_yaw_angle - last_yaw_angle;
 	}
-	if ( difference > 180.0f) {
+	if (difference > 180.0f)
+	{
 		/* Clockwise past +180 degrees */
 		difference = 360.0f - difference;
-	} else if ( difference < -180.0f) {
+	}
+	else if (difference < -180.0f)
+	{
 		/* Counter-clockwise past -180 degrees */
 		difference = 360.0f + difference;
 	}
