@@ -8,7 +8,6 @@ Use this url to install the vendordep online:
 
 Caveats:
 
-- Currently only java is being built. C++ needs to be updated for C++20
 - Support for VMXpi has been removed as I do not have the source for the native library.
 
 This repository is published under the license specified by the Maven Repository listing and by the downloaded source, which can be found at [LICENSE.txt](LICENSE.txt)
