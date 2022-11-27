@@ -113,6 +113,7 @@ THE SOFTWARE.
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <cstdint>
 
 #define IMU_PROTOCOL_MAX_MESSAGE_LENGTH QUATERNION_UPDATE_MESSAGE_LENGTH
 
