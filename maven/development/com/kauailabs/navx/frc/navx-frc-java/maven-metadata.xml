@@ -3,7 +3,7 @@
   <groupId>com.kauailabs.navx.frc</groupId>
   <artifactId>navx-frc-java</artifactId>
   <versioning>
-    <release>2023.1.0-beta-3-3-gcd2e8b9</release>
+    <release>2023.1.0-beta-4-1-gf0721f4</release>
     <versions>
       <version>2023.1.0-beta-1-2-g67d6817</version>
       <version>2023.1.0-beta-1-3-gc0379d7</version>
@@ -15,7 +15,8 @@
       <version>2023.1.0-beta-3-1-ge47374a</version>
       <version>2023.1.0-beta-3-2-gdc5ad97</version>
       <version>2023.1.0-beta-3-3-gcd2e8b9</version>
+      <version>2023.1.0-beta-4-1-gf0721f4</version>
     </versions>
-    <lastUpdated>20221119234534</lastUpdated>
+    <lastUpdated>20221128132339</lastUpdated>
   </versioning>
 </metadata>
