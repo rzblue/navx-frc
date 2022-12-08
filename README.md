@@ -1,4 +1,8 @@
 # 2023 Beta Unofficial NavX Library
+
+## Studica has released an offical beta. Please use this url to install the vendordep online: `https://dev.studica.com/releases/2023/NavX.json`
+
+
 [![CI](https://github.com/rzblue/navx-frc/actions/workflows/ci.yml/badge.svg)](https://github.com/rzblue/navx-frc/actions/workflows/ci.yml)
 [![Latest version](https://img.shields.io/github/v/release/rzblue/navx-frc?include_prereleases)](https://github.com/rzblue/navx-frc/releases/latest)
 
