@@ -6,16 +6,16 @@ nativeUtils.withCrossLinuxArm32()
 nativeUtils.withCrossLinuxArm64()
 
 nativeUtils {
-  wpi {
-    configureDependencies {
-      wpiVersion = "2023.1.1+"
-      niLibVersion = "2023.3.0"
-      opencvVersion = "4.6.0-3"
-      googleTestVersion = "1.12.1-1"
-      imguiVersion = "1.89.1-1"
-      wpimathVersion = "2023.1.1+"
+    wpi {
+        configureDependencies {
+            wpiVersion = "2023.1.1+"
+            niLibVersion = "2023.3.0"
+            opencvVersion = "4.6.0-3"
+            googleTestVersion = "1.12.1-1"
+            imguiVersion = "1.89.1-1"
+            wpimathVersion = "2023.1.1+"
+        }
     }
-  }
 }
 
 nativeUtils.wpi.addWarnings()
@@ -83,7 +83,7 @@ ext.createComponentZipTasks = { components, names, base, type, project, func ->
         if (it in NativeLibrarySpec && stringNames.contains(it.name)) {
             it.binaries.each {
                 if (!it.buildable) return
-                def target = nativeUtils.getPublishClassifier(it)
+                    def target = nativeUtils.getPublishClassifier(it)
                 if (configMap.containsKey(target)) {
                     configMap.get(target).add(it)
                 } else {
@@ -133,7 +133,7 @@ ext.createAllCombined = { list, name, base, type, project ->
 
         list.each {
             if (it.name.endsWith('debug')) return
-            from project.zipTree(it.archivePath)
+                from project.zipTree(it.archivePath)
             dependsOn it
         }
     }
