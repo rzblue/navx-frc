@@ -18,11 +18,9 @@
 #include "IIOProvider.h"
 #include "IMUProtocol.h"
 
-using namespace frc;
-
 class SerialIO : public IIOProvider {
-  SerialPort::Port serial_port_id;
-  SerialPort* serial_port;
+  frc::SerialPort::Port serial_port_id;
+  frc::SerialPort* serial_port;
   uint8_t next_integration_control_action;
   bool signal_transmit_integration_control;
   bool signal_retransmit_stream_config;
@@ -47,7 +45,7 @@ class SerialIO : public IIOProvider {
   bool debug;
 
  public:
-  SerialIO(SerialPort::Port port_id, uint8_t update_rate_hz,
+  SerialIO(frc::SerialPort::Port port_id, uint8_t update_rate_hz,
            bool processed_data, IIOCompleteNotification* notify_sink,
            IBoardCapabilities* board_capabilities);
   bool IsConnected();
@@ -61,8 +59,8 @@ class SerialIO : public IIOProvider {
   void EnableLogging(bool enable);
 
  private:
-  SerialPort* ResetSerialPort();
-  SerialPort* GetMaybeCreateSerialPort();
+  frc::SerialPort* ResetSerialPort();
+  frc::SerialPort* GetMaybeCreateSerialPort();
   void EnqueueIntegrationControlMessage(uint8_t action);
   void DispatchStreamResponse(IMUProtocol::StreamResponse& response);
   int DecodePacketHandler(char* received_data, int bytes_remaining);

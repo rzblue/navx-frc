@@ -12,11 +12,9 @@
 
 #include "RegisterIO.h"
 
-using namespace frc;
-
 class RegisterIO_I2C : public IRegisterIO {
  public:
-  RegisterIO_I2C(I2C* port);
+  RegisterIO_I2C(frc::I2C* port);
   virtual ~RegisterIO_I2C() {}
   bool Init();
   bool Write(uint8_t address, uint8_t value);
@@ -25,7 +23,7 @@ class RegisterIO_I2C : public IRegisterIO {
   void EnableLogging(bool enable);
 
  private:
-  I2C* port;
+  frc::I2C* port;
   bool trace;
   int successive_error_count;
 };

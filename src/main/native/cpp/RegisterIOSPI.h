@@ -12,13 +12,11 @@
 
 #include "RegisterIO.h"
 
-using namespace frc;
-
 static const int MAX_SPI_MSG_LENGTH = 256;
 
 class RegisterIO_SPI : public IRegisterIO {
  public:
-  RegisterIO_SPI(SPI* port, uint32_t bitrate);
+  RegisterIO_SPI(frc::SPI* port, uint32_t bitrate);
   virtual ~RegisterIO_SPI() {}
   bool Init();
   bool Write(uint8_t address, uint8_t value);
@@ -27,7 +25,7 @@ class RegisterIO_SPI : public IRegisterIO {
   void EnableLogging(bool enable);
 
  private:
-  SPI* port;
+  frc::SPI* port;
   uint32_t bitrate;
   uint8_t rx_buffer[MAX_SPI_MSG_LENGTH];
   bool trace;

@@ -21,6 +21,7 @@ static const double IO_TIMEOUT_SECONDS = 1.0;
 #define SERIALIO_DASHBOARD_DEBUG
 
 using units::unit_cast;
+using namespace frc;
 
 SerialIO::SerialIO(SerialPort::Port port_id, uint8_t update_rate_hz,
                    bool processed_data, IIOCompleteNotification* notify_sink,

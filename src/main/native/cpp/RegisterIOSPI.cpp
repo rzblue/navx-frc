@@ -15,6 +15,7 @@
 #include "Tracer.h"
 
 using namespace wpi;
+using namespace frc;
 
 #define NUM_IGNORED_SUCCESSIVE_ERRORS 50
 
