@@ -24,7 +24,6 @@ THE SOFTWARE.
 package com.kauailabs.navx;
 
 public class IMUProtocol {
-
   public static final byte PACKET_START_CHAR = '!';
   static final int PROTOCOL_FLOAT_LENGTH = 7;
   static final int CHECKSUM_LENGTH = 2;
@@ -115,7 +114,6 @@ public class IMUProtocol {
   public static final int IMU_PROTOCOL_MAX_MESSAGE_LENGTH = QUATERNION_UPDATE_MESSAGE_LENGTH;
 
   public static class YPRUpdate {
-
     public float yaw;
     public float pitch;
     public float roll;
@@ -123,12 +121,10 @@ public class IMUProtocol {
   }
 
   public static class StreamCommand {
-
     public byte stream_type;
   }
 
   public static class StreamResponse {
-
     public byte stream_type;
     public short gyro_fsr_dps;
     public short accel_fsr_g;
@@ -142,7 +138,6 @@ public class IMUProtocol {
   }
 
   public static class QuaternionUpdate {
-
     public short q1;
     public short q2;
     public short q3;
@@ -157,7 +152,6 @@ public class IMUProtocol {
   }
 
   public static class GyroUpdate {
-
     public short gyro_x;
     public short gyro_y;
     public short gyro_z;
@@ -187,7 +181,6 @@ public class IMUProtocol {
   }
 
   public static int decodeStreamResponse(byte[] buffer, int offset, int length, StreamResponse r) {
-
     if (length < STREAM_RESPONSE_MESSAGE_LENGTH) {
       return 0;
     }

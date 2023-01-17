@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 
 class RegisterIO_SPI implements IRegisterIO {
-
   SPI port;
   int bitrate;
   boolean trace = false;

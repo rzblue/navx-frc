@@ -44,7 +44,6 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
  * @author Scott
  */
 public class AHRS implements Sendable, Gyro {
-
   /**
    * Identifies one of the three sensing axes on the navX sensor board. Note that these axes are
    * board-relative ("Board Frame"), and are not necessarily the same as the logical axes of the
@@ -1389,7 +1388,6 @@ public class AHRS implements Sendable, Gyro {
   /***********************************************************/
 
   class IOThread implements Runnable {
-
     Thread m_thread;
     boolean stop;
 
@@ -1410,7 +1408,6 @@ public class AHRS implements Sendable, Gyro {
   /***********************************************************/
 
   class BoardCapabilities implements IBoardCapabilities {
-
     @Override
     public boolean isOmniMountSupported() {
       return (((capability_flags & AHRSProtocol.NAVX_CAPABILITY_FLAG_OMNIMOUNT) != 0)
@@ -1444,7 +1441,6 @@ public class AHRS implements Sendable, Gyro {
   /***********************************************************/
 
   class IOCompleteNotification implements IIOCompleteNotification {
-
     @Override
     public void setYawPitchRoll(YPRUpdate ypr_update, long sensor_timestamp) {
       AHRS.this.yaw = ypr_update.yaw;
@@ -1456,7 +1452,6 @@ public class AHRS implements Sendable, Gyro {
 
     @Override
     public void setAHRSPosData(AHRSPosUpdate ahrs_update, long sensor_timestamp) {
-
       /* Update base IMU class variables */
 
       AHRS.this.yaw = ahrs_update.yaw;
@@ -1555,7 +1550,6 @@ public class AHRS implements Sendable, Gyro {
 
     @Override
     public void setAHRSData(AHRSProtocol.AHRSUpdate ahrs_update, long sensor_timestamp) {
-
       /* Update base IMU class variables */
 
       AHRS.this.yaw = ahrs_update.yaw;

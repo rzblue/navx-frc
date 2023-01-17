@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 class SerialIO implements IIOProvider {
-
   SerialPort.Port serial_port_id;
   SerialPort serial_port;
   private byte next_integration_control_action;
@@ -164,7 +163,6 @@ class SerialIO implements IIOProvider {
   }
 
   protected int decodePacketHandler(byte[] received_data, int offset, int bytes_remaining) {
-
     int packet_length;
     int sensor_timestamp = 0; /* Note:  Serial Protocols often don't provide sensor timestamps */
 
@@ -207,7 +205,6 @@ class SerialIO implements IIOProvider {
   }
 
   public void run() {
-
     stop = false;
     boolean stream_response_received = false;
     double last_stream_command_sent_timestamp = 0.0;
@@ -273,7 +270,6 @@ class SerialIO implements IIOProvider {
 
     while (!stop) {
       try {
-
         if (serial_port == null) {
           double update_rate = 1.0 / ((double) ((int) (this.update_rate_hz & 0xFF)));
           Timer.delay(update_rate);
@@ -339,7 +335,6 @@ class SerialIO implements IIOProvider {
           int i = 0;
           // Scan the buffer looking for valid packets
           while (i < bytes_read) {
-
             // Attempt to decode a packet
 
             int bytes_remaining = bytes_read - i;
@@ -359,7 +354,6 @@ class SerialIO implements IIOProvider {
                 byte total_expected_binary_data_bytes = received_data[i + 2];
                 total_expected_binary_data_bytes += 2;
                 while (bytes_remaining < total_expected_binary_data_bytes) {
-
                   /* This binary packet contains an embedded     */
                   /* end-of-line character.  Continue to receive */
                   /* more data until entire packet is received.  */

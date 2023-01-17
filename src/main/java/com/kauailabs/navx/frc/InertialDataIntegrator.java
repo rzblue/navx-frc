@@ -10,7 +10,6 @@
 package com.kauailabs.navx.frc;
 
 class InertialDataIntegrator {
-
   private float last_velocity[] = new float[2];
   private float displacement[] = new float[2];
 

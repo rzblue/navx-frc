@@ -24,7 +24,6 @@ THE SOFTWARE.
 package com.kauailabs.navx;
 
 public class IMURegisters {
-
   /**********************************************/
   /* Device Identification Registers            */
   /**********************************************/

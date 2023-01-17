@@ -12,7 +12,6 @@ package com.kauailabs.navx.frc;
 import edu.wpi.first.wpilibj.I2C;
 
 class RegisterIO_I2C implements IRegisterIO {
-
   I2C port;
   boolean trace = false;
   int successive_error_count;

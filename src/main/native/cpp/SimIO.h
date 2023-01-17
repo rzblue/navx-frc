@@ -5,70 +5,67 @@
  *      Author: Scott
  */
 
-#ifndef SRC_SIMIO_H_
-#define SRC_SIMIO_H_
-
-#include "IIOProvider.h"
-#include "IMUProtocol.h"
-#include "AHRSProtocol.h"
-#include "IBoardCapabilities.h"
-#include "IIOCompleteNotification.h"
+#ifndef NAVX_FRC_SRC_MAIN_NATIVE_CPP_SIMIO_H_
+#define NAVX_FRC_SRC_MAIN_NATIVE_CPP_SIMIO_H_
 
 #include <frc/Timer.h>
 #include <hal/SimDevice.h>
-
 #include <stdint.h>
 
-class SimIO : public IIOProvider
-{
-private:
-    bool stop;
-    bool is_connected;
-    double start_seconds;
-    IIOCompleteNotification *notify_sink;
-    uint8_t update_rate_hz;
+#include "AHRSProtocol.h"
+#include "IBoardCapabilities.h"
+#include "IIOCompleteNotification.h"
+#include "IIOProvider.h"
+#include "IMUProtocol.h"
 
-    hal::SimDevice *sim_device;
-    hal::SimBoolean simConnected;
-    hal::SimDouble simRate;
-    hal::SimDouble simYaw;
-    hal::SimDouble simPitch;
-    hal::SimDouble simRoll;
-    hal::SimDouble simCompassHeading;
-    hal::SimDouble simFusedHeading;
-    hal::SimDouble simLinearWorldAccelX;
-    hal::SimDouble simLinearWorldAccelY;
-    hal::SimDouble simLinearWorldAccelZ;
+class SimIO : public IIOProvider {
+ private:
+  bool stop;
+  bool is_connected;
+  double start_seconds;
+  IIOCompleteNotification* notify_sink;
+  uint8_t update_rate_hz;
 
-    float last_yaw;
-    float last_linear_world_accel_x;
-    float last_linear_world_accel_y;
+  hal::SimDevice* sim_device;
+  hal::SimBoolean simConnected;
+  hal::SimDouble simRate;
+  hal::SimDouble simYaw;
+  hal::SimDouble simPitch;
+  hal::SimDouble simRoll;
+  hal::SimDouble simCompassHeading;
+  hal::SimDouble simFusedHeading;
+  hal::SimDouble simLinearWorldAccelX;
+  hal::SimDouble simLinearWorldAccelY;
+  hal::SimDouble simLinearWorldAccelZ;
 
-    AHRSProtocol::BoardID board_id;
-    IIOCompleteNotification::BoardState board_state;
-    AHRSProtocol::AHRSPosUpdate ahrs_update;
-    IMUProtocol::GyroUpdate raw_data_update;
+  float last_yaw;
+  float last_linear_world_accel_x;
+  float last_linear_world_accel_y;
 
-public:
-    SimIO(uint8_t update_rate_hz,
-          IIOCompleteNotification *notify_sink,
-          hal::SimDevice *sim_device);
-    bool IsConnected();
-    double GetByteCount();
-    double GetUpdateCount();
-    void SetUpdateRateHz(uint8_t update_rate);
-    void ZeroYaw();
-    void ZeroDisplacement();
-    void Run();
-    void Stop();
-    void EnableLogging(bool enable);
-    virtual ~SimIO();
+  AHRSProtocol::BoardID board_id;
+  IIOCompleteNotification::BoardState board_state;
+  AHRSProtocol::AHRSPosUpdate ahrs_update;
+  IMUProtocol::GyroUpdate raw_data_update;
 
-    double GetRate();
+ public:
+  SimIO(uint8_t update_rate_hz, IIOCompleteNotification* notify_sink,
+        hal::SimDevice* sim_device);
+  bool IsConnected();
+  double GetByteCount();
+  double GetUpdateCount();
+  void SetUpdateRateHz(uint8_t update_rate);
+  void ZeroYaw();
+  void ZeroDisplacement();
+  void Run();
+  void Stop();
+  void EnableLogging(bool enable);
+  virtual ~SimIO();
 
-private:
-    void UpdatePeriodicFromSimVariables(long sensor_timestamp);
-    float CalculateNormal(float in1, float in2);
+  double GetRate();
+
+ private:
+  void UpdatePeriodicFromSimVariables(long sensor_timestamp);
+  float CalculateNormal(float in1, float in2);
 };
 
-#endif /* SRC_SIMIO_H_ */
+#endif  // NAVX_FRC_SRC_MAIN_NATIVE_CPP_SIMIO_H_

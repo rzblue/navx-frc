@@ -113,7 +113,7 @@ jobs:
   publish-maven:
     name: Publish to Maven
     if: |
-      github.repository_owner == 'rzblue' && 
+      github.repository_owner == 'rzblue' &&
       (startsWith(github.ref, 'refs/tags/v') || github.ref_name == 'main')
     needs: combine
     runs-on: ubuntu-latest

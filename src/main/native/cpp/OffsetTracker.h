@@ -5,25 +5,24 @@
  *      Author: Scott
  */
 
-#ifndef SRC_OFFSETTRACKER_H_
-#define SRC_OFFSETTRACKER_H_
+#ifndef NAVX_FRC_SRC_MAIN_NATIVE_CPP_OFFSETTRACKER_H_
+#define NAVX_FRC_SRC_MAIN_NATIVE_CPP_OFFSETTRACKER_H_
 
-class OffsetTracker
-{
-    float *value_history;
-    int next_value_history_index;
-    int history_len;
-    double value_offset;
+class OffsetTracker {
+  float* value_history;
+  int next_value_history_index;
+  int history_len;
+  double value_offset;
 
-public:
-    OffsetTracker(int history_length);
-    void UpdateHistory(float curr_value);
-    void SetOffset();
-    double ApplyOffset(double value);
+ public:
+  OffsetTracker(int history_length);
+  void UpdateHistory(float curr_value);
+  void SetOffset();
+  double ApplyOffset(double value);
 
-private:
-    double GetAverageFromHistory();
-    double GetOffset();
+ private:
+  double GetAverageFromHistory();
+  double GetOffset();
 };
 
-#endif /* SRC_OFFSETTRACKER_H_ */
+#endif  // NAVX_FRC_SRC_MAIN_NATIVE_CPP_OFFSETTRACKER_H_

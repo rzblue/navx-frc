@@ -10,7 +10,6 @@
 package com.kauailabs.navx.frc;
 
 public class Quaternion {
-
   private float w;
   private float x;
   private float y;

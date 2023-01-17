@@ -22,8 +22,8 @@ THE SOFTWARE.
 ===============================================
  */
 
-#ifndef IMU_REGISTERS_H_
-#define IMU_REGISTERS_H_
+#ifndef NAVX_FRC_SRC_MAIN_NATIVE_INCLUDE_IMUREGISTERS_H_
+#define NAVX_FRC_SRC_MAIN_NATIVE_INCLUDE_IMUREGISTERS_H_
 
 #include "IMUProtocol.h"
 
@@ -69,9 +69,14 @@ typedef int32_t s_1616_float;
 /* Read-only */
 /* Accelerometer Full-Scale Range:  in units of G [unsigned byte] */
 #define NAVX_REG_ACCEL_FSR_G 0x05
-/* Gyro Full-Scale Range (Degrees/Sec):  Range:  250, 500, 1000 or 2000 [unsigned short] */
-#define NAVX_REG_GYRO_FSR_DPS_L 0x06  /* Lower 8-bits of Gyro Full-Scale Range */
-#define NAVX_REG_GYRO_FSR_DPS_H 0x07  /* Upper 8-bits of Gyro Full-Scale Range */
+/* Gyro Full-Scale Range (Degrees/Sec):  Range:  250, 500, 1000 or 2000
+ * [unsigned short] */
+#define NAVX_REG_GYRO_FSR_DPS_L                 \
+  0x06 /* Lower 8-bits of Gyro Full-Scale Range \
+        */
+#define NAVX_REG_GYRO_FSR_DPS_H                                                \
+  0x07                                /* Upper 8-bits of Gyro Full-Scale Range \
+                                       */
 #define NAVX_REG_OP_STATUS 0x08       /* NAVX_OP_STATUS_XXX */
 #define NAVX_REG_CAL_STATUS 0x09      /* NAVX_CAL_STATUS_XXX */
 #define NAVX_REG_SELFTEST_STATUS 0x0A /* NAVX_SELFTEST_STATUS_XXX */
@@ -112,14 +117,27 @@ typedef int32_t s_1616_float;
 #define NAVX_REG_ALTITUDE_D_L 0x22
 #define NAVX_REG_ALTITUDE_D_H 0x23
 
-/* World-frame Linear Acceleration: In units of +/- G * 1000 [signed thousandths] */
+/* World-frame Linear Acceleration: In units of +/- G * 1000 [signed
+ * thousandths] */
 
-#define NAVX_REG_LINEAR_ACC_X_L 0x24 /* Lower 8 bits of Linear Acceleration X */
-#define NAVX_REG_LINEAR_ACC_X_H 0x25 /* Upper 8 bits of Linear Acceleration X */
-#define NAVX_REG_LINEAR_ACC_Y_L 0x26 /* Lower 8 bits of Linear Acceleration Y */
-#define NAVX_REG_LINEAR_ACC_Y_H 0x27 /* Upper 8 bits of Linear Acceleration Y */
-#define NAVX_REG_LINEAR_ACC_Z_L 0x28 /* Lower 8 bits of Linear Acceleration Z */
-#define NAVX_REG_LINEAR_ACC_Z_H 0x29 /* Upper 8 bits of Linear Acceleration Z */
+#define NAVX_REG_LINEAR_ACC_X_L                 \
+  0x24 /* Lower 8 bits of Linear Acceleration X \
+        */
+#define NAVX_REG_LINEAR_ACC_X_H                 \
+  0x25 /* Upper 8 bits of Linear Acceleration X \
+        */
+#define NAVX_REG_LINEAR_ACC_Y_L                 \
+  0x26 /* Lower 8 bits of Linear Acceleration Y \
+        */
+#define NAVX_REG_LINEAR_ACC_Y_H                 \
+  0x27 /* Upper 8 bits of Linear Acceleration Y \
+        */
+#define NAVX_REG_LINEAR_ACC_Z_L                 \
+  0x28 /* Lower 8 bits of Linear Acceleration Z \
+        */
+#define NAVX_REG_LINEAR_ACC_Z_H                 \
+  0x29 /* Upper 8 bits of Linear Acceleration Z \
+        */
 
 /* Quaternion:  Range -1 to 1 [signed short ratio] */
 
@@ -136,12 +154,14 @@ typedef int32_t s_1616_float;
 /* Raw Data Registers                         */
 /**********************************************/
 
-/* Sensor Die Temperature:  Range +/- 150, In units of Centigrade * 100 [signed hundredths float */
+/* Sensor Die Temperature:  Range +/- 150, In units of Centigrade * 100 [signed
+ * hundredths float */
 
 #define NAVX_REG_MPU_TEMP_C_L 0x32 /* Lower 8 bits of Temperature */
 #define NAVX_REG_MPU_TEMP_C_H 0x33 /* Upper 8 bits of Temperature */
 
-/* Raw, Calibrated Angular Rotation, in device units.  Value in DPS = units / GYRO_FSR_DPS [signed short] */
+/* Raw, Calibrated Angular Rotation, in device units.  Value in DPS = units /
+ * GYRO_FSR_DPS [signed short] */
 
 #define NAVX_REG_GYRO_X_L 0x34
 #define NAVX_REG_GYRO_X_H 0x35
@@ -150,7 +170,8 @@ typedef int32_t s_1616_float;
 #define NAVX_REG_GYRO_Z_L 0x38
 #define NAVX_REG_GYRO_Z_H 0x39
 
-/* Raw, Calibrated, Acceleration Data, in device units.  Value in G = units / ACCEL_FSR_G [signed short] */
+/* Raw, Calibrated, Acceleration Data, in device units.  Value in G = units /
+ * ACCEL_FSR_G [signed short] */
 
 #define NAVX_REG_ACC_X_L 0x3A
 #define NAVX_REG_ACC_X_H 0x3B
@@ -159,7 +180,8 @@ typedef int32_t s_1616_float;
 #define NAVX_REG_ACC_Z_L 0x3E
 #define NAVX_REG_ACC_Z_H 0x3F
 
-/* Raw, Calibrated, Un-tilt corrected Magnetometer Data, in device units.  1 unit = 0.15 uTesla [signed short] */
+/* Raw, Calibrated, Un-tilt corrected Magnetometer Data, in device units.  1
+ * unit = 0.15 uTesla [signed short] */
 
 #define NAVX_REG_MAG_X_L 0x40
 #define NAVX_REG_MAG_X_H 0x41
@@ -168,7 +190,8 @@ typedef int32_t s_1616_float;
 #define NAVX_REG_MAG_Z_L 0x44
 #define NAVX_REG_MAG_Z_H 0x45
 
-/* Calibrated Pressure in millibars Valid Range:  10.00 Max:  1200.00 [16:16 float]  */
+/* Calibrated Pressure in millibars Valid Range:  10.00 Max:  1200.00 [16:16
+ * float]  */
 
 #define NAVX_REG_PRESSURE_IL 0x46
 #define NAVX_REG_PRESSURE_IH 0x47
@@ -191,14 +214,22 @@ typedef int32_t s_1616_float;
 
 /* Hires timestamp:  Range: 0 to 2^64-1 [uint64_t]  */
 
-#define NAVX_REG_HIRES_TIMESTAMP_L_L_L 0x4E /* Lowest 8 bits of Hi-res Timestamp */
-#define NAVX_REG_HIRES_TIMESTAMP_L_L_H 0x4F /* 2nd Lowest 8 bits of Hi-res Timestamp */
-#define NAVX_REG_HIRES_TIMESTAMP_L_H_L 0x50 /* 3rd Lowest 8 bits of Hi-res Timestamp */
-#define NAVX_REG_HIRES_TIMESTAMP_L_H_H 0x51 /* 4th Lowest 8 bits of Hi-res Timestamp */
-#define NAVX_REG_HIRES_TIMESTAMP_H_L_L 0x52 /* 5th Lowest 8 bits of Hi-res Timestamp */
-#define NAVX_REG_HIRES_TIMESTAMP_H_L_H 0x53 /* 6th Lowest 8 bits of Hi-res Timestamp */
-#define NAVX_REG_HIRES_TIMESTAMP_H_H_L 0x54 /* 7th Lowest 8 bits of Hi-res Timestamp */
-#define NAVX_REG_HIRES_TIMESTAMP_H_H_H 0x55 /* Upper 8 bits of Hi-res Timestamp */
+#define NAVX_REG_HIRES_TIMESTAMP_L_L_L \
+  0x4E /* Lowest 8 bits of Hi-res Timestamp */
+#define NAVX_REG_HIRES_TIMESTAMP_L_L_H \
+  0x4F /* 2nd Lowest 8 bits of Hi-res Timestamp */
+#define NAVX_REG_HIRES_TIMESTAMP_L_H_L \
+  0x50 /* 3rd Lowest 8 bits of Hi-res Timestamp */
+#define NAVX_REG_HIRES_TIMESTAMP_L_H_H \
+  0x51 /* 4th Lowest 8 bits of Hi-res Timestamp */
+#define NAVX_REG_HIRES_TIMESTAMP_H_L_L \
+  0x52 /* 5th Lowest 8 bits of Hi-res Timestamp */
+#define NAVX_REG_HIRES_TIMESTAMP_H_L_H \
+  0x53 /* 6th Lowest 8 bits of Hi-res Timestamp */
+#define NAVX_REG_HIRES_TIMESTAMP_H_H_L \
+  0x54 /* 7th Lowest 8 bits of Hi-res Timestamp */
+#define NAVX_REG_HIRES_TIMESTAMP_H_H_H \
+  0x55 /* Upper 8 bits of Hi-res Timestamp */
 
 /**********************************************/
 /* Integrated Data Registers                  */
@@ -313,184 +344,161 @@ typedef int32_t s_1616_float;
 
 #define NAVX_INTEGRATION_CTL_RESET_YAW 0x80
 
-class IMURegisters
-{
-public:
-    /************************************************************/
-    /* NOTE:                                                    */
-    /* The following functions assume a little-endian processor */
-    /************************************************************/
+class IMURegisters {
+ public:
+  /************************************************************/
+  /* NOTE:                                                    */
+  /* The following functions assume a little-endian processor */
+  /************************************************************/
 
-    static inline uint16_t decodeProtocolUint16(char *uint16_bytes)
-    {
-        return *((uint16_t *)uint16_bytes);
-    }
-    static inline void encodeProtocolUint16(uint16_t val, char *uint16_bytes)
-    {
-        *((uint16_t *)uint16_bytes) = val;
-    }
+  static inline uint16_t decodeProtocolUint16(char* uint16_bytes) {
+    return *((uint16_t*)uint16_bytes);
+  }
+  static inline void encodeProtocolUint16(uint16_t val, char* uint16_bytes) {
+    *((uint16_t*)uint16_bytes) = val;
+  }
 
-    static inline int16_t decodeProtocolInt16(char *int16_bytes)
-    {
-        return *((int16_t *)int16_bytes);
-    }
-    static inline void encodeProtocolInt16(int16_t val, char *int16_bytes)
-    {
-        *((int16_t *)int16_bytes) = val;
-    }
+  static inline int16_t decodeProtocolInt16(char* int16_bytes) {
+    return *((int16_t*)int16_bytes);
+  }
+  static inline void encodeProtocolInt16(int16_t val, char* int16_bytes) {
+    *((int16_t*)int16_bytes) = val;
+  }
 
-    static inline uint32_t decodeProtocolUint32(char *uint32_bytes)
-    {
-        return *((uint32_t *)uint32_bytes);
-    }
+  static inline uint32_t decodeProtocolUint32(char* uint32_bytes) {
+    return *((uint32_t*)uint32_bytes);
+  }
 
-    static inline int32_t decodeProtocolInt32(char *int32_bytes)
-    {
-        return *((int32_t *)int32_bytes);
-    }
-    static inline void encodeProtocolInt32(int32_t val, char *int32_bytes)
-    {
-        *((int32_t *)int32_bytes) = val;
-    }
+  static inline int32_t decodeProtocolInt32(char* int32_bytes) {
+    return *((int32_t*)int32_bytes);
+  }
+  static inline void encodeProtocolInt32(int32_t val, char* int32_bytes) {
+    *((int32_t*)int32_bytes) = val;
+  }
 
-    /* -327.68 to +327.68 */
-    static inline float decodeProtocolSignedHundredthsFloat(char *uint8_signed_angle_bytes)
-    {
-        float signed_angle = (float)decodeProtocolInt16(uint8_signed_angle_bytes);
-        signed_angle /= 100;
-        return signed_angle;
-    }
-    static inline void encodeProtocolSignedHundredthsFloat(float input, char *uint8_signed_hundredths_float)
-    {
-        int16_t input_as_int = (int16_t)(input * 100.0f);
-        encodeProtocolInt16(input_as_int, uint8_signed_hundredths_float);
-    }
+  /* -327.68 to +327.68 */
+  static inline float decodeProtocolSignedHundredthsFloat(
+      char* uint8_signed_angle_bytes) {
+    float signed_angle = (float)decodeProtocolInt16(uint8_signed_angle_bytes);
+    signed_angle /= 100;
+    return signed_angle;
+  }
+  static inline void encodeProtocolSignedHundredthsFloat(
+      float input, char* uint8_signed_hundredths_float) {
+    int16_t input_as_int = (int16_t)(input * 100.0f);
+    encodeProtocolInt16(input_as_int, uint8_signed_hundredths_float);
+  }
 
-    static inline s_short_hundred_float encodeSignedHundredthsFloat(float input)
-    {
-        return (s_short_hundred_float)(input * 100.0f);
-    }
-    static inline u_short_hundred_float encodeUnsignedHundredthsFloat(float input)
-    {
-        return (u_short_hundred_float)(input * 100.0f);
-    }
+  static inline s_short_hundred_float encodeSignedHundredthsFloat(float input) {
+    return (s_short_hundred_float)(input * 100.0f);
+  }
+  static inline u_short_hundred_float encodeUnsignedHundredthsFloat(
+      float input) {
+    return (u_short_hundred_float)(input * 100.0f);
+  }
 
-    static inline s_short_ratio_float encodeRatioFloat(float input_ratio)
-    {
-        return (s_short_hundred_float)(input_ratio *= 32768.0f);
-    }
-    static inline s_short_thousand_float encodeSignedThousandthsFloat(float input)
-    {
-        return (s_short_thousand_float)(input * 1000.0f);
-    }
+  static inline s_short_ratio_float encodeRatioFloat(float input_ratio) {
+    return (s_short_hundred_float)(input_ratio *= 32768.0f);
+  }
+  static inline s_short_thousand_float encodeSignedThousandthsFloat(
+      float input) {
+    return (s_short_thousand_float)(input * 1000.0f);
+  }
 
-    /* 0 to 655.35 */
-    static inline float decodeProtocolUnsignedHundredthsFloat(char *uint8_unsigned_hundredths_float)
-    {
-        float unsigned_float = (float)decodeProtocolUint16(uint8_unsigned_hundredths_float);
-        unsigned_float /= 100;
-        return unsigned_float;
-    }
-    static inline void encodeProtocolUnsignedHundredthsFloat(float input, char *uint8_unsigned_hundredths_float)
-    {
-        uint16_t input_as_uint = (uint16_t)(input * 100.0f);
-        encodeProtocolUint16(input_as_uint, uint8_unsigned_hundredths_float);
-    }
+  /* 0 to 655.35 */
+  static inline float decodeProtocolUnsignedHundredthsFloat(
+      char* uint8_unsigned_hundredths_float) {
+    float unsigned_float =
+        (float)decodeProtocolUint16(uint8_unsigned_hundredths_float);
+    unsigned_float /= 100;
+    return unsigned_float;
+  }
+  static inline void encodeProtocolUnsignedHundredthsFloat(
+      float input, char* uint8_unsigned_hundredths_float) {
+    uint16_t input_as_uint = (uint16_t)(input * 100.0f);
+    encodeProtocolUint16(input_as_uint, uint8_unsigned_hundredths_float);
+  }
 
-    /* -32.768 to +32.768 */
-    static inline float decodeProtocolSignedThousandthsFloat(char *uint8_signed_angle_bytes)
-    {
-        float signed_angle = (float)decodeProtocolInt16(uint8_signed_angle_bytes);
-        signed_angle /= 1000;
-        return signed_angle;
-    }
-    static inline void encodeProtocolSignedThousandthsFloat(float input, char *uint8_signed_thousandths_float)
-    {
-        int16_t input_as_int = (int16_t)(input * 1000.0f);
-        encodeProtocolInt16(input_as_int, uint8_signed_thousandths_float);
-    }
+  /* -32.768 to +32.768 */
+  static inline float decodeProtocolSignedThousandthsFloat(
+      char* uint8_signed_angle_bytes) {
+    float signed_angle = (float)decodeProtocolInt16(uint8_signed_angle_bytes);
+    signed_angle /= 1000;
+    return signed_angle;
+  }
+  static inline void encodeProtocolSignedThousandthsFloat(
+      float input, char* uint8_signed_thousandths_float) {
+    int16_t input_as_int = (int16_t)(input * 1000.0f);
+    encodeProtocolInt16(input_as_int, uint8_signed_thousandths_float);
+  }
 
-    /* In units of -1 to 1, multiplied by 16384 */
-    static inline float decodeProtocolRatio(char *uint8_ratio)
-    {
-        float ratio = (float)decodeProtocolInt16(uint8_ratio);
-        ratio /= 32768.0f;
-        return ratio;
-    }
-    static inline void encodeProtocolRatio(float ratio, char *uint8_ratio)
-    {
-        ratio *= 32768.0f;
-        encodeProtocolInt16(ratio, uint8_ratio);
-    }
+  /* In units of -1 to 1, multiplied by 16384 */
+  static inline float decodeProtocolRatio(char* uint8_ratio) {
+    float ratio = (float)decodeProtocolInt16(uint8_ratio);
+    ratio /= 32768.0f;
+    return ratio;
+  }
+  static inline void encodeProtocolRatio(float ratio, char* uint8_ratio) {
+    ratio *= 32768.0f;
+    encodeProtocolInt16(ratio, uint8_ratio);
+  }
 
-    /* <int16>.<uint16> (-32768.9999 to 32767.9999) */
-    static float decodeProtocol1616Float(char *uint8_16_16_bytes)
-    {
-        float result = (float)decodeProtocolInt32(uint8_16_16_bytes);
-        result /= 65536.0f;
-        return result;
-    }
-    static void encodeProtocol1616Float(float val, char *uint8_16_16_bytes)
-    {
-        val *= 65536.0f;
-        int32_t packed_float = (int32_t)val;
-        encodeProtocolInt32(packed_float, uint8_16_16_bytes);
-    }
+  /* <int16>.<uint16> (-32768.9999 to 32767.9999) */
+  static float decodeProtocol1616Float(char* uint8_16_16_bytes) {
+    float result = (float)decodeProtocolInt32(uint8_16_16_bytes);
+    result /= 65536.0f;
+    return result;
+  }
+  static void encodeProtocol1616Float(float val, char* uint8_16_16_bytes) {
+    val *= 65536.0f;
+    int32_t packed_float = (int32_t)val;
+    encodeProtocolInt32(packed_float, uint8_16_16_bytes);
+  }
 
 #define CRC7_POLY 0x91
 
-    static void buildCRCLookupTable(uint8_t *table, size_t length)
-    {
-        size_t crc;
-        size_t i, j;
-        if (length == 256)
-        {
-            for (i = 0; i < length; i++)
-            {
-                crc = (uint8_t)i;
-                for (j = 0; j < 8; j++)
-                {
-                    if (crc & 1)
-                    {
-                        crc ^= CRC7_POLY;
-                    }
-                    crc >>= 1;
-                }
-                table[i] = crc;
-            }
+  static void buildCRCLookupTable(uint8_t* table, size_t length) {
+    size_t crc;
+    size_t i, j;
+    if (length == 256) {
+      for (i = 0; i < length; i++) {
+        crc = (uint8_t)i;
+        for (j = 0; j < 8; j++) {
+          if (crc & 1) {
+            crc ^= CRC7_POLY;
+          }
+          crc >>= 1;
         }
+        table[i] = crc;
+      }
     }
+  }
 
-    static inline uint8_t getCRCWithTable(uint8_t *table, uint8_t message[], uint8_t length)
-    {
-        uint8_t i, crc = 0;
+  static inline uint8_t getCRCWithTable(uint8_t* table, uint8_t message[],
+                                        uint8_t length) {
+    uint8_t i, crc = 0;
 
-        for (i = 0; i < length; i++)
-        {
-            crc ^= message[i];
-            crc = table[crc];
+    for (i = 0; i < length; i++) {
+      crc ^= message[i];
+      crc = table[crc];
+    }
+    return crc;
+  }
+
+  static uint8_t getCRC(uint8_t message[], uint8_t length) {
+    uint8_t i, j, crc = 0;
+
+    for (i = 0; i < length; i++) {
+      crc ^= message[i];
+      for (j = 0; j < 8; j++) {
+        if (crc & 1) {
+          crc ^= CRC7_POLY;
         }
-        return crc;
+        crc >>= 1;
+      }
     }
-
-    static uint8_t getCRC(uint8_t message[], uint8_t length)
-    {
-        uint8_t i, j, crc = 0;
-
-        for (i = 0; i < length; i++)
-        {
-            crc ^= message[i];
-            for (j = 0; j < 8; j++)
-            {
-                if (crc & 1)
-                {
-                    crc ^= CRC7_POLY;
-                }
-                crc >>= 1;
-            }
-        }
-        return crc;
-    }
+    return crc;
+  }
 };
 
-#endif /* IMU_REGISTERS_H_ */
+#endif  // NAVX_FRC_SRC_MAIN_NATIVE_INCLUDE_IMUREGISTERS_H_

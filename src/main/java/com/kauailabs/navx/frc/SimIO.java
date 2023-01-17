@@ -19,7 +19,6 @@ import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.wpilibj.Timer;
 
 class SimIO implements IIOProvider {
-
   boolean stop = false;
   boolean is_connected = false;
   double start_seconds = 0;
@@ -52,7 +51,6 @@ class SimIO implements IIOProvider {
     this.update_rate_hz = update_rate_hz;
     this.sim_device = sim_device;
     if (sim_device != null) {
-
       // Booleans
 
       simConnected = sim_device.createBoolean("Connected", SimDevice.Direction.kInput, true);
@@ -226,7 +224,6 @@ class SimIO implements IIOProvider {
   }
 
   private void UpdatePeriodicFromSimVariables(long sensor_timestamp) {
-
     if (sim_device == null) return;
 
     boolean curr_is_connected = simConnected.get();

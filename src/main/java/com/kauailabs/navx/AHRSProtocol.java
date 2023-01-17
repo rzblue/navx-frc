@@ -25,7 +25,6 @@ THE SOFTWARE.
 package com.kauailabs.navx;
 
 public class AHRSProtocol extends IMUProtocol {
-
   /* NAVX_CAL_STATUS */
 
   public static final byte NAVX_CAL_STATUS_IMU_CAL_STATE_MASK = 0x03;
@@ -496,7 +495,6 @@ public class AHRSProtocol extends IMUProtocol {
         && (buffer[offset + 1] == BINARY_PACKET_INDICATOR_CHAR)
         && (buffer[offset + 2] == AHRS_UPDATE_MESSAGE_LENGTH - 2)
         && (buffer[offset + 3] == MSGID_AHRS_UPDATE)) {
-
       if (!verifyChecksum(buffer, offset, AHRS_UPDATE_MESSAGE_CHECKSUM_INDEX)) {
         return 0;
       }
@@ -565,7 +563,6 @@ public class AHRSProtocol extends IMUProtocol {
         && (buffer[offset + 1] == BINARY_PACKET_INDICATOR_CHAR)
         && (buffer[offset + 2] == AHRSPOS_UPDATE_MESSAGE_LENGTH - 2)
         && (buffer[offset + 3] == MSGID_AHRSPOS_UPDATE)) {
-
       if (!verifyChecksum(buffer, offset, AHRSPOS_UPDATE_MESSAGE_CHECKSUM_INDEX)) {
         return 0;
       }
@@ -631,7 +628,6 @@ public class AHRSProtocol extends IMUProtocol {
         && (buffer[offset + 1] == BINARY_PACKET_INDICATOR_CHAR)
         && (buffer[offset + 2] == AHRSPOS_TS_UPDATE_MESSAGE_LENGTH - 2)
         && (buffer[offset + 3] == MSGID_AHRSPOS_TS_UPDATE)) {
-
       if (!verifyChecksum(buffer, offset, AHRSPOS_TS_UPDATE_MESSAGE_CHECKSUM_INDEX)) {
         return 0;
       }
@@ -690,7 +686,6 @@ public class AHRSProtocol extends IMUProtocol {
         && (buffer[offset + 1] == BINARY_PACKET_INDICATOR_CHAR)
         && (msg_len == AHRSPOS_TS_RAW_UPDATE_MESSAGE_LENGTH - 2)
         && (buffer[offset + 3] == MSGID_AHRSPOS_TS_RAW_UPDATE)) {
-
       if (!verifyChecksum(buffer, offset, AHRSPOS_TS_RAW_UPDATE_MESSAGE_CHECKSUM_INDEX)) {
         return 0;
       }

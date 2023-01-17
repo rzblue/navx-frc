@@ -14,7 +14,6 @@
 package com.kauailabs.navx.frc;
 
 class ContinuousAngleTracker {
-
   private boolean fFirstUse;
   private double gyro_prevVal;
   private int ctrRollOver;

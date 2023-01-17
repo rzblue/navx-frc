@@ -60,7 +60,6 @@ class RegisterIO implements IIOProvider {
   }
 
   public void run() {
-
     io_provider.init();
 
     /* Initial Device Configuration */
