@@ -1020,7 +1020,7 @@ public class AHRS implements Sendable, Gyro {
     this.logging_enabled = false;
 
     // Construct SimDevice (only succeeds in simulation environments)
-    m_simDevice = SimDevice.create("navX-Sensor", 0);
+    m_simDevice = SimDevice.create(AHRSSim.kSimDevicePrefix, 0);
   }
 
   /**
@@ -1789,4 +1789,8 @@ public class AHRS implements Sendable, Gyro {
   /************************************************************/
   @Override
   public void calibrate() {}
+
+  protected SimDevice getSimDevice() {
+    return m_simDevice;
+  }
 }

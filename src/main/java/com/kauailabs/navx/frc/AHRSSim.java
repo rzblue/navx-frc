@@ -2,30 +2,37 @@ package com.kauailabs.navx.frc;
 
 import edu.wpi.first.hal.SimBoolean;
 import edu.wpi.first.hal.SimDouble;
-import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
+import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
 
 public class AHRSSim {
-  int m_deviceHandle = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
+  public static final String kSimDevicePrefix = "navX-Sensor";
 
-  SimBoolean m_connected =
-      new SimBoolean(SimDeviceDataJNI.getSimValueHandle(m_deviceHandle, "Connected"));
-  SimDouble m_yawRate = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_deviceHandle, "Rate"));
-  SimDouble m_yaw = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_deviceHandle, "Yaw"));
-  SimDouble m_pitch = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_deviceHandle, "Pitch"));
-  SimDouble m_roll = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_deviceHandle, "Roll"));
-  SimDouble m_compassHeading =
-      new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_deviceHandle, "CompassHeading"));
-  SimDouble m_fusedHeading =
-      new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_deviceHandle, "FusedHeading"));
-  SimDouble m_linearWorldAccelX =
-      new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_deviceHandle, "LinearWorldAccelX"));
-  SimDouble m_linearWorldAccelY =
-      new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_deviceHandle, "LinearWorldAccelY"));
-  SimDouble m_linearWorldAccelZ =
-      new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_deviceHandle, "LinearWorldAccelZ"));
+  private final SimDeviceSim m_simDevice;
+  private final SimBoolean m_connected;
+  private final SimDouble m_yawRate;
+  private final SimDouble m_yaw;
+  private final SimDouble m_pitch;
+  private final SimDouble m_roll;
+  private final SimDouble m_compassHeading;
+  private final SimDouble m_fusedHeading;
+  private final SimDouble m_linearWorldAccelX;
+  private final SimDouble m_linearWorldAccelY;
+  private final SimDouble m_linearWorldAccelZ;
 
   /** Constructs a new AHRSSim device. */
-  public AHRSSim() {}
+  public AHRSSim() {
+    m_simDevice = new SimDeviceSim(kSimDevicePrefix, 0);
+    m_connected = m_simDevice.getBoolean("Connected");
+    m_yawRate = m_simDevice.getDouble("Rate");
+    m_yaw = m_simDevice.getDouble("Yaw");
+    m_pitch = m_simDevice.getDouble("Pitch");
+    m_roll = m_simDevice.getDouble("Roll");
+    m_compassHeading = m_simDevice.getDouble("CompassHeading");
+    m_fusedHeading = m_simDevice.getDouble("FusedHeading");
+    m_linearWorldAccelX = m_simDevice.getDouble("LinearWorldAccelX");
+    m_linearWorldAccelY = m_simDevice.getDouble("LinearWorldAccelY");
+    m_linearWorldAccelZ = m_simDevice.getDouble("LinearWorldAccelZ");
+  }
 
   /**
    * Set whether the AHRS is connected.
