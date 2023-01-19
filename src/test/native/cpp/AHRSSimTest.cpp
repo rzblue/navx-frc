@@ -4,7 +4,7 @@
 #include "AHRSSim.h"
 #include "frc/Timer.h"
 
-constexpr auto delayTime = 0.05_s;
+constexpr auto delayTime = 0.1_s;
 
 class AHRSSimTest : public ::testing::Test {
 
