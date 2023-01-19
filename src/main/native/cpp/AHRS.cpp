@@ -545,6 +545,11 @@ AHRS::AHRS(frc::SerialPort::Port serial_port_id) : m_simDevice("navX-Sensor", 0)
     SerialInit(serial_port_id, SerialDataType::kProcessedData, NAVX_DEFAULT_UPDATE_RATE_HZ);
 }
 
+AHRS::~AHRS() {
+    io->Stop();
+    Tracer::Trace("navX-Sensor Shutting down...\n");
+}
+
 /**
  * Returns the current pitch value (in degrees, from -180 to 180)
  * reported by the sensor.  Pitch is a measure of rotation around

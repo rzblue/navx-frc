@@ -162,6 +162,8 @@ public:
 
     AHRS(frc::SerialPort::Port serial_port_id, AHRS::SerialDataType data_type, uint8_t update_rate_hz);
 
+    ~AHRS();
+    
     float GetPitch();
     float GetRoll();
     float GetYaw();
