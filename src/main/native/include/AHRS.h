@@ -150,6 +150,7 @@ private:
     bool logging_enabled;
 
 public:
+    AHRS();
     AHRS(frc::SPI::Port spi_port_id);
     AHRS(frc::I2C::Port i2c_port_id);
     AHRS(frc::SerialPort::Port serial_port_id);

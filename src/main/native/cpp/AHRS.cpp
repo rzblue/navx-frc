@@ -413,6 +413,8 @@ class AHRSInternal : public IIOCompleteNotification, public IBoardCapabilities
     }
 };
 
+AHRS::AHRS(): AHRS::AHRS(SPI::Port::kMXP) {}
+
 /**
  * The AHRS class provides an interface to AHRS capabilities
  * of the KauaiLabs navX Robotics Navigation Sensor via SPI, I2C and
