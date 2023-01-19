@@ -433,7 +433,7 @@ AHRS::AHRS(): AHRS::AHRS(SPI::Port::kMXP) {}
  * @author Scott
  */
 
-AHRS::AHRS(frc::SPI::Port spi_port_id, uint8_t update_rate_hz) : m_simDevice("navX-Sensor", spi_port_id)
+AHRS::AHRS(frc::SPI::Port spi_port_id, uint8_t update_rate_hz) : m_simDevice("navX-Sensor", 0)
 {
     SPIInit(spi_port_id, DEFAULT_SPI_BITRATE, update_rate_hz);
 }
@@ -459,7 +459,7 @@ AHRS::AHRS(frc::SPI::Port spi_port_id, uint8_t update_rate_hz) : m_simDevice("na
  * @author Scott
  */
 
-AHRS::AHRS(frc::SPI::Port spi_port_id, uint32_t spi_bitrate, uint8_t update_rate_hz) : m_simDevice("navX-Sensor", spi_port_id)
+AHRS::AHRS(frc::SPI::Port spi_port_id, uint32_t spi_bitrate, uint8_t update_rate_hz) : m_simDevice("navX-Sensor", 0)
 {
     SPIInit(spi_port_id, spi_bitrate, update_rate_hz);
 }
@@ -477,7 +477,7 @@ AHRS::AHRS(frc::SPI::Port spi_port_id, uint32_t spi_bitrate, uint8_t update_rate
  * @param i2c_port_id I2C Port to use
  * @param update_rate_hz Custom Update Rate (Hz)
  */
-AHRS::AHRS(frc::I2C::Port i2c_port_id, uint8_t update_rate_hz) : m_simDevice("navX-Sensor", i2c_port_id)
+AHRS::AHRS(frc::I2C::Port i2c_port_id, uint8_t update_rate_hz) : m_simDevice("navX-Sensor", 0)
 {
     I2CInit(i2c_port_id, update_rate_hz);
 }
@@ -502,7 +502,7 @@ AHRS::AHRS(frc::I2C::Port i2c_port_id, uint8_t update_rate_hz) : m_simDevice("na
  * @param data_type either kProcessedData or kRawData
  * @param update_rate_hz Custom Update Rate (Hz)
  */
-AHRS::AHRS(frc::SerialPort::Port serial_port_id, AHRS::SerialDataType data_type, uint8_t update_rate_hz) : m_simDevice("navX-Sensor", serial_port_id)
+AHRS::AHRS(frc::SerialPort::Port serial_port_id, AHRS::SerialDataType data_type, uint8_t update_rate_hz) : m_simDevice("navX-Sensor", 0)
 {
     SerialInit(serial_port_id, data_type, update_rate_hz);
 }
@@ -514,7 +514,7 @@ AHRS::AHRS(frc::SerialPort::Port serial_port_id, AHRS::SerialDataType data_type,
  *<p>
  * @param spi_port_id SPI port to use.
  */
-AHRS::AHRS(frc::SPI::Port spi_port_id) : m_simDevice("navX-Sensor", spi_port_id)
+AHRS::AHRS(frc::SPI::Port spi_port_id) : m_simDevice("navX-Sensor", 0)
 {
     SPIInit(spi_port_id, DEFAULT_SPI_BITRATE, NAVX_DEFAULT_UPDATE_RATE_HZ);
 }
@@ -526,7 +526,7 @@ AHRS::AHRS(frc::SPI::Port spi_port_id) : m_simDevice("navX-Sensor", spi_port_id)
  *<p>
  * @param i2c_port_id I2C port to use
  */
-AHRS::AHRS(frc::I2C::Port i2c_port_id) : m_simDevice("navX-Sensor", i2c_port_id)
+AHRS::AHRS(frc::I2C::Port i2c_port_id) : m_simDevice("navX-Sensor", 0)
 {
     I2CInit(i2c_port_id, NAVX_DEFAULT_UPDATE_RATE_HZ);
 }
@@ -540,7 +540,7 @@ AHRS::AHRS(frc::I2C::Port i2c_port_id) : m_simDevice("navX-Sensor", i2c_port_id)
  *<p>
  * @param serial_port_id SerialPort to use
  */
-AHRS::AHRS(frc::SerialPort::Port serial_port_id) : m_simDevice("navX-Sensor", serial_port_id)
+AHRS::AHRS(frc::SerialPort::Port serial_port_id) : m_simDevice("navX-Sensor", 0)
 {
     SerialInit(serial_port_id, SerialDataType::kProcessedData, NAVX_DEFAULT_UPDATE_RATE_HZ);
 }
@@ -1347,7 +1347,12 @@ double AHRS::GetAngle() const
 
 double AHRS::GetRate() const
 {
-    return yaw_angle_tracker->GetRate();
+    if(m_simDevice) {
+        SimIO* simio = dynamic_cast<SimIO*>(io);
+        return simio->GetRate();
+    } else {
+        return yaw_angle_tracker->GetRate();
+    }
 }
 
 /**

@@ -39,6 +39,7 @@ SimIO::SimIO(uint8_t update_rate_hz,
         this->simConnected = sim_device->CreateBoolean("Connected", direction, true);
 
         // Doubles
+        this->simRate = sim_device->CreateDouble("Rate", direction, 0.0f);
         this->simYaw = sim_device->CreateDouble("Yaw", direction, 0.0f);
         this->simPitch = sim_device->CreateDouble("Pitch", direction, 0.0f);
         this->simRoll = sim_device->CreateDouble("Roll", direction, 0.0f);
