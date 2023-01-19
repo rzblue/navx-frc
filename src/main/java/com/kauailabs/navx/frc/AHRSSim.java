@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
 public class AHRSSim {
   public static final String kSimDevicePrefix = "navX-Sensor";
 
-  private final SimDeviceSim m_simDevice;
+  private final SimDeviceSim m_simDeviceSim;
   private final SimBoolean m_connected;
   private final SimDouble m_yawRate;
   private final SimDouble m_yaw;
@@ -21,26 +21,26 @@ public class AHRSSim {
 
   /** Constructs a new AHRSSim device. */
   public AHRSSim() {
-    m_simDevice = new SimDeviceSim(kSimDevicePrefix, 0);
-    m_connected = m_simDevice.getBoolean("Connected");
-    m_yawRate = m_simDevice.getDouble("Rate");
-    m_yaw = m_simDevice.getDouble("Yaw");
-    m_pitch = m_simDevice.getDouble("Pitch");
-    m_roll = m_simDevice.getDouble("Roll");
-    m_compassHeading = m_simDevice.getDouble("CompassHeading");
-    m_fusedHeading = m_simDevice.getDouble("FusedHeading");
-    m_linearWorldAccelX = m_simDevice.getDouble("LinearWorldAccelX");
-    m_linearWorldAccelY = m_simDevice.getDouble("LinearWorldAccelY");
-    m_linearWorldAccelZ = m_simDevice.getDouble("LinearWorldAccelZ");
+    m_simDeviceSim = new SimDeviceSim(kSimDevicePrefix, 0);
+    m_connected = m_simDeviceSim.getBoolean("Connected");
+    m_yawRate = m_simDeviceSim.getDouble("Rate");
+    m_yaw = m_simDeviceSim.getDouble("Yaw");
+    m_pitch = m_simDeviceSim.getDouble("Pitch");
+    m_roll = m_simDeviceSim.getDouble("Roll");
+    m_compassHeading = m_simDeviceSim.getDouble("CompassHeading");
+    m_fusedHeading = m_simDeviceSim.getDouble("FusedHeading");
+    m_linearWorldAccelX = m_simDeviceSim.getDouble("LinearWorldAccelX");
+    m_linearWorldAccelY = m_simDeviceSim.getDouble("LinearWorldAccelY");
+    m_linearWorldAccelZ = m_simDeviceSim.getDouble("LinearWorldAccelZ");
   }
 
   /**
    * Set whether the AHRS is connected.
    *
-   * @param value the new value.
+   * @param connected the new value.
    */
-  public void setConnected(boolean value) {
-    m_connected.set(value);
+  public void setConnected(boolean connected) {
+    m_connected.set(connected);
   }
 
   /**
