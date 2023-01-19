@@ -205,6 +205,9 @@ Temporary Items
 !.vscode/extensions.json
 !.vscode/*.code-snippets
 
+# Just ignore .vscode please
+.vscode/
+
 # Local History for Visual Studio Code
 .history/
 
