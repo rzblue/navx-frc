@@ -8,7 +8,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - container: wpilib/roborio-cross-ubuntu:2023-22.04
+          - container: wpilib/roborio-cross-ubuntu:2024-22.04
             artifact-name: Athena
             build-options: "-Ponlylinuxathena"
           - container: wpilib/raspbian-cross-ubuntu:bullseye-22.04
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ${{ matrix.container }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Set release environment variable
@@ -36,31 +36,33 @@ jobs:
           git fetch --prune --unshallow
       - name: Build with Gradle
         run: ./gradlew build --max-workers 1 -PskipJavaFormat -PbuildServer ${{ matrix.build-options }} ${{ env.EXTRA_GRADLE_ARGS }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact-name }}
           path: build/allOutputs
 
   build-host:
+    env:
+      MACOSX_DEPLOYMENT_TARGET: 12
     strategy:
       fail-fast: false
       matrix:
         include:
-          - os: windows-2019
+          - os: windows-2022
             artifact-name: Win64
             architecture: x64
-          - os: macos-11
+          - os: macos-12
             artifact-name: macOS
             architecture: x64
     name: "Build - ${{ matrix.artifact-name }}"
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Fetch all history and metadata
         run: git fetch --prune --unshallow
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: zulu
@@ -71,7 +73,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
       - name: Build with Gradle
         run: ./gradlew build -PskipJavaFormat -Pbuildalldesktop -PbuildServer ${{ env.EXTRA_GRADLE_ARGS }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact-name }}
           path: build/allOutputs
@@ -81,17 +83,17 @@ jobs:
     needs: [build-docker, build-host]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: wpilibsuite/build-tools
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           path: combiner/products/build/allOutputs
       - name: Flatten Artifacts
         run: rsync -a --delete combiner/products/build/allOutputs/*/* combiner/products/build/allOutputs/
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
-          java-version: 11
+          java-version: 17
           distribution: zulu
       - name: Combine
         if: |
@@ -105,7 +107,7 @@ jobs:
         run: |
           ./gradlew publish -Pthirdparty -PreleaseRepoPublish
         working-directory: combiner
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: Maven
           path: ~/releases
@@ -119,15 +121,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch maven repo branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: maven
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: zulu
       - name: Download maven artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Maven
       - name: Update metadata
