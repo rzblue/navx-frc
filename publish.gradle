@@ -42,8 +42,8 @@ copyAllOutputs.dependsOn outputVersions
 
 ext.addTaskToCopyAllOutputs = { task ->
     copyAllOutputs.dependsOn task
-    copyAllOutputs.inputs.file task.archivePath
-    copyAllOutputs.from task.archivePath
+    copyAllOutputs.inputs.file task.archiveFile
+    copyAllOutputs.from task.archiveFile
 }
 
 def artifactGroupId = 'com.kauailabs.navx.frc'
