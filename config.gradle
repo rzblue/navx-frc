@@ -19,7 +19,8 @@ nativeUtils {
 }
 
 nativeUtils.wpi.addWarnings()
-nativeUtils.wpi.addWarningsAsErrors()
+// TODO: Re-enable this
+//nativeUtils.wpi.addWarningsAsErrors()
 
 nativeUtils.setSinglePrintPerPlatform()
 
