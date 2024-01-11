@@ -83,5 +83,5 @@ model {
 apply from: 'publish.gradle'
 apply from: 'javastyle.gradle'
 wrapper {
-    gradleVersion '8.4'
+    gradleVersion '8.5'
 }
