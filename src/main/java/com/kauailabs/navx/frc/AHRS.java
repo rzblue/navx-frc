@@ -17,6 +17,9 @@ import com.kauailabs.navx.IMUProtocol.YPRUpdate;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.hal.SimDevice;
+import edu.wpi.first.math.geometry.Quaternion;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
@@ -24,7 +27,6 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * The AHRS class provides an interface to AHRS capabilities of the KauaiLabs navX Robotics
@@ -43,7 +45,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
  *
  * @author Scott
  */
-public class AHRS implements Sendable, Gyro {
+public class AHRS implements Sendable, AutoCloseable {
 
   /**
    * Identifies one of the three sensing axes on the navX sensor board. Note that these axes are
@@ -415,6 +417,30 @@ public class AHRS implements Sendable, Gyro {
     } else {
       return (float) yaw_offset_tracker.applyOffset(this.yaw);
     }
+  }
+
+  /**
+   * Return the heading of the robot as a {@link edu.wpi.first.math.geometry.Rotation2d}.
+   *
+   * <p>The angle is continuous, that is it will continue from 360 to 361 degrees. This allows
+   * algorithms that wouldn't want to see a discontinuity in the gyro output as it sweeps past from
+   * 360 to 0 on the second time around.
+   *
+   * <p>The angle is expected to increase as the gyro turns counterclockwise when looked at from the
+   * top. It needs to follow the NWU axis convention.
+   *
+   * <p>This heading is based on integration of the returned rate from the gyro.
+   *
+   * @return the current heading of the robot as a {@link edu.wpi.first.math.geometry.Rotation2d}.
+   */
+  public Rotation2d getRotation2d() {
+    return Rotation2d.fromDegrees(-getAngle());
+  }
+
+  /** Constructs a Rotation3d from a quaternion. */
+  public Rotation3d getRotation3d() {
+    Quaternion q = new Quaternion(quaternionW, quaternionX, quaternionY, quaternionZ);
+    return new Rotation3d(q);
   }
 
   /**
@@ -1787,6 +1813,9 @@ public class AHRS implements Sendable, Gyro {
   /************************************************************/
   /* Gyro interface Implementation                            */
   /************************************************************/
-  @Override
+  /**
+   * @deprecated Calibrate does not do anything.
+   */
+  @Deprecated(forRemoval = true, since = "2024")
   public void calibrate() {}
 }

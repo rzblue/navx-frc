@@ -19,6 +19,8 @@
 #include <frc/interfaces/Gyro.h>
 #include <networktables/NetworkTableEntry.h>
 #include <hal/SimDevice.h>
+#include <frc/geometry/Rotation2d.h>
+#include <frc/geometry/Rotation3d.h>
 
 #include <thread>
 
@@ -30,8 +32,7 @@ class AHRSInternal;
 
 /// Class providing an "Attitude and Heading Reference System" (AHRS)
 /// interface to a navX-sensor
-class AHRS : public frc::Gyro,
-             public wpi::Sendable,
+class AHRS : public wpi::Sendable,
              public wpi::SendableHelper<AHRS>
 {
 public:
@@ -166,8 +167,10 @@ public:
     float GetYaw();
     float GetCompassHeading();
     void ZeroYaw();
-    bool IsCalibrating();
-    bool IsConnected();
+    frc::Rotation2d GetRotation2d();
+    frc::Rotation3d GetRotation3d();
+    bool   IsCalibrating();
+    bool   IsConnected();
     double GetByteCount();
     double GetUpdateCount();
     long GetLastSensorTimestamp();
@@ -195,11 +198,11 @@ public:
     float GetDisplacementX();
     float GetDisplacementY();
     float GetDisplacementZ();
-    double GetAngle() const override;
-    double GetRate() const override;
+    double GetAngle() const;
+    double GetRate() const;
     void SetAngleAdjustment(double angle);
     double GetAngleAdjustment();
-    void Reset() override;
+    void Reset();
     float GetRawGyroX();
     float GetRawGyroY();
     float GetRawGyroZ();
@@ -227,8 +230,9 @@ public:
     int16_t GetGyroFullScaleRangeDPS();
     int16_t GetAccelFullScaleRangeG();
 
-    // Gyro interface implementation
-    void Calibrate() override;
+    [[deprecated("Calibrate does not do anything.")]]
+    // This does nothing
+    void Calibrate();
 
 private:
     void SPIInit(frc::SPI::Port spi_port_id, uint32_t bitrate, uint8_t update_rate_hz);

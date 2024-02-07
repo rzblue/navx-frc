@@ -588,6 +588,31 @@ float AHRS::GetYaw()
 }
 
 /**
+ * Return the heading of the robot as a Rotation2d.
+ *
+ * The angle is continuous, that is it will continue from 360 to 361 degrees.
+ * This allows algorithms that wouldn't want to see a discontinuity in the
+ * gyro output as it sweeps past from 360 to 0 on the second time around.
+ *
+ * The angle is expected to increase as the gyro turns counterclockwise when
+ * looked at from the top. It needs to follow the NWU axis convention.
+ *
+ * @return the current heading of the robot as a Rotation2d. This heading is
+ *         based on integration of the returned rate from the gyro.
+ */
+frc::Rotation2d AHRS::GetRotation2d() {
+    return units::degree_t{-GetAngle()};
+}
+
+/**
+ * Constructs a Rotation3d from the NavX quaternion.
+ */
+frc::Rotation3d AHRS::GetRotation3d() {
+    frc::Quaternion q{GetQuaternionW(), GetQuaternionX(), GetQuaternionY(), GetQuaternionZ()};
+    return frc::Rotation3d{q};
+}
+
+/**
  * Returns the current tilt-compensated compass heading
  * value (in degrees, from 0 to 360) reported by the sensor.
  *<p>

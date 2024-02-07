@@ -256,7 +256,7 @@ public:
         // Data
         protocol_buffer[STREAM_CMD_STREAM_TYPE_INDEX] = stream_type;
         // convert update_rate_hz to two ascii bytes
-        sprintf(&protocol_buffer[STREAM_CMD_UPDATE_RATE_HZ_INDEX], "%02X", update_rate_hz);
+        snprintf(&protocol_buffer[STREAM_CMD_UPDATE_RATE_HZ_INDEX], 3, "%02X", update_rate_hz);
 
         // Footer
         encodeTermination(protocol_buffer, STREAM_CMD_MESSAGE_LENGTH, STREAM_CMD_MESSAGE_LENGTH - 4);
@@ -412,9 +412,9 @@ protected:
                 checksum += buffer[i];
             }
             // convert checksum to two ascii bytes
-            sprintf(&buffer[content_length], "%02X", checksum);
+            snprintf(&buffer[content_length], 3, "%02X", checksum);
             // Message Terminator
-            sprintf(&buffer[content_length + CHECKSUM_LENGTH], "%s", "\r\n");
+            snprintf(&buffer[content_length + CHECKSUM_LENGTH], 3, "%s", "\r\n");
         }
     }
 
@@ -437,7 +437,7 @@ protected:
             buff[0] = '-';
         else
             buff[0] = ' ';
-        sprintf(work_buffer, "%03d.%02d", abs((int)f), temp1);
+        snprintf(work_buffer, 4, "%03d.%02d", abs((int)f), temp1);
         for (i = 0; i < (PROTOCOL_FLOAT_LENGTH - 1); i++)
         {
             buff[1 + i] = work_buffer[i];
@@ -446,7 +446,7 @@ protected:
 
     static void encodeProtocolUint16(uint16_t value, char *buff)
     {
-        sprintf(&buff[0], "%04X", value);
+        snprintf(&buff[0], 5, "%04X", value);
     }
 
     static uint16_t decodeProtocolUint16(char *uint16_string)
